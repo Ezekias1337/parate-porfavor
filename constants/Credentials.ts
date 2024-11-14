@@ -1,0 +1,6 @@
+const CREDENTIALS = {
+  USERNAME: "TELMEX",
+  PASSWORD: "ZjRtMWxpYV9DNHJtMG40X1VyYjFWMWxsYQ%3D%3D",
+};
+
+export default CREDENTIALS;
