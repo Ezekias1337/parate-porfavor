@@ -10,18 +10,18 @@ export type RootStackParamList = {
 
 const Stack = createStackNavigator<RootStackParamList>();
 
-const linking = {
+/* const linking = {
   prefixes: ['http://localhost:8081'],
   config: {
     screens: {
       Home: '',  // This ensures the root path goes to the Home screen
     },
   },
-};
+}; */
 
 const RootNavigator: React.FC = () => {
   return (
-    <NavigationContainer linking={linking}>
+    <NavigationContainer /* linking={linking} */>
       <Stack.Navigator>
         <Stack.Screen name="Home" component={Home} />
       </Stack.Navigator>

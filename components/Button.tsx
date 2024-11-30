@@ -63,7 +63,7 @@ const Button: FC<ButtonProps> = ({
 
   const handlePress = (event: GestureResponderEvent) => {
     if (url) {
-      navigation.navigate(url as never);
+     navigation.navigate(url as never);
     } else if (onClickHandler) {
       onClickHandler(event);
     }

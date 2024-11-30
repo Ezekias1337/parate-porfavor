@@ -39,15 +39,3 @@ export default view2G;
 
 
 
-await fetch("http://192.168.1.254/html/bbsp/common/GetLanUserDevInfo.asp", {
-  "credentials": "include",
-  "headers": {
-      "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:132.0) Gecko/20100101 Firefox/132.0",
-      "Accept": "*/*",
-      "Accept-Language": "en-US,en;q=0.5",
-      "X-Requested-With": "XMLHttpRequest"
-  },
-  "referrer": "http://192.168.1.254/html/bbsp/userdevinfo/userdevinfo.asp",
-  "method": "POST",
-  "mode": "cors"
-});

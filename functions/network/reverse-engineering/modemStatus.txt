@@ -1,0 +1,42 @@
+await fetch("http://192.168.1.254/html/ssmp/deviceinfo/deviceinfo.asp", {
+  credentials: "include",
+  headers: {
+    "User-Agent":
+      "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:132.0) Gecko/20100101 Firefox/132.0",
+    Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "Accept-Language": "en-US,en;q=0.5",
+    "Upgrade-Insecure-Requests": "1",
+    Priority: "u=4",
+  },
+  referrer: "http://192.168.1.254/index.asp",
+  method: "GET",
+  mode: "cors",
+});
+
+
+
+async function fetchDataFromHTML() {
+  try {
+    const response = await fetch('http://192.168.1.254/html/ssmp/deviceinfo/deviceinfo.asp', {
+      credentials: 'include', // Important for authentication
+    });
+    const htmlText = await response.text();
+
+    // Extract JavaScript variables using regular expressions
+    const cpuUsedMatch = htmlText.match(/var cpuUsed = '(.+?)';/);
+    const memUsedMatch = htmlText.match(/var memUsed = '(.+?)';/);
+    const systemTimeMatch = htmlText.match(/var systemdsttime = '(.+?)';/);
+
+    const cpuUsed = cpuUsedMatch ? cpuUsedMatch[1] : null;
+    const memUsed = memUsedMatch ? memUsedMatch[1] : null;
+    const systemTime = systemTimeMatch ? systemTimeMatch[1] : null;
+
+    console.log('CPU Used:', cpuUsed);
+    console.log('Memory Used:', memUsed);
+    console.log('System Time:', systemTime);
+
+    return { cpuUsed, memUsed, systemTime };
+  } catch (error) {
+    console.error('Error fetching data from HTML:', error);
+  }
+}
