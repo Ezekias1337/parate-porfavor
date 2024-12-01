@@ -36,14 +36,18 @@ export const LocalizationProvider: React.FC<{ children: React.ReactNode }> = ({
           login: "Login",
           authSuccess: "Authentication successful!",
           authError: "Authentication failed. Please try again.",
-          test: "Test",
+          home: "Home",
+          modem: "Modem",
+          devices: "Devices",
         },
         es: {
           welcome: "Bienvenido",
           login: "Iniciar Sesión",
           authSuccess: "¡Autenticación exitosa!",
           authError: "La autenticación falló. Por favor, inténtelo de nuevo.",
-          test: "Prueba",
+          home: "Inicio",
+          modem: "Modem",
+          devices: "Dispositivos",
         },
       };
 

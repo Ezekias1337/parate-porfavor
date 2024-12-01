@@ -7,13 +7,16 @@ import DevicesScreen from "../screens/Devices"; // Import screens
 import TabIcon from "../navigation/TabIcon"; // Custom icon component
 import { bottomTabStyles } from "../styles/component-specific/bottom-tabs"; // Import styles
 import { colors } from "../styles/variables";
+import { useLocalization } from "../components/localization/LocalizationContext";
 
 const Tab = createBottomTabNavigator();
 
 const BottomTabs = () => {
+  const { translate } = useLocalization();
+
   return (
     <Tab.Navigator
-      initialRouteName="Home"
+      initialRouteName={translate("home")}
       screenOptions={{
         headerShown: false,
         tabBarStyle: bottomTabStyles.tabBar,
@@ -22,7 +25,7 @@ const BottomTabs = () => {
       }}
     >
       <Tab.Screen
-        name="Home"
+        name={translate("home")}
         component={HomeScreen} // Home screen is now part of the navigator
         options={{
           tabBarIcon: ({ color, size }) => (
@@ -31,7 +34,7 @@ const BottomTabs = () => {
         }}
       />
       <Tab.Screen
-        name="Modem"
+        name={translate("modem")}
         component={ModemScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
@@ -40,7 +43,7 @@ const BottomTabs = () => {
         }}
       />
       <Tab.Screen
-        name="Devices"
+        name={translate("devices")}
         component={DevicesScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
