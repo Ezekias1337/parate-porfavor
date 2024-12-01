@@ -1,5 +1,5 @@
-import getToken from "../../network/getToken";
-import login from "../../network/login";
+import getToken from "../../network/auth/getToken";
+import login from "../../network/auth/login";
 
 import { SetStateBoolean } from "../../../types/SetState";
 

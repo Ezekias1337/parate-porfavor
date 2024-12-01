@@ -1,9 +1,9 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import LOGIN_ENDPOINT from "../../constants/LoginEndpoint";
-import CREDENTIALS from "../../constants/Credentials";
+import LOGIN_ENDPOINT from "../../../constants/LoginEndpoint";
+import CREDENTIALS from "../../../constants/Credentials";
 
-import { SetStateBoolean } from "../../types/SetState";
+import { SetStateBoolean } from "../../../types/SetState";
 
 import fetchData from "./fetchData";
 

@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // Constants
-import ORIGIN_URL_BASE from "../../constants/RouterIp";
+import ORIGIN_URL_BASE from "../../../constants/RouterIp";
 
 const fetchData = async (input: RequestInfo, init?: RequestInit) => {
   const url = `${ORIGIN_URL_BASE}${input}`;

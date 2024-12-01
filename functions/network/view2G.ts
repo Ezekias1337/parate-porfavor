@@ -1,5 +1,5 @@
 import TWO_G_ENDPOINT from "../../constants/2gEndpoint";
-import fetchData from "./fetchData";
+import fetchData from "./auth/fetchData";
 
 const view2G = async (): Promise<string | null> => {
   try {

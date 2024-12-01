@@ -1,4 +1,4 @@
-import TOKEN_ENDPOINT from "../../constants/TokenEndpoint";
+import TOKEN_ENDPOINT from "../../../constants/TokenEndpoint";
 import fetchData from "./fetchData";
 
 const getToken = async (): Promise<string | null> => {

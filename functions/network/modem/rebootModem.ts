@@ -1,4 +1,4 @@
-import fetchData from "../fetchData";
+import fetchData from "../auth/fetchData";
 import ROUTER_IP from "../../../constants/RouterIp";
 
 // Reboot modem function
