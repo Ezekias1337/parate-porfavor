@@ -1,0 +1,62 @@
+import React, {
+  createContext,
+  useState,
+  useEffect,
+  useCallback,
+  useContext,
+} from "react";
+import { getInitialLanguage } from "./languageDetector";
+
+interface LocalizationContextValue {
+  translate: (key: string) => string;
+  language: string;
+}
+
+const LocalizationContext = createContext<LocalizationContextValue>({
+  translate: (key) => key,
+  language: "es",
+});
+
+export const LocalizationProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const [language, setLanguageState] = useState("es");
+
+  useEffect(() => {
+    // Set the language based on device settings
+    const initialLanguage = getInitialLanguage();
+    setLanguageState(initialLanguage);
+  }, []);
+
+  const translate = useCallback(
+    (key: string) => {
+      const translations: { [key: string]: { [key: string]: string } } = {
+        en: {
+          welcome: "Welcome",
+          login: "Login",
+          authSuccess: "Authentication successful!",
+          authError: "Authentication failed. Please try again.",
+          test: "Test",
+        },
+        es: {
+          welcome: "Bienvenido",
+          login: "Iniciar Sesión",
+          authSuccess: "¡Autenticación exitosa!",
+          authError: "La autenticación falló. Por favor, inténtelo de nuevo.",
+          test: "Prueba",
+        },
+      };
+
+      return translations[language]?.[key] || key;
+    },
+    [language]
+  );
+
+  return (
+    <LocalizationContext.Provider value={{ translate, language }}>
+      {children}
+    </LocalizationContext.Provider>
+  );
+};
+
+export const useLocalization = () => useContext(LocalizationContext);

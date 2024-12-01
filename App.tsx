@@ -1,6 +1,16 @@
-import React from 'react';
-import RootNavigator from './navigation/RootNavigator'; // Make sure this path is correct
+import React from "react";
+import RootNavigator from "./navigation/RootNavigator";
+import { LocalizationProvider } from "./components/localization/LocalizationContext";
+import { useEffect } from "react";
 
 export default function App() {
-  return <RootNavigator />;
+  useEffect(() => {
+    console.log("IN APP") 
+  }, [])
+  
+  return (
+    <LocalizationProvider>
+      <RootNavigator />
+    </LocalizationProvider>
+  );
 }
