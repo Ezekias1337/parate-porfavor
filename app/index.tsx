@@ -1,12 +1,14 @@
-// app/index.tsx
+// Library Imports
 import React from "react";
+// Localization
 import { LocalizationProvider } from "../components/localization/LocalizationContext";
-import Home from "./Home"; 
+// Consistent Layout
+import BottomTabs from "../navigation/BottomTabs";
 
 const App = () => {
   return (
     <LocalizationProvider>
-      <Home />
+      <BottomTabs /> 
     </LocalizationProvider>
   );
 };
