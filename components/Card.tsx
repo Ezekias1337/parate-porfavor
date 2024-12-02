@@ -8,7 +8,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import FontAwesomeIconNames from "../types/FontAwesome";
 
 // Components
-import { RootStackParamList } from "../navigation/RootNavigator";
+//import { RootStackParamList } from "../navigation/RootNavigator";
 // CSS
 import cardStyles from "../styles/component-specific/card";
 
@@ -69,7 +69,7 @@ export const Card: FC<CardProps> = ({
   button2Icon,
   imageSource,
 }) => {
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  //const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
   if (cardVariant === "mobile") {
     return (
@@ -115,7 +115,7 @@ export const Card: FC<CardProps> = ({
                 if (button1OnClick) {
                   button1OnClick();
                 } else if (button1Link) {
-                  navigation.navigate(button1Link as never);
+                  //navigation.navigate(button1Link as never);
                 }
               }}
             >
@@ -132,7 +132,7 @@ export const Card: FC<CardProps> = ({
           {buttonCount === 2 && button2OnClick && (
             <TouchableOpacity
               style={[cardStyles.button, cardStyles[button2Variant || "error"]]}
-              onPress={button2OnClick}
+              //onPress={button2OnClick}
             >
               {button2Icon && (
                 <FontAwesome

@@ -8,11 +8,13 @@ import TabIcon from "../navigation/TabIcon"; // Custom icon component
 import { bottomTabStyles } from "../styles/component-specific/bottom-tabs"; // Import styles
 import { colors } from "../styles/variables";
 import { useLocalization } from "../components/localization/LocalizationContext";
+import { useAuth } from "../components/auth/authContext";
 
 const Tab = createBottomTabNavigator();
 
 const BottomTabs = () => {
   const { translate } = useLocalization();
+  const { logout } = useAuth();
 
   return (
     <Tab.Navigator
@@ -48,6 +50,21 @@ const BottomTabs = () => {
         options={{
           tabBarIcon: ({ color, size }) => (
             <TabIcon name="cogs" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name={translate("logout")}
+        component={HomeScreen}
+        listeners={{
+          tabPress: async (e) => {
+            e.preventDefault();
+            await logout();
+          },
+        }}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <TabIcon name="user" size={size} color={color} />
           ),
         }}
       />

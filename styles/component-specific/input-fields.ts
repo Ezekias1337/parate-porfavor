@@ -1,0 +1,31 @@
+// Library Imports
+import { StyleSheet } from "react-native";
+
+// CSS
+import { colors, borderRadius, fontSizes } from "../variables";
+
+export const inputFieldStyles = StyleSheet.create({
+  textInput: {
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: borderRadius.borderRadius,
+    textAlign: "left",
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
+    fontSize: fontSizes.body,
+    backgroundColor: colors.neutral800,
+    borderColor: colors.primary500,
+    borderWidth: 1.5,
+    color: colors.primary500,
+    width: "75%",
+    marginBottom: 10,
+  },
+
+  leftIcon: {
+    paddingRight: 16,
+  },
+  rightIcon: {
+    paddingLeft: 16,
+  },
+});
