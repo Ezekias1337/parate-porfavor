@@ -4,20 +4,14 @@ import { StyleSheet } from "react-native";
 // CSS
 import { colors } from "../variables";
 
-const loginStyles = StyleSheet.create({
+const modemStyles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: colors.neutral800,
   },
-
-  buttonContainer: {
-    width: "75%",
-  },
-  button: {
-    width: "75%",
-  },
+  
 });
 
-export default loginStyles;
+export default modemStyles;

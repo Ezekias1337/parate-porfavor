@@ -13,6 +13,7 @@ export const buttonStyles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
+    width: "100%",
   },
   buttonContent: {
     flexDirection: "row",
@@ -36,17 +37,21 @@ export const buttonStyles = StyleSheet.create({
   },
   mediumButton: {
     fontSize: fontSizes.header3,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
   },
   largeButton: {
     fontSize: fontSizes.header2,
+    paddingVertical: 16,
+    paddingHorizontal: 32,
   },
   loader: {
     color: colors.neutral800,
   },
   primaryButton: {
     backgroundColor: colors.primary500,
-    color: colors.primary100,
-    borderColor: colors.primary100,
+    color: colors.primary900,
+    borderColor: colors.primary900,
   },
   primaryDarkButton: {
     backgroundColor: colors.primary900,

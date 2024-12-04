@@ -59,15 +59,19 @@ const Login: React.FC = () => {
         secureTextEntry
         style={inputFieldStyles.textInput}
         placeholderTextColor={colors.primary300}
-        
       />
-      <Button
-        text={translate("login")}
-        variant="primary"
-        onClickHandler={async () => {
-          await handleLogin();
-        }}
-      />
+      <View style={loginStyles.buttonContainer}>
+        <Button
+          text={translate("login")}
+          variant="primary"
+          buttonSize="medium"
+          onClickHandler={async () => {
+            await handleLogin();
+          }}
+          icon="sign-in"
+          leftIcon
+        />
+      </View>
     </View>
   );
 };

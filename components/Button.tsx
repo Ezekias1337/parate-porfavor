@@ -76,18 +76,20 @@ const Button: FC<ButtonProps> = ({
           name={icon}
           style={buttonStyles.leftIcon}
           size={iconSize}
+          color={buttonVariantToStyle[variant].color}
         />
       )}
       {loading ? (
         <ActivityIndicator color={buttonStyles.loader.color} />
       ) : (
-        <Text style={buttonStyles.buttonText}>{text}</Text>
+        <Text style={[buttonStyles.buttonText, buttonVariantToStyle[variant]]}>{text}</Text>
       )}
       {rightIcon && icon && (
         <FontAwesome
           name={icon}
           style={buttonStyles.rightIcon}
           size={iconSize}
+          color={buttonVariantToStyle[variant].color}
         />
       )}
     </View>

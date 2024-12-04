@@ -24,7 +24,7 @@ const Home: React.FC = () => {
 
   return (
     <View style={homeStyles.container}>
-      <StatusBar style="light" backgroundColor={colors.primary500} />
+      {/* <StatusBar style="light" backgroundColor={colors.primary500} /> */}
       <Text>Hello</Text>
     </View>
   );

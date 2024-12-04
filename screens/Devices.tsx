@@ -27,7 +27,6 @@ const Devices: React.FC = () => {
   
   return (
     <View style={homeStyles.container}>
-      <StatusBar style="light" backgroundColor={colors.primary500} />
       {isAuthenticated ? (
         <View>
           <Alert
