@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import axios from "axios";
-import { createProxyMiddleware } from "http-proxy-middleware";
+import { createProxyMiddleware, Options } from "http-proxy-middleware";
 
 const app = express();
 const PORT = 3000;
@@ -46,13 +46,13 @@ app.get(
     pathRewrite: {
       "^/device-info": "/html/ssmp/deviceinfo/deviceinfo.asp",
     },
-    onProxyReq: (proxyReq) => {
+    onProxyReq: (proxyReq: any) => {
       // Add session cookie to the request
       if (sessionCookie) {
         proxyReq.setHeader("Cookie", sessionCookie);
       }
     },
-  })
+  } as Options)
 );
 
 // Start the server

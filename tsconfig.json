@@ -6,12 +6,14 @@
       "@/*": [
         "./*"
       ]
-    }
+    },
+    "outDir": "dist"
   },
   "include": [
     "**/*.ts",
     "**/*.tsx",
     ".expo/types/**/*.ts",
-    "expo-env.d.ts"
+    "expo-env.d.ts",
+    "server/**/*.ts"
   ]
 }
