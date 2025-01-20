@@ -4,7 +4,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "../screens/Home"; // Import screens
 import ModemScreen from "../screens/Modem"; // Import screens
 import DevicesScreen from "../screens/Devices"; // Import screens
-import TabIcon from "../navigation/TabIcon"; // Custom icon component
+import TabIcon from "./TabIcon"; // Custom icon component
 import { bottomTabStyles } from "../styles/component-specific/bottom-tabs"; // Import styles
 import { colors } from "../styles/variables";
 import { useLocalization } from "../components/localization/LocalizationContext";
