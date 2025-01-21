@@ -1,19 +1,11 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-
-// Constants
-import ORIGIN_URL_BASE from "../../../constants/RouterIp";
-
 const fetchData = async (input: RequestInfo, init?: RequestInit) => {
-  const url = `${ORIGIN_URL_BASE}${input}`;
-  const authCookie = await AsyncStorage.getItem("authCookie");
-
+  const url = `${process.env.EXPO_PUBLIC_SERVER_IP}:${process.env.EXPO_PUBLIC_BACKEND_PORT}${input}`;
   const response = await fetch(url, {
     ...init,
-    credentials: "include",
+    //credentials: "include",
     redirect: "follow",
     headers: {
       ...(init?.headers || {}),
-      Cookie: authCookie || "", // Add the cookie to headers if available
     },
   });
 

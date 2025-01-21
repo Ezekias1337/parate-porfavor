@@ -32,7 +32,7 @@ const Login: React.FC = () => {
     try {
       const token = await getToken(); // Fetch token from the API
       if (token) {
-        await login(token, password); // Perform login
+        await login(token, username, password); // Perform login
         await authenticate(token); // Update auth context
       } else {
         //Alert.alert("Error", "Failed to retrieve token.");
