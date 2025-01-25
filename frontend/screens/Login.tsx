@@ -30,12 +30,9 @@ const Login: React.FC = () => {
 
   const handleLogin = async () => {
     try {
-      const token = await getToken(); // Fetch token from the API
-      if (token) {
-        await login(token, username, password); // Perform login
-        await authenticate(token); // Update auth context
-      } else {
-        //Alert.alert("Error", "Failed to retrieve token.");
+      const token = await login(username, password);
+      if (token != null) {
+        await authenticate(token);
       }
     } catch (error) {
       //Alert.alert("Error", "Failed to log in.");

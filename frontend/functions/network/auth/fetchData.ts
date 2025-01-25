@@ -2,7 +2,7 @@ const fetchData = async (input: RequestInfo, init?: RequestInit) => {
   const url = `${process.env.EXPO_PUBLIC_SERVER_IP}:${process.env.EXPO_PUBLIC_BACKEND_PORT}${input}`;
   const response = await fetch(url, {
     ...init,
-    //credentials: "include",
+    credentials: "include",
     redirect: "follow",
     headers: {
       ...(init?.headers || {}),

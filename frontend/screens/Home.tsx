@@ -6,6 +6,7 @@ import { useNavigation, NavigationProp } from "@react-navigation/native";
 // Functions, Helpers, Utils, and Hooks
 import handleLogin from "../functions/component-specific/index/handleLogin";
 import view2G from "@/functions/network/view2G";
+import fetchData from "../functions/network/auth/fetchData";
 // Components
 import Button from "../components/Button";
 import Alert from "../components/Alert";
@@ -43,6 +44,30 @@ const Home: React.FC = () => {
       */
      
       // Placeholder MAC for now: 02:0f:b5:f1:7f:82
+      
+      
+      
+      try {
+        const response = await fetchData("/api/modem/get-device-list", {
+          method: "GET",
+          headers: {
+            "User-Agent":
+              "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:132.0) Gecko/20100101 Firefox/132.0",
+            Accept: "*/*",
+          },
+        });
+    
+        if (response.ok) {
+          const token = await response.text();
+          console.log("Token:", token);
+          return token;
+        } else {
+          return null;
+        }
+      } catch (error) {
+        console.error("Token fetch error:", error);
+        return null;
+      }
     } catch (error) {
       
       console.error("Login error:", error);

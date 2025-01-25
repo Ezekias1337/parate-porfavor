@@ -1,22 +1,25 @@
 import fetchData from "./fetchData";
 import base64EncodeString from "@/utils/strings/base64EncodeString";
 import urlEncodeString from "@/utils/strings/urlEncodeString";
+import getToken from "./getToken";
 
-const login = async (token: string, username: string, password: string): Promise<boolean> => {
+const login = async (username: string, password: string): Promise<string | null> => {
 
   const hashedPasswordPreEncoding = base64EncodeString(password);
   const hashedPassword = urlEncodeString(hashedPasswordPreEncoding);
 
   try {
+    const token = await getToken();
     const response = await fetchData("/api/auth/login", {
       method: "POST",
       headers: {
         "User-Agent":
           "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:132.0) Gecko/20100101 Firefox/132.0",
+        "Content-Type": "application/json",
         Accept: "*/*",
         "X-Requested-With": "XMLHttpRequest",
       },
-      body: `UserName=${username}&PassWord=${hashedPassword}&x.X_HW_Token=${token}`,
+      body: JSON.stringify({ UserName: username, PassWord: hashedPassword, x_X_HW_Token: token }),
       credentials: "include",
     });
 
@@ -24,14 +27,14 @@ const login = async (token: string, username: string, password: string): Promise
 
     if (response.ok) {
       console.log("Login successful!");
-      return true;
+      return token;
     } else {
       console.error("Login failed:", response.status);
-      return false;
+      return null;
     }
   } catch (error) {
     console.error("Failed to login:", error);
-    return false;
+    return null;
   }
 };
 
