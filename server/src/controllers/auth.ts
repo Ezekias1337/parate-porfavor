@@ -1,8 +1,9 @@
 // Library Imports
 import { RequestHandler } from "express";
-import axiosInstance, { jar } from "../util/axiosWithCookies";
-import createHttpError from "http-errors";
+import axios from "axios";
 import env from "../util/validateEnv";
+// Functions, Helpers, and Utils
+import sessionStore from "../session/sessionStore";
 import runCurlCommand from "../util/runCurlCommand";
 
 const USER_AGENT = env.USER_AGENT;
@@ -21,16 +22,9 @@ const MODEM_URL_BASE = env.MODEM_URL_BASE;
     ? <input type="hidden" name="onttoken" id="hwonttoken" value="f02a7a5399d7e2521c8cf1117524f99d43b50792149af218">
 */
 
-/* 
-    ! The reason that CURL commands are being used here for login is because of security   
-    ! limitations javascript not exposing the set-cookie header. As a result in order to get the
-    ! sid cookie which is used for all subsequent requests (unchanging per session and different from
-    ! the x.X_HW_Token cookie)
-*/
-
 export const getToken: RequestHandler = async (req, res, next) => {
     try {
-        const response = await axiosInstance.post(`${MODEM_URL_BASE}/asp/GetRandCount.asp`, null, {
+        const response = await axios.post(`${MODEM_URL_BASE}/asp/GetRandCount.asp`, null, {
             headers: {
                 "User-Agent": USER_AGENT,
                 Accept: "*/*",
@@ -43,13 +37,18 @@ export const getToken: RequestHandler = async (req, res, next) => {
     }
 };
 
+
 /* 
-    The session cookie from logging in needs to be stored and used for subsequent requests.
+    ! The reason that CURL commands are being used here for login is because of security   
+    ! limitations javascript not exposing the set-cookie header. As a result in order to get the
+    ! sid cookie which is used for all subsequent requests (unchanging per session and different from
+    ! the x.X_HW_Token cookie)
+    
+    ! The session cookie from logging in needs to be stored and used for subsequent requests.
 */
 
 export const login: RequestHandler = async (req, res, next) => {
     const { UserName, PassWord, x_X_HW_Token } = req.body;
-    console.log("Login Request From Front End:", req.body);
     const url = `${process.env.MODEM_URL_BASE}/login.cgi`;
     const curlCommand = `
         curl -s -X POST "${url}" \
@@ -66,30 +65,27 @@ export const login: RequestHandler = async (req, res, next) => {
     `;
 
     try {
-        // Proceed with the login request
-        const response = await runCurlCommand(curlCommand);
+        await runCurlCommand(curlCommand);
 
-        // cURL will save the cookies (including `sid`) in `cookies.txt`
-        console.log("Login Response:", response);
-
-        /// Read the `sid` cookie from the file
         const fs = require("fs");
         const cookieFile = fs.readFileSync("cookies.txt", "utf8");
-
         const sidMatch = cookieFile.match(/sid=([^\s;]+)/);
         if (!sidMatch) {
             throw new Error("Failed to retrieve SID from cookies");
         }
 
-        const sid = sidMatch[1];
-        console.log("Extracted SID:", sid);
+        const rawCookieString = sidMatch[0];
+        const cookieString = `Cookie=${rawCookieString}`;
 
+        /* 
+            ! Now that I successfully have retrieved the cookie string, I just need to store it in the sessionStore
+            ! so that all subsequent requests can use it.
+        */
+        sessionStore.setCookie("loginToken", cookieString);
 
-        /* const cookies = jar.getCookiesSync(`${MODEM_URL_BASE}`);
-        console.log("Cookies in Jar:", cookies); */
-
-        res.json({ token: sid });
+        res.json({ success: true });
     } catch (error) {
+        res.json({ success: false });
         next(error);
     }
 };
@@ -97,7 +93,7 @@ export const login: RequestHandler = async (req, res, next) => {
 export const turnOffModem: RequestHandler = async (req, res, next) => {
     try {
         const token = req.body.token;
-        const response = await axiosInstance.post(`${MODEM_URL_BASE}/html/ssmp/reset/set.cgi?x=InternetGatewayDevice.X_HW_DEBUG.SMP.DM.ResetBoard&RequestFile=html/ssmp/reset/reset.asp`, null, {
+        const response = await axios.post(`${MODEM_URL_BASE}/html/ssmp/reset/set.cgi?x=InternetGatewayDevice.X_HW_DEBUG.SMP.DM.ResetBoard&RequestFile=html/ssmp/reset/reset.asp`, null, {
             method: "POST",
             //credentials: "include", // Ensure authentication is handled with cookies
             headers: {

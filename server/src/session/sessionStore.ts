@@ -1,7 +1,26 @@
-import { CookieJar } from "tough-cookie";
+class SessionStore {
+    private cookies: Map<string, string>;
 
-const jar = new CookieJar();
+    constructor() {
+        this.cookies = new Map();
+    }
 
-export const getCookieJar = () => jar;
+    // Set the raw cookie string
+    setCookie(name: string, value: string) {
+        this.cookies.set(name, value);
+    }
 
-export default jar;
+    // Get the raw cookie string
+    getCookie(name: string): string | undefined {
+        return this.cookies.get(name);
+    }
+
+    // Get all cookies in the correct format for the request header
+    getAllCookies(): string {
+        return Array.from(this.cookies.values()).join('; ');
+    }
+}
+
+const sessionStore = new SessionStore();
+
+export default sessionStore;
