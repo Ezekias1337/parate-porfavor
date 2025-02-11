@@ -2,19 +2,12 @@ import { RequestHandler } from "express";
 import axios from "axios";
 import env from "../util/validateEnv";
 import sessionStore from "../session/sessionStore";
+import Device from "../../../shared/types/Device";
 
 const USER_AGENT = env.USER_AGENT;
 const MODEM_URL_BASE = env.MODEM_URL_BASE;
 
-type Device = {
-    domain: string;
-    macAddr: string;
-    hostName: string;
-    ipAddress: string;
-    onlineStatus: string;
-    connectionType: string;
-    ssid: string;
-};
+
 
 export const getDeviceList: RequestHandler = async (req, res, next) => {
     const cookies = sessionStore.getAllCookies();
