@@ -38,7 +38,8 @@ export const LocalizationProvider: React.FC<{ children: React.ReactNode }> = ({
           username: "Username",
           password: "Password",
           authSuccess: "Authentication successful!",
-          authError: "Authentication failed. Please try again.",
+          authError:
+            "Failed to login. Please verify your username & password and try again.",
           home: "Home",
           modem: "Modem",
           devices: "Devices",
@@ -50,7 +51,8 @@ export const LocalizationProvider: React.FC<{ children: React.ReactNode }> = ({
           username: "Usuario",
           password: "Contraseña",
           authSuccess: "¡Autenticación exitosa!",
-          authError: "La autenticación falló. Por favor, inténtelo de nuevo.",
+          authError:
+            "No se pudo iniciar sesión. Verifique su nombre de usuario y contraseña e inténtelo nuevamente.",
           home: "Inicio",
           modem: "Modem",
           devices: "Dispositivos",

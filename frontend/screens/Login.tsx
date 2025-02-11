@@ -21,7 +21,7 @@ import { inputFieldStyles } from "../styles/component-specific/input-fields";
 
 const Login: React.FC = () => {
   const { translate, language } = useLocalization();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [authError, setAuthError] = useState(false);
 
   const [username, setUsername] = useState("");
@@ -30,18 +30,30 @@ const Login: React.FC = () => {
 
   const handleLogin = async () => {
     try {
+      setLoading(true);
       const token = await login(username, password);
       if (token != null) {
+        if (setAuthError) {
+          setAuthError(false);
+        }
+        setLoading(false);
         await authenticate(token);
       }
     } catch (error) {
-      //Alert.alert("Error", "Failed to log in.");
+      setLoading(false);
+      setAuthError(true);
       console.error("Login error:", error);
     }
   };
 
   return (
     <View style={loginStyles.container}>
+      {authError === false && (
+        <View style={loginStyles.alertContainer}>
+          <Alert bodyText={translate("authError")} variant="error" icon="exclamation-triangle" />
+        </View>
+      )}
+
       <TextInput
         placeholder={translate("username")}
         value={username}
@@ -62,6 +74,7 @@ const Login: React.FC = () => {
           text={translate("login")}
           variant="primary"
           buttonSize="medium"
+          loading={loading}
           onClickHandler={async () => {
             await handleLogin();
           }}

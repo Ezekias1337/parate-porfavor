@@ -23,10 +23,7 @@ const login = async (username: string, password: string): Promise<string | null>
       credentials: "include",
     });
 
-    console.log("LOGIN RESPONSE:", response);
-
     if (response.ok) {
-      console.log("Login successful!");
       return token;
     } else {
       console.error("Login failed:", response.status);

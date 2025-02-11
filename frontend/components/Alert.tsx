@@ -43,8 +43,15 @@ const Alert: FC<AlertProps> = ({
       ]}
     >
       <View style={[alertStyles.alert, variantStyles]}>
-        {icon && <FontAwesome name={icon} size={24} style={alertStyles.icon} />}
-        <Text style={alertStyles.alertText}>{bodyText}</Text>
+        {icon && (
+          <FontAwesome
+            name={icon}
+            size={24}
+            style={alertStyles.icon}
+            color={variantStyles.color}
+          />
+        )}
+        <Text style={[alertStyles.alertText, alertVariantToStyle[variant]]}>{bodyText}</Text>
       </View>
     </View>
   );
