@@ -48,7 +48,7 @@ const Login: React.FC = () => {
 
   return (
     <View style={loginStyles.container}>
-      {authError === false && (
+      {authError && (
         <View style={loginStyles.alertContainer}>
           <Alert bodyText={translate("authError")} variant="error" icon="exclamation-triangle" />
         </View>
