@@ -1,11 +1,8 @@
 // Library Imports
-import React, { useEffect, useState } from "react";
-import { View, Text, AppState } from "react-native";
-import { StatusBar } from "expo-status-bar";
-import { useNavigation, NavigationProp } from "@react-navigation/native";
+import React, { useState } from "react";
+import { View } from "react-native";
 // Functions, Helpers, Utils, and Hooks
 import login from "@/functions/network/auth/login";
-import getToken from "@/functions/network/auth/getToken";
 // Components
 import { useAuth } from "../components/auth/authContext";
 import { TextInput } from "react-native";
@@ -20,7 +17,7 @@ import loginStyles from "../styles/page-specific/login";
 import { inputFieldStyles } from "../styles/component-specific/input-fields";
 
 const Login: React.FC = () => {
-  const { translate, language } = useLocalization();
+  const { translate } = useLocalization();
   const [loading, setLoading] = useState(false);
   const [authError, setAuthError] = useState(false);
 
@@ -50,7 +47,11 @@ const Login: React.FC = () => {
     <View style={loginStyles.container}>
       {authError && (
         <View style={loginStyles.alertContainer}>
-          <Alert bodyText={translate("authError")} variant="error" icon="exclamation-triangle" />
+          <Alert
+            bodyText={translate("authError")}
+            variant="error"
+            icon="exclamation-triangle"
+          />
         </View>
       )}
 
