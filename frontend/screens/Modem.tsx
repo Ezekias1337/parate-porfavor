@@ -6,12 +6,12 @@ import { useNavigation, NavigationProp } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 // Functions, Helpers, Utils, and Hooks
 import { useAuth } from "../components/auth/authContext";
-import getModemStatus, {
-  ModemStatus,
-} from "../functions/network/modem/getModemStatus";
+import getModemStatus from "../functions/network/modem/getModemStatus";
 // Components
 import Button from "../components/Button";
 import Alert from "../components/Alert";
+// Types
+import { ModemStatus } from "../../shared/types/Modem";
 
 import { useLocalization } from "../components/localization/LocalizationContext";
 
@@ -27,7 +27,7 @@ const Modem: React.FC = () => {
 
   useEffect(() => {
     const fetchModemStatus = async () => {
-      const status = await getModemStatus(/* authCookie */);
+      const status = await getModemStatus();
       setModemStatus(status);
     };
     fetchModemStatus();
