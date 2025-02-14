@@ -7,7 +7,6 @@ import { useNavigation, NavigationProp } from "@react-navigation/native";
 import handleLogin from "../functions/component-specific/index/handleLogin";
 import view2G from "@/functions/network/view2G";
 // Components
-//import { RootStackParamList } from "@/navigation/RootNavigator";
 import Button from "../components/Button";
 import Alert from "../components/Alert";
 

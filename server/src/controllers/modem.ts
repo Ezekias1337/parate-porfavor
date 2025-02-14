@@ -77,13 +77,11 @@ export const getModemStatus: RequestHandler = async (req, res, next) => {
         const cpuUsedMatch = htmlText.match(/var cpuUsed = '(.+?)';/);
         const memUsedMatch = htmlText.match(/var memUsed = '(.+?)';/);
         const systemTimeMatch = htmlText.match(/var systemdsttime = '(.+?)';/);
-        const deviceRunTimeMatch = htmlText.match(/id="ShowTime">([^<]+)<\/span>/);
 
         const modemStatus: ModemStatus = {
             cpuUsed: cpuUsedMatch ? cpuUsedMatch[1] : null,
             memUsed: memUsedMatch ? memUsedMatch[1] : null,
             systemTime: systemTimeMatch ? systemTimeMatch[1] : null,
-            deviceRunTime: deviceRunTimeMatch ? deviceRunTimeMatch[1] : null
         };
         console.log(modemStatus);
         res.json(modemStatus);

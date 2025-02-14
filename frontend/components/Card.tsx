@@ -8,7 +8,6 @@ import { FontAwesome } from "@expo/vector-icons";
 import FontAwesomeIconNames from "../types/FontAwesome";
 
 // Components
-//import { RootStackParamList } from "../navigation/RootNavigator";
 // CSS
 import cardStyles from "../styles/component-specific/card";
 

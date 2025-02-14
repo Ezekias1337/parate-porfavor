@@ -43,6 +43,12 @@ export const LocalizationProvider: React.FC<{ children: React.ReactNode }> = ({
           home: "Home",
           modem: "Modem",
           devices: "Devices",
+          cpuUsed: "CPU Used",
+          ramUsed: "RAM Used",
+          systemTime: "System Time",
+          serverError: "Could not communicate with the server. Please try again later.",
+          errorGettingModemStatus: "Could not get modem status. Press button to try again.",
+          refresh: "Refresh"
         },
         es: {
           welcome: "Bienvenido",
@@ -56,6 +62,12 @@ export const LocalizationProvider: React.FC<{ children: React.ReactNode }> = ({
           home: "Inicio",
           modem: "Modem",
           devices: "Dispositivos",
+          cpuUsed: "CPU Usado",
+          ramUsed: "RAM Usada",
+          systemTime: "Tiempo del Sistema",
+          serverError: "No se pudo comunicar con el servidor. Por favor, inténtelo de nuevo mas tarde.",
+          errorGettingModemStatus: "No se pudo obtener el estado del modem. Presione el botón para intentarlo de nuevo.",
+          refresh: "Actualizar"
         },
       };
 

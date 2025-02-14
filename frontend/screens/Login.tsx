@@ -8,9 +8,7 @@ import { useAuth } from "../components/auth/authContext";
 import { TextInput } from "react-native";
 import Button from "../components/Button";
 import Alert from "../components/Alert";
-
 import { useLocalization } from "../components/localization/LocalizationContext";
-
 // CSS
 import { colors } from "../styles/variables";
 import loginStyles from "../styles/page-specific/login";
