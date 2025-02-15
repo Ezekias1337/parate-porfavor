@@ -10,6 +10,6 @@ router.get("/get-token", AuthController.getToken);
 // POST requests
 router.post("/login", AuthController.login);
 /* router.post("/logout", AuthController.logout); */
-router.post("/turn-off-modem", AuthController.turnOffModem);
+
 
 export default router;

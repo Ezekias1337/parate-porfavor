@@ -21,6 +21,7 @@ export const buttonStyles = StyleSheet.create({
   },
   buttonText: {
     fontSize: fontSizes.body,
+    textAlign: "center",
   },
   leftIcon: {
     paddingRight: 16,

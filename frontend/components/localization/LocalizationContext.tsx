@@ -6,6 +6,7 @@ import React, {
   useContext,
 } from "react";
 import { getInitialLanguage } from "./languageDetector";
+import rebootModem from "@/functions/network/modem/rebootModem";
 
 interface LocalizationContextValue {
   translate: (key: string) => string;
@@ -47,7 +48,10 @@ export const LocalizationProvider: React.FC<{ children: React.ReactNode }> = ({
           ramUsed: "RAM Used",
           systemTime: "System Time",
           serverError: "Could not communicate with the server. Please try again later.",
-          errorGettingModemStatus: "Could not get modem status. Press button to try again.",
+          errorGettingModemStatus: "Could not get modem status. Press button to try again. If it still doesn't work, try logging out and logging back in.",
+          rebootModem: "Reboot Modem",
+          modemIsRebooting: "Modem is rebooting in... Logging you out in:",
+          seconds: "seconds",
           refresh: "Refresh"
         },
         es: {
@@ -66,7 +70,10 @@ export const LocalizationProvider: React.FC<{ children: React.ReactNode }> = ({
           ramUsed: "RAM Usada",
           systemTime: "Tiempo del Sistema",
           serverError: "No se pudo comunicar con el servidor. Por favor, inténtelo de nuevo mas tarde.",
-          errorGettingModemStatus: "No se pudo obtener el estado del modem. Presione el botón para intentarlo de nuevo.",
+          errorGettingModemStatus: "No se pudo obtener el estado del modem. Presione el botón para intentarlo de nuevo. Si sigue sin funcionar, inténtelo cerrando y vuelvéndose a iniciar sesión.",
+          rebootModem: "Reiniciar Modem",
+          modemIsRebooting: "El modem se esta reiniciando... Cerrando sesión en:",
+          seconds: "segundos",
           refresh: "Actualizar"
         },
       };

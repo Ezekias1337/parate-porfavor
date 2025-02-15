@@ -1,31 +1,31 @@
-import axios from 'axios';
-import cheerio from 'cheerio';
-import env from "../util/validateEnv";
+import * as cheerio from 'cheerio';
 
-const USER_AGENT = env.USER_AGENT;
+/**
+ * Extracts the `onttoken` value from an HTML or ASP file content.
+ * @param {string} htmlContent - The raw HTML/ASP file content to be parsed.
+ * @param {boolean} logToken - Optional flag to log the extracted token.
+ * @returns {string | null} - The extracted token or null if not found.
+*/
 
-const fetchToken = async (url: string, sessionCookie: string): Promise<string | null> => {
+const fetchOntToken = (htmlContent: string, logToken?: boolean): string | null => {
     try {
-        const response = await axios.get(url, {
-            headers: {
-                'User-Agent': USER_AGENT,
-                'Cookie': sessionCookie,
-            },
-        });
-        const $ = cheerio.load(response.data);
+        const $ = cheerio.load(htmlContent);
         const token = $('input[name="onttoken"]').val();
 
         if (token) {
-            console.log(`Token extracted: ${token}`);
+            if (logToken) {
+                console.log(`Token extracted: ${token}`);
+            }
+
             return token;
         } else {
             console.error('Token not found in the HTML.');
             return null;
         }
     } catch (error) {
-        console.error('Error fetching or parsing the .asp file:', error);
+        console.error('Error parsing the HTML content:', error);
         return null;
     }
 };
 
-export default fetchToken;
+export default fetchOntToken;

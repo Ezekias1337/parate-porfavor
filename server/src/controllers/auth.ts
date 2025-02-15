@@ -90,31 +90,5 @@ export const login: RequestHandler = async (req, res, next) => {
     }
 };
 
-export const turnOffModem: RequestHandler = async (req, res, next) => {
-    try {
-        const token = req.body.token;
-        const response = await axios.post(`${MODEM_URL_BASE}/html/ssmp/reset/set.cgi?x=InternetGatewayDevice.X_HW_DEBUG.SMP.DM.ResetBoard&RequestFile=html/ssmp/reset/reset.asp`, null, {
-            method: "POST",
-            //credentials: "include", // Ensure authentication is handled with cookies
-            headers: {
-                "User-Agent":
-                    USER_AGENT,
-                Accept:
-                    "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-                "Accept-Language": "en-US,en;q=0.5",
-                "Content-Type": "application/x-www-form-urlencoded",
-                "Upgrade-Insecure-Requests": "1",
-                Priority: "u=4",
-            },
-            params: {
-                "x.X_HW_Token": token,
-            },
-            //referrer: `${env.ORIGIN_URL_BASE}/html/ssmp/reset/reset.asp`,
 
-        });
-        res.json({ token: response.data });
-    } catch (error) {
-        next(error);
-    }
-};
 

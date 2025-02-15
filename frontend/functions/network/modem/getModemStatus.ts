@@ -1,6 +1,4 @@
 import fetchData from "../auth/fetchData";
-import ROUTER_IP from "../../../constants/RouterIp";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ModemStatus } from "../../../../shared/types/Modem"
 
 // Fetch modem status function

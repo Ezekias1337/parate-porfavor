@@ -9,6 +9,6 @@ router.get("/get-modem-status", ModemController.getModemStatus);
 router.get("/get-device-list", ModemController.getDeviceList);
 
 // POST requests
-//router.post("/reboot-modem", ModemController.rebootModem);
+router.post("/reboot-modem", ModemController.rebootModem);
 
 export default router;

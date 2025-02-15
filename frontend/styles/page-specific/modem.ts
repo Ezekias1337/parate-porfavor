@@ -9,8 +9,20 @@ const modemStyles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    width: "100%",
   },
-  
+  buttonContainer: {
+    marginTop: 20,
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "column",
+    gap: 10,
+    width: "85%",
+  },
+  alertContainer: {
+   width: "100%",
+  },
+
 });
 
 export default modemStyles;

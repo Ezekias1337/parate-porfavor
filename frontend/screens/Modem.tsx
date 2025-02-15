@@ -3,7 +3,9 @@ import React, { useEffect, useState, useCallback } from "react";
 import { View, ActivityIndicator } from "react-native";
 // Functions, Helpers, Utils, and Hooks
 import getModemStatus from "../functions/network/modem/getModemStatus";
+import rebootModem from "../functions/network/modem/rebootModem";
 // Components
+import { useAuth } from "../components/auth/authContext";
 import Button from "../components/Button";
 import Alert from "../components/Alert";
 import ModemStatusCard from "../components/page-specific/modem/ModemStatusCard";
@@ -12,13 +14,18 @@ import { ModemStatus } from "../../shared/types/Modem";
 import { useLocalization } from "../components/localization/LocalizationContext";
 // CSS
 import { colors } from "../styles/variables";
-import modemStyles from "../styles/page-specific/index";
+import modemStyles from "../styles/page-specific/modem";
 
 const Modem: React.FC = () => {
   const { translate } = useLocalization();
+  const { logout } = useAuth();
+
   const [modemStatus, setModemStatus] = useState<ModemStatus | null>(null);
+  const [displayButtons, setDisplayButtons] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [modemRebooting, setModemRebooting] = useState(false);
+  const [secondsBeforeLogout, setSecondsBeforeLogout] = useState(0);
 
   const fetchModemStatus = useCallback(async () => {
     setLoading(true);
@@ -26,11 +33,9 @@ const Modem: React.FC = () => {
 
     if (status === null) {
       setErrorMsg(translate("serverError"));
-      setLoading(false);
-    } else {
-      setModemStatus(status);
-      setLoading(false);
     }
+    setLoading(false);
+    setModemStatus(status);
   }, [setLoading, setErrorMsg, setModemStatus]);
 
   useEffect(() => {
@@ -47,23 +52,85 @@ const Modem: React.FC = () => {
     }
   }, [modemStatus]);
 
+  useEffect(() => {
+    if (!loading) {
+      setDisplayButtons(true);
+    } else {
+      setDisplayButtons(false);
+    }
+  }, [loading]);
+
+  // Countdown Timer for Logout
+  useEffect(() => {
+    if (modemRebooting) {
+      setSecondsBeforeLogout(5); // Set initial countdown value
+
+      const interval = setInterval(() => {
+        setSecondsBeforeLogout((prev) => {
+          if (prev <= 1) {
+            clearInterval(interval);
+            logout(); // Logout when countdown reaches 0
+            return 0;
+          }
+          return prev - 1; // Decrease countdown every second
+        });
+      }, 1000);
+
+      return () => clearInterval(interval); // Cleanup on unmount
+    }
+  }, [modemRebooting, logout]);
+
   return (
     <View style={modemStyles.container}>
       {loading && <ActivityIndicator color={colors.primary500} size="large" />}
-      {errorMsg && <Alert bodyText={errorMsg} variant="error" />}
-      {errorMsg === translate("errorGettingModemStatus") && (
-        <Button
-          variant="primary"
-          text={translate("refresh")}
-          onClickHandler={fetchModemStatus}
-        />
+      {errorMsg && (
+        <View style={modemStyles.alertContainer}>
+          <Alert
+            bodyText={errorMsg}
+            variant="error"
+            icon="exclamation-triangle"
+          />
+        </View>
       )}
-      {modemStatus !== null && (
+      {modemRebooting && (
+        <View style={modemStyles.alertContainer}>
+          <View style={modemStyles.alertContainer}>
+            <Alert
+              bodyText={`${translate(
+                "modemIsRebooting"
+              )} ${secondsBeforeLogout} ${translate("seconds")}`}
+              variant="info"
+              icon="info-circle"
+            />
+          </View>
+        </View>
+      )}
+
+      {!loading && modemStatus !== null && errorMsg === null && (
         <ModemStatusCard
           cpuUsed={modemStatus.cpuUsed}
           memUsed={modemStatus.memUsed}
           systemTime={modemStatus.systemTime}
         />
+      )}
+
+      {displayButtons && (
+        <View style={modemStyles.buttonContainer}>
+          <Button
+            text={translate("rebootModem")}
+            variant="primary"
+            onClickHandler={async () => {
+              await rebootModem();
+              setModemRebooting(true);
+            }}
+            loading={modemRebooting}
+          />
+          <Button
+            variant="error"
+            text={translate("refresh")}
+            onClickHandler={fetchModemStatus}
+          />
+        </View>
       )}
     </View>
   );

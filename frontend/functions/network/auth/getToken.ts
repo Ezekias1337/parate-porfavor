@@ -13,7 +13,6 @@ const getToken = async (): Promise<string | null> => {
 
     if (response.ok) {
       const token = await response.text();
-      console.log("Token:", token);
       return token;
     } else {
       return null;
