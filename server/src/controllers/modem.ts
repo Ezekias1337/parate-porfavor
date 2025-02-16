@@ -2,10 +2,10 @@ import { RequestHandler } from "express";
 import axios from "axios";
 import env from "../util/validateEnv";
 import sessionStore from "../session/sessionStore";
-import Device from "../../../shared/types/Device";
 import { ModemStatus } from "../../../shared/types/Modem";
 
 import fetchOntToken from "../util/fetchOntToken";
+import extractDeviceList from "../util/extractDeviceList";
 
 const USER_AGENT = env.USER_AGENT;
 const MODEM_URL_BASE = env.MODEM_URL_BASE;
@@ -31,24 +31,7 @@ export const getDeviceList: RequestHandler = async (req, res, next) => {
             },
         });
 
-        // Regex to capture relevant device data
-        const deviceRegex = /new USERDeviceNew\("(.*?)","(.*?)","(.*?)","(.*?)","(.*?)","(.*?)","(.*?)","(.*?)","(.*?)","(.*?)","(.*?)","(.*?)","(.*?)","(.*?)","(.*?)","(.*?)","(.*?)"\)/g;
-
-        let match;
-        const deviceList: Device[] = [];
-
-        while ((match = deviceRegex.exec(response.data)) !== null) {
-            deviceList.push({
-                domain: match[1],
-                ipAddress: match[2].replace(/\\x2e/g, "."), // Convert encoded IP address
-                macAddr: match[3].replace(/\\x3a/g, ":"), // Convert encoded MAC address
-                hostName: decodeURIComponent(match[11].replace(/\\x2d/g, "-")), // Decode hostnames
-                onlineStatus: match[8] === "Online" ? "Online" : "Offline",
-                connectionType: match[9] === "ETH" ? "ETH" : "WIFI",
-                ssid: match[5],
-            });
-        }
-
+        const deviceList = extractDeviceList(response.data, true);
         res.json({ deviceList });
     } catch (error) {
         next(error);
@@ -96,7 +79,7 @@ export const rebootModem: RequestHandler = async (req, res, next) => {
     try {
         /* 
             ! Before we can make the request to the modem to reboot we need the onttoken 
-            ! (which will be passed as x.X_HW_Token)
+            ! from the DOM of the page (which will be passed as x.X_HW_Token)
         */
         const ontTokenSource = await axios.get(`${MODEM_URL_BASE}/html/ssmp/reset/reset.asp`, {
             headers: {

@@ -1,14 +1,19 @@
-// navigation/BottomTabs.tsx
+// Library Imports
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import HomeScreen from "../screens/Home"; // Import screens
-import ModemScreen from "../screens/Modem"; // Import screens
-import DevicesScreen from "../screens/Devices"; // Import screens
-import TabIcon from "./TabIcon"; // Custom icon component
-import { bottomTabStyles } from "../styles/component-specific/bottom-tabs"; // Import styles
-import { colors } from "../styles/variables";
+// Screens
+import HomeScreen from "../screens/Home";
+import ParentalControlsScreen from "../screens/ParentalControls";
+import ModemScreen from "../screens/Modem";
+import DevicesScreen from "../screens/Devices";
+// Components
+import TabIcon from "./TabIcon";
+// Hooks
 import { useLocalization } from "../components/localization/LocalizationContext";
 import { useAuth } from "../components/auth/authContext";
+// CSS
+import { bottomTabStyles } from "../styles/component-specific/bottom-tabs";
+import { colors } from "../styles/variables";
 
 const Tab = createBottomTabNavigator();
 
@@ -33,6 +38,15 @@ const BottomTabs = () => {
         options={{
           tabBarIcon: ({ color, size }) => (
             <TabIcon name="home" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name={translate("parentalControls")}
+        component={ParentalControlsScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <TabIcon name="user" size={size} color={color} />
           ),
         }}
       />
