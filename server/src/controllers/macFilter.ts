@@ -15,9 +15,13 @@ const MODEM_URL_BASE = env.MODEM_URL_BASE;
     ? It seems like there are different api requests for WLAN vs LAN (wireless vs ethernet)
     ? After getting one working inspect the differences
     ? On each of the pages in the modem's html the wlan only returns wifi devices and vice versa
+    
+    
+    ? fetchOntTokenSource has an ontToken parameter, need to think about where that token should be stored
+    ? so that it doesn't need to be constantly refreshed
 */
 
-const fetchOntTokenSource = async (ontToken: string | null, cookies: string): Promise<string | null> => {
+export const fetchOntTokenSourceHandler = async (ontToken: string | null, cookies: string, wirelessOrEthernet: string): Promise<string | null> => {
     /* 
         ! Before we can make the request to the modem to reboot we need the onttoken 
         ! from the DOM of the page (which will be passed as x.X_HW_Token)
@@ -25,7 +29,15 @@ const fetchOntTokenSource = async (ontToken: string | null, cookies: string): Pr
 
     try {
         if (ontToken === null) {
-            const ontTokenSource = await axios.get(`${MODEM_URL_BASE}/html/bbsp/macfilter/macfilter.asp`, {
+            let queryString;
+
+            if (wirelessOrEthernet === "ethernet") {
+                queryString = `${MODEM_URL_BASE}/html/bbsp/macfilter/macfilter.asp`;
+            } else {
+                queryString = `${MODEM_URL_BASE}/html/bbsp/wlanmacfilter/wlanmacfilter.asp`
+            }
+
+            const ontTokenSource = await axios.get(queryString, {
                 headers: {
                     "User-Agent": USER_AGENT,
                     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
@@ -48,16 +60,39 @@ const fetchOntTokenSource = async (ontToken: string | null, cookies: string): Pr
     }
 }
 
+export const fetchOntTokenSource: RequestHandler = async (req, res, next) => {
+    const cookies = sessionStore.getAllCookies();
+    const wirelessOrEthernet = req.body.wirelessOrEthernet;
+    let ontToken = req.body.ontToken;
+
+    try {
+        const tokenToReturn = fetchOntTokenSourceHandler(ontToken, cookies, wirelessOrEthernet);
+        res.json({ ontToken: tokenToReturn });
+    } catch (error) {
+        res.json({ ontToken: null });
+    }
+}
+
 export const editMacFilter: RequestHandler = async (req, res, next) => {
     const cookies = sessionStore.getAllCookies();
     const blacklistOrWhitelist = req.body.blacklistOrWhitelist;
     const macFilterEnabledOrDisabled = req.body.macFilterEnabledOrDisabled;
+    const wirelessOrEthernet = req.body.wirelessOrEthernet;
     let ontToken = req.body.ontToken;
 
     try {
-        ontToken = await fetchOntTokenSource(ontToken, cookies);
+        ontToken = await fetchOntTokenSourceHandler(ontToken, cookies, wirelessOrEthernet);
 
-        await axios.post(`${MODEM_URL_BASE}/html/bbsp/macfilter/set.cgi?x=InternetGatewayDevice.X_HW_Security&RequestFile=html/bbsp/macfilter/macfilter.asp`, `x.MacFilterPolicy=${blacklistOrWhitelist === "blacklist" ? "0" : "1"}&x.MacFilterRight=${macFilterEnabledOrDisabled === "enabled" ? "1" : "0"}&x.X_HW_Token=${ontToken}`, {
+        let queryString;
+
+        if (wirelessOrEthernet === "ethernet") {
+            queryString = `${MODEM_URL_BASE}/html/bbsp/macfilter/set.cgi?x=InternetGatewayDevice.X_HW_Security&RequestFile=html/bbsp/macfilter/macfilter.asp`, `x.MacFilterPolicy=${blacklistOrWhitelist === "blacklist" ? "0" : "1"}&x.MacFilterRight=${macFilterEnabledOrDisabled === "enabled" ? "1" : "0"}&x.X_HW_Token=${ontToken}`;
+        } else {
+            queryString = `${MODEM_URL_BASE}/html/bbsp/wlanmacfilter/set.cgi?x=InternetGatewayDevice.X_HW_Security&RequestFile=html/bbsp/wlanmacfilter/wlanmacfilter.asp`, `x.MacFilterPolicy=${blacklistOrWhitelist === "blacklist" ? "0" : "1"}&x.MacFilterRight=${macFilterEnabledOrDisabled === "enabled" ? "1" : "0"}&x.X_HW_Token=${ontToken}`;
+        }
+
+
+        await axios.post(queryString, {
             headers: {
                 "User-Agent": USER_AGENT,
                 "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
@@ -82,6 +117,8 @@ export const editMacFilter: RequestHandler = async (req, res, next) => {
 export const addDeviceToMacFilter: RequestHandler = async (req, res, next) => {
     const cookies = sessionStore.getAllCookies();
     const { deviceMac, deviceName } = req.body.deviceToAdd;
+    const wirelessOrEthernet = req.body.wirelessOrEthernet;
+    const ssidName = req.body.ssidName;
     let ontToken = req.body.ontToken;
 
     /* 
@@ -91,13 +128,19 @@ export const addDeviceToMacFilter: RequestHandler = async (req, res, next) => {
     const deviceMacEncoded = deviceMac.replace(/:/g, "%3A");
 
     try {
-        ontToken = await fetchOntTokenSource(ontToken, cookies);
+        ontToken = await fetchOntTokenSourceHandler(ontToken, cookies, wirelessOrEthernet);
+        let queryString;
+        if (wirelessOrEthernet === "ethernet") {
+            queryString = `${MODEM_URL_BASE}/html/bbsp/macfilter/add.cgi?x=InternetGatewayDevice.X_HW_Security.MacFilter&RequestFile=html/bbsp/macfilter/macfilter.asp`, `x.SourceMACAddress=${deviceMacEncoded}&x.DeviceAlias=${deviceName}&x.X_HW_Token=${ontToken}`;
+        } else {
+            queryString = `${MODEM_URL_BASE}/html/bbsp/wlanmacfilter/add.cgi?x=InternetGatewayDevice.X_HW_Security.MacFilter&RequestFile=html/bbsp/wlanmacfilter/wlanmacfilter.asp`, `x.SourceMACAddress=${deviceMacEncoded}&x.SSIDName=${ssidName}&x.DeviceAlias=${deviceName}&x.X_HW_Token=${ontToken}`;
+        }
 
         /* 
             ? Need to verify what happens if the device alias is non-existant
         */
 
-        await axios.post(`${MODEM_URL_BASE}/html/bbsp/macfilter/add.cgi?x=InternetGatewayDevice.X_HW_Security.MacFilter&RequestFile=html/bbsp/macfilter/macfilter.asp`, `x.SourceMACAddress=${deviceMacEncoded}&x.DeviceAlias=${deviceName}&x.X_HW_Token=${ontToken}`, {
+        await axios.post(queryString, {
             headers: {
                 "User-Agent": USER_AGENT,
                 "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
@@ -121,18 +164,27 @@ export const addDeviceToMacFilter: RequestHandler = async (req, res, next) => {
 
 export const removeDeviceFromMacFilter: RequestHandler = async (req, res, next) => {
     const cookies = sessionStore.getAllCookies();
-    const deviceIndicesToRemove: number[] = req.body.deviceIndexToRemove;
+    const deviceIndicesToRemove: number[] = req.body.deviceIndecesToRemove;
+    const wirelessOrEthernet = req.body.wirelessOrEthernet;
     let ontToken = req.body.ontToken;
 
     try {
-        ontToken = await fetchOntTokenSource(ontToken, cookies);
+        ontToken = await fetchOntTokenSourceHandler(ontToken, cookies, wirelessOrEthernet);
+        
+        let queryString;
+
+        if (wirelessOrEthernet === "ethernet") {
+            queryString = `${MODEM_URL_BASE}/html/bbsp/macfilter/del.cgi?x=InternetGatewayDevice.X_HW_Security.MacFilter&RequestFile=html/bbsp/macfilter/macfilter.asp`;
+        } else {
+            queryString = `${MODEM_URL_BASE}/html/bbsp/wlanmacfilter/del.cgi?x=InternetGatewayDevice.X_HW_Security.MacFilter&RequestFile=html/bbsp/wlanmacfilter/wlanmacfilter.asp`;
+        }
 
         let deviceIndicesString: string = "";
         for (const index of deviceIndicesToRemove) {
             deviceIndicesString += `InternetGatewayDevice.X_HW_Security.MacFilter.${index}=&,`;
         }
 
-        await axios.post(`${MODEM_URL_BASE}/html/bbsp/macfilter/del.cgi?x=InternetGatewayDevice.X_HW_Security.MacFilter&RequestFile=html/bbsp/macfilter/macfilter.asp`, `${deviceIndicesString}x.X_HW_Token=${ontToken}`, {
+        await axios.post(queryString, `${deviceIndicesString}x.X_HW_Token=${ontToken}`, {
             headers: {
                 "User-Agent": USER_AGENT,
                 "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",

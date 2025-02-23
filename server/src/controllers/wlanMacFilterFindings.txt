@@ -1,0 +1,399 @@
+MAC Filter Configuration:
+Use this to block a specific device from the internet, regardless of current schedules.
+
+Get onttoken from http://192.168.1.254/html/bbsp/macfilter/macfilter.asp with a GET request
+
+await fetch("http://192.168.1.254/html/bbsp/macfilter/macfilter.asp", {
+    "credentials": "include",
+    "headers": {
+        "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.5",
+        "Upgrade-Insecure-Requests": "1",
+        "Priority": "u=4",
+        "Pragma": "no-cache",
+        "Cache-Control": "no-cache"
+    },
+    "referrer": "http://192.168.1.254/index.asp",
+    "method": "GET",
+    "mode": "cors"
+});
+
+
+
+Enable MAC Filter:
+await fetch("http://192.168.1.254/html/bbsp/macfilter/set.cgi?x=InternetGatewayDevice.X_HW_Security&RequestFile=html/bbsp/macfilter/macfilter.asp", {
+    "credentials": "include",
+    "headers": {
+        "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.5",
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Upgrade-Insecure-Requests": "1",
+        "Priority": "u=4",
+        "Pragma": "no-cache",
+        "Cache-Control": "no-cache"
+    },
+    "referrer": "http://192.168.1.254/html/bbsp/macfilter/macfilter.asp",
+    "body": "x.MacFilterPolicy=0&x.MacFilterRight=1&x.X_HW_Token=0d4ff57bdd337bc309463541d065a9484a276e69c01a039d",
+    "method": "POST",
+    "mode": "cors"
+});
+
+Disable MAC Filter:
+await fetch("http://192.168.1.254/html/bbsp/macfilter/set.cgi?x=InternetGatewayDevice.X_HW_Security&RequestFile=html/bbsp/macfilter/macfilter.asp", {
+    "credentials": "include",
+    "headers": {
+        "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.5",
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Upgrade-Insecure-Requests": "1",
+        "Priority": "u=4",
+        "Pragma": "no-cache",
+        "Cache-Control": "no-cache"
+    },
+    "referrer": "http://192.168.1.254/html/bbsp/macfilter/set.cgi?x=InternetGatewayDevice.X_HW_Security&RequestFile=html/bbsp/macfilter/macfilter.asp",
+    "body": "x.MacFilterPolicy=0&x.MacFilterRight=0&x.X_HW_Token=a18b94c3ed57f684727d72cfb46362e8abc88fb1fa6899ce",
+    "method": "POST",
+    "mode": "cors"
+});
+
+The Difference between these two is in the body. MacFilterRight=1 means enable and MacFilterRight=0 means disable
+
+Changing Filter mode deletes all filter rules:
+
+
+Filter Mode Blacklist:
+
+await fetch("http://192.168.1.254/html/bbsp/macfilter/set.cgi?x=InternetGatewayDevice.X_HW_Security&RequestFile=html/bbsp/macfilter/macfilter.asp", {
+    "credentials": "include",
+    "headers": {
+        "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.5",
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Upgrade-Insecure-Requests": "1",
+        "Priority": "u=4",
+        "Pragma": "no-cache",
+        "Cache-Control": "no-cache"
+    },
+    "referrer": "http://192.168.1.254/html/bbsp/macfilter/set.cgi?x=InternetGatewayDevice.X_HW_Security&RequestFile=html/bbsp/macfilter/macfilter.asp",
+    "body": "x.MacFilterRight=0&x.MacFilterPolicy=0&x.X_HW_Token=16dff54073b693af4ac19e0e52c7e182a577481b63408689",
+    "method": "POST",
+    "mode": "cors"
+});
+
+
+Filter Mode Whitelist:
+
+await fetch("http://192.168.1.254/html/bbsp/macfilter/set.cgi?x=InternetGatewayDevice.X_HW_Security&RequestFile=html/bbsp/macfilter/macfilter.asp", {
+    "credentials": "include",
+    "headers": {
+        "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.5",
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Upgrade-Insecure-Requests": "1",
+        "Priority": "u=4",
+        "Pragma": "no-cache",
+        "Cache-Control": "no-cache"
+    },
+    "referrer": "http://192.168.1.254/html/bbsp/macfilter/set.cgi?x=InternetGatewayDevice.X_HW_Security&RequestFile=html/bbsp/macfilter/macfilter.asp",
+    "body": "x.MacFilterRight=0&x.MacFilterPolicy=1&x.X_HW_Token=4bf265054acebcb172a8dced68e462f221efbf61621437e8",
+    "method": "POST",
+    "mode": "cors"
+});
+
+The Difference between these two is in the body. MacFilterPolicy=0 means blacklist, MacFilterPolicy=1 means whitelist
+
+
+
+
+In order to modify the devices in the mac filters, you have to make a fetch request like this:
+await fetch("http://192.168.1.254/html/bbsp/common/GetLanUserDevInfo.asp", {
+    "credentials": "include",
+    "headers": {
+        "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0",
+        "Accept": "*/*",
+        "Accept-Language": "en-US,en;q=0.5",
+        "X-Requested-With": "XMLHttpRequest",
+        "Pragma": "no-cache",
+        "Cache-Control": "no-cache"
+    },
+    "referrer": "http://192.168.1.254/html/bbsp/macfilter/macfilter.asp",
+    "method": "POST",
+    "mode": "cors"
+});
+
+Then you need to access the var UserDevinfo and display only devices that are currently online and connected with "ETH".
+
+
+the device mac address needs to be re-encoded before being sent to modem:
+for example:
+2c:cf:67:69:5f:10 becomes 2c%3Acf%3A67%3A69%3A5f%3A10
+Replace ":" with %3A
+
+Add Device to MAC Filter:
+
+await fetch("http://192.168.1.254/html/bbsp/macfilter/add.cgi?x=InternetGatewayDevice.X_HW_Security.MacFilter&RequestFile=html/bbsp/macfilter/macfilter.asp", {
+    "credentials": "include",
+    "headers": {
+        "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.5",
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Upgrade-Insecure-Requests": "1",
+        "Priority": "u=4",
+        "Pragma": "no-cache",
+        "Cache-Control": "no-cache"
+    },
+    "referrer": "http://192.168.1.254/html/bbsp/macfilter/macfilter.asp",
+    "body": "x.SourceMACAddress=2c%3Acf%3A67%3A69%3A5f%3A10&x.DeviceAlias=raspberrypi&x.X_HW_Token=ab01fe87971c3cecc04ecb68a546ecbcf4dbb9f250c7853d",
+    "method": "POST",
+    "mode": "cors"
+});
+
+
+Delete Device to MAC Filter:
+
+(1st device in list)
+await fetch("http://192.168.1.254/html/bbsp/macfilter/del.cgi?x=InternetGatewayDevice.X_HW_Security.MacFilter&RequestFile=html/bbsp/macfilter/macfilter.asp", {
+    "credentials": "include",
+    "headers": {
+        "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.5",
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Upgrade-Insecure-Requests": "1",
+        "Priority": "u=4",
+        "Pragma": "no-cache",
+        "Cache-Control": "no-cache"
+    },
+    "referrer": "http://192.168.1.254/html/bbsp/macfilter/add.cgi?x=InternetGatewayDevice.X_HW_Security.MacFilter&RequestFile=html/bbsp/macfilter/macfilter.asp",
+    "body": "InternetGatewayDevice.X_HW_Security.MacFilter.1=&x.X_HW_Token=e26303a31d5a9e8141e6f37753309e7543caabc7d586685f",
+    "method": "POST",
+    "mode": "cors"
+});
+
+(3rd device in list)
+await fetch("http://192.168.1.254/html/bbsp/macfilter/del.cgi?x=InternetGatewayDevice.X_HW_Security.MacFilter&RequestFile=html/bbsp/macfilter/macfilter.asp", {
+    "credentials": "include",
+    "headers": {
+        "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.5",
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Upgrade-Insecure-Requests": "1",
+        "Priority": "u=4",
+        "Pragma": "no-cache",
+        "Cache-Control": "no-cache"
+    },
+    "referrer": "http://192.168.1.254/html/bbsp/macfilter/add.cgi?x=InternetGatewayDevice.X_HW_Security.MacFilter&RequestFile=html/bbsp/macfilter/macfilter.asp",
+    "body": "InternetGatewayDevice.X_HW_Security.MacFilter.3=&x.X_HW_Token=5c0e24b0595a93c96aa9070de8bc65a16200577b26e3dbec",
+    "method": "POST",
+    "mode": "cors"
+});
+
+In the body section there are 1 based arrays for the devices in the filter list. 
+For example: InternetGatewayDevice.X_HW_Security.MacFilter.3 deletes the 3rd device in the mac filter list. It does not use MAC address
+
+Below is an example of deleting devices 1 and 2 from the mac filter:
+
+await fetch("http://192.168.1.254/html/bbsp/macfilter/del.cgi?x=InternetGatewayDevice.X_HW_Security.MacFilter&RequestFile=html/bbsp/macfilter/macfilter.asp", {
+    "credentials": "include",
+    "headers": {
+        "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.5",
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Upgrade-Insecure-Requests": "1",
+        "Priority": "u=4",
+        "Pragma": "no-cache",
+        "Cache-Control": "no-cache"
+    },
+    "referrer": "http://192.168.1.254/html/bbsp/macfilter/set.cgi?x=InternetGatewayDevice.X_HW_Security.MacFilter.1&RequestFile=html/bbsp/macfilter/macfilter.asp",
+    "body": "InternetGatewayDevice.X_HW_Security.MacFilter.1=&InternetGatewayDevice.X_HW_Security.MacFilter.2=&x.X_HW_Token=9a0a1925642720f475e0beab79d368fe10f7c25db3cf8b18",
+    "method": "POST",
+    "mode": "cors"
+});
+
+As you can see InternetGatewayDevice.X_HW_Security.MacFilter.1 and InternetGatewayDevice.X_HW_Security.MacFilter.2 are both included, separated by a &
+
+
+
+
+
+__________________________________________________________________________________________________________________________________________________________________
+
+
+For Wireless (WLAN):
+
+get onttoken
+
+await fetch("http://192.168.1.254/html/bbsp/wlanmacfilter/wlanmacfilter.asp", {
+    "credentials": "include",
+    "headers": {
+        "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.5",
+        "Upgrade-Insecure-Requests": "1",
+        "Priority": "u=4",
+        "Pragma": "no-cache",
+        "Cache-Control": "no-cache"
+    },
+    "referrer": "http://192.168.1.254/index.asp",
+    "method": "GET",
+    "mode": "cors"
+});
+
+NOTE: ALTHOUGH CHANGING THE FILTER LIST USES DIFFERENT ENDPOINTS, FETCHING THE DEVICE LIST USES THE SAME ENDPOINT BETWEEN LAN/WLAN
+ALSO: IT NEEDS TO BE SORTED BY SSID (SINCE WIFI CAN HAVE SEVERAL DIFFERENT ACCESS POINTS, 2.4 GHZ, 5 GHZ, GUEST, ETC.)
+
+
+In order to modify the devices in the mac filters, you have to make a fetch request like this:
+await fetch("http://192.168.1.254/html/bbsp/common/GetLanUserDevInfo.asp", {
+    "credentials": "include",
+    "headers": {
+        "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0",
+        "Accept": "*/*",
+        "Accept-Language": "en-US,en;q=0.5",
+        "X-Requested-With": "XMLHttpRequest",
+        "Pragma": "no-cache",
+        "Cache-Control": "no-cache"
+    },
+    "referrer": "http://192.168.1.254/html/bbsp/macfilter/macfilter.asp",
+    "method": "POST",
+    "mode": "cors"
+});
+
+Then you need to access the var UserDevinfo and display only devices that are currently online and using "WIFI".
+
+
+the device mac address needs to be re-encoded before being sent to modem:
+for example:
+2c:cf:67:69:5f:10 becomes 2c%3Acf%3A67%3A69%3A5f%3A10
+Replace ":" with %3A
+
+
+
+Enable WLAN MAC Filter:
+
+await fetch("http://192.168.1.254/html/bbsp/wlanmacfilter/set.cgi?x=InternetGatewayDevice.X_HW_Security&RequestFile=html/bbsp/wlanmacfilter/wlanmacfilter.asp", {
+    "credentials": "include",
+    "headers": {
+        "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.5",
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Upgrade-Insecure-Requests": "1",
+        "Priority": "u=4",
+        "Pragma": "no-cache",
+        "Cache-Control": "no-cache"
+    },
+    "referrer": "http://192.168.1.254/html/bbsp/wlanmacfilter/wlanmacfilter.asp",
+    "body": "x.WlanMacFilterPolicy=0&x.WlanMacFilterRight=1&x.X_HW_Token=474b2d5915e1cd5a4d8f0770776343ed135111cf86e42bce",
+    "method": "POST",
+    "mode": "cors"
+});
+
+Disable WLAN MAC Filter:
+
+await fetch("http://192.168.1.254/html/bbsp/wlanmacfilter/set.cgi?x=InternetGatewayDevice.X_HW_Security&RequestFile=html/bbsp/wlanmacfilter/wlanmacfilter.asp", {
+    "credentials": "include",
+    "headers": {
+        "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.5",
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Upgrade-Insecure-Requests": "1",
+        "Priority": "u=4",
+        "Pragma": "no-cache",
+        "Cache-Control": "no-cache"
+    },
+    "referrer": "http://192.168.1.254/html/bbsp/wlanmacfilter/set.cgi?x=InternetGatewayDevice.X_HW_Security&RequestFile=html/bbsp/wlanmacfilter/wlanmacfilter.asp",
+    "body": "x.WlanMacFilterPolicy=0&x.WlanMacFilterRight=0&x.X_HW_Token=50788fb605d08ffdc8cbd13c79938097a23855fdae56ef73",
+    "method": "POST",
+    "mode": "cors"
+});
+
+Blacklist Mode:
+
+await fetch("http://192.168.1.254/html/bbsp/wlanmacfilter/set.cgi?x=InternetGatewayDevice.X_HW_Security&RequestFile=html/bbsp/wlanmacfilter/wlanmacfilter.asp", {
+    "credentials": "include",
+    "headers": {
+        "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.5",
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Upgrade-Insecure-Requests": "1",
+        "Priority": "u=4",
+        "Pragma": "no-cache",
+        "Cache-Control": "no-cache"
+    },
+    "referrer": "http://192.168.1.254/html/bbsp/wlanmacfilter/set.cgi?x=InternetGatewayDevice.X_HW_Security&RequestFile=html/bbsp/wlanmacfilter/wlanmacfilter.asp",
+    "body": "x.WlanMacFilterRight=0&x.WlanMacFilterPolicy=0&x.X_HW_Token=c22e51af04db1c559f17c19d1987f187efe092a76d548465",
+    "method": "POST",
+    "mode": "cors"
+});
+
+
+Whitelist Mode:
+
+await fetch("http://192.168.1.254/html/bbsp/wlanmacfilter/set.cgi?x=InternetGatewayDevice.X_HW_Security&RequestFile=html/bbsp/wlanmacfilter/wlanmacfilter.asp", {
+    "credentials": "include",
+    "headers": {
+        "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.5",
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Upgrade-Insecure-Requests": "1",
+        "Priority": "u=4",
+        "Pragma": "no-cache",
+        "Cache-Control": "no-cache"
+    },
+    "referrer": "http://192.168.1.254/html/bbsp/wlanmacfilter/set.cgi?x=InternetGatewayDevice.X_HW_Security&RequestFile=html/bbsp/wlanmacfilter/wlanmacfilter.asp",
+    "body": "x.WlanMacFilterRight=0&x.WlanMacFilterPolicy=1&x.X_HW_Token=c1d09274efa3ffbc90fdce08a5ce39954a8ea97a4a45d6d6",
+    "method": "POST",
+    "mode": "cors"
+});
+
+Add Device:
+
+await fetch("http://192.168.1.254/html/bbsp/wlanmacfilter/add.cgi?x=InternetGatewayDevice.X_HW_Security.WLANMacFilter&RequestFile=html/bbsp/wlanmacfilter/wlanmacfilter.asp", {
+    "credentials": "include",
+    "headers": {
+        "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.5",
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Upgrade-Insecure-Requests": "1",
+        "Priority": "u=4",
+        "Pragma": "no-cache",
+        "Cache-Control": "no-cache"
+    },
+    "referrer": "http://192.168.1.254/html/bbsp/wlanmacfilter/set.cgi?x=InternetGatewayDevice.X_HW_Security&RequestFile=html/bbsp/wlanmacfilter/wlanmacfilter.asp",
+    "body": "x.SourceMACAddress=8e%3A32%3Ad4%3Aea%3Ae8%3A17&x.SSIDName=SSID-1&x.DeviceName=Pixel-7-Frank&x.Enable=1&x.X_HW_Token=638aef2340ac5b8f4461cf1914d0d6632f503df9790c7f48",
+    "method": "POST",
+    "mode": "cors"
+});
+
+Remove Device(s): 
+
+await fetch("http://192.168.1.254/html/bbsp/wlanmacfilter/del.cgi?x=InternetGatewayDevice.X_HW_Security.WLANMacFilter&RequestFile=html/bbsp/wlanmacfilter/wlanmacfilter.asp", {
+    "credentials": "include",
+    "headers": {
+        "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.5",
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Upgrade-Insecure-Requests": "1",
+        "Priority": "u=4",
+        "Pragma": "no-cache",
+        "Cache-Control": "no-cache"
+    },
+    "referrer": "http://192.168.1.254/html/bbsp/wlanmacfilter/add.cgi?x=InternetGatewayDevice.X_HW_Security.WLANMacFilter&RequestFile=html/bbsp/wlanmacfilter/wlanmacfilter.asp",
+    "body": "InternetGatewayDevice.X_HW_Security.WLANMacFilter.1=&InternetGatewayDevice.X_HW_Security.WLANMacFilter.2=&x.X_HW_Token=b66df3101168970bb59fc427009262515d9ae22f030875c9",
+    "method": "POST",
+    "mode": "cors"
+});
