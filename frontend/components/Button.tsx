@@ -20,6 +20,16 @@ import {
   buttonSizeToStyle,
 } from "../styles/component-specific/button";
 
+export type ButtonVariant = 
+  | "primary"
+  | "primaryDark"
+  | "success"
+  | "warning"
+  | "error"
+  | "info"
+  | "neutral"
+  | "neutralDark";
+
 interface ButtonProps {
   text: string;
   variant:

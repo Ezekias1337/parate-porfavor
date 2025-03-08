@@ -124,11 +124,15 @@ const Modem: React.FC = () => {
               setModemRebooting(true);
             }}
             loading={modemRebooting}
+            icon="power-off" 
+            leftIcon
           />
           <Button
-            variant="error"
+            variant="primaryDark"
             text={translate("refresh")}
             onClickHandler={fetchModemStatus}
+            icon="refresh" 
+            leftIcon
           />
         </View>
       )}

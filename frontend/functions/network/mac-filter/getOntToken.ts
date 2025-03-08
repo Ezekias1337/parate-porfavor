@@ -6,10 +6,16 @@ const getOntToken = async (
   ontToken: OntToken
 ): Promise<OntToken> => {
   try {
+    if (typeof ontToken === "string") {
+      return ontToken;
+    }
+
     let infoNeededForToken = {
       wirelessOrEthernet: wirelessOrEthernet,
       ontToken: ontToken,
     };
+    console.log("infoNeededForToken: ", infoNeededForToken);
+    console.log("info jsonified: ", JSON.stringify(infoNeededForToken));
 
     const response = await fetchData("/api/mac-filter/get-ont-token", {
       method: "POST",
@@ -17,18 +23,20 @@ const getOntToken = async (
         "User-Agent":
           "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:132.0) Gecko/20100101 Firefox/132.0",
         Accept: "*/*",
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(infoNeededForToken),
     });
-    
+
     const responseJson = await response.json();
     if (!response.ok || responseJson === null) {
       throw new Error(
         `Failed to fetch ontToken, status: ${response.status}`
       );
     }
-    
-    return responseJson.ontToken;
+    console.log("responseJson for ONT Token", responseJson);
+
+    return responseJson;
   } catch (error) {
     console.error("Error fetching ontToken:", error);
     return null;

@@ -6,10 +6,13 @@ import { FontAwesome } from "@expo/vector-icons";
 
 // Interfaces and Types
 import FontAwesomeIconNames from "../types/FontAwesome";
+import { ButtonVariant } from "./Button";
 
 // Components
+import Button from "./Button";
 // CSS
 import cardStyles from "../styles/component-specific/card";
+import { colors } from "../styles/variables";
 
 type ButtonLink = {
   name: string;
@@ -17,43 +20,38 @@ type ButtonLink = {
 };
 
 type CardProps = {
-  cardVariant: "mobile" | "imageOnly" | "imageAndBody";
   headerText: string;
   bodyText?: string;
-  buttonCount: 0 | 1 | 2;
-  button1Text?: string;
-  button1Variant?:
-    | "primary"
-    | "primary-dark"
-    | "warning"
-    | "info"
-    | "neutral"
-    | "neutral-dark"
-    | "success"
-    | "error";
+  buttonCount: 0 | 1 | 2 | 3 | 4;
+  button1Text: string;
+  button1Variant: ButtonVariant;
   button1OnClick?: Function;
   button1Icon?: FontAwesomeIconNames;
   button1Link?: string;
-  button2Text?: string;
+  button2Text: string;
   button2Type?: "button" | "reset";
-  button2Variant?:
-    | "primary"
-    | "primary-dark"
-    | "warning"
-    | "info"
-    | "neutral"
-    | "neutral-dark"
-    | "success"
-    | "error";
+  button2Variant: ButtonVariant;
   button2OnClick?: Function;
   button2Icon?: FontAwesomeIconNames;
-  button2Link?: ButtonLink;
+  button2Link?: string;
+  button3Text?: string;
+  button3Type?: "button" | "reset";
+  button3Variant?: ButtonVariant;
+  button3OnClick?: Function;
+  button3Icon?: FontAwesomeIconNames;
+  button3Link?: string;
+  button4Text?: string;
+  button4Type?: "button" | "reset";
+  button4Variant?: ButtonVariant;
+  button4OnClick?: Function;
+  button4Icon?: FontAwesomeIconNames;
+  button4Link?: string;
   buttonSize?: "small" | "medium" | "large";
   imageSource: any;
+  cardIcon: FontAwesomeIconNames;
 };
 
 export const Card: FC<CardProps> = ({
-  cardVariant,
   headerText,
   bodyText,
   buttonCount,
@@ -66,87 +64,92 @@ export const Card: FC<CardProps> = ({
   button2Variant,
   button2OnClick,
   button2Icon,
+  button2Link,
+  button3Text = "",
+  button3Variant = "error",
+  button3OnClick,
+  button3Icon,
+  button3Link,
+  button4Text = "",
+  button4Variant = "error",
+  button4OnClick,
+  button4Icon,
+  button4Link,
   imageSource,
+  cardIcon,
 }) => {
   //const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  return (
+    <View style={cardStyles.card}>
+      {/* <Image source={imageSource} style={cardStyles.image} /> */}
+      <FontAwesome name={cardIcon} size={32} color={`${colors.primary500}`} />
+      <View style={cardStyles.cardTextWrapper}>
+        <Text style={cardStyles.headerText}>{headerText}</Text>
+        {bodyText && (
+          <Text style={cardStyles.bodyText}>
+            {bodyText.split("/n").map((line, index) => (
+              <Fragment key={index}>
+                {line}
+                {"\n"}
+              </Fragment>
+            ))}
+          </Text>
+        )}
+      </View>
+      <View style={cardStyles.buttonWrapper}>
+        {buttonCount >= 1 && button1OnClick !== undefined && (
+          <Button
+            text={button1Text}
+            variant={button1Variant}
+            leftIcon
+            icon={button1Icon}
+            iconSize={32}
+            onClickHandler={() => button1OnClick()}
+            url={button1Link}
+            buttonSize="small"
+          ></Button>
+        )}
+        {buttonCount >= 2 && button2OnClick && (
+          <Button
+            text={button2Text}
+            variant={button2Variant}
+            leftIcon
+            icon={button2Icon}
+            iconSize={32}
+            onClickHandler={() => button2OnClick()}
+            url={button2Link}
+            buttonSize="small"
+          ></Button>
+        )}
 
-  if (cardVariant === "mobile") {
-    return (
-      <View style={cardStyles.card}>
-        <Image source={imageSource} style={cardStyles.image} />
-        <Text style={cardStyles.headerText}>{headerText}</Text>
-        {bodyText && <Text style={cardStyles.bodyText}>{bodyText}</Text>}
+        {buttonCount >= 3 && button3OnClick && (
+          <Button
+            text={button3Text}
+            variant={button3Variant}
+            leftIcon
+            icon={button3Icon}
+            iconSize={32}
+            onClickHandler={() => button3OnClick()}
+            url={button3Link}
+            buttonSize="small"
+          ></Button>
+        )}
+
+        {buttonCount >= 4 && button4OnClick && (
+          <Button
+            text={button4Text}
+            variant={button4Variant}
+            icon={button4Icon}
+            leftIcon
+            iconSize={32}
+            onClickHandler={() => button4OnClick()}
+            url={button4Link}
+            buttonSize="small"
+          ></Button>
+        )}
       </View>
-    );
-  } else if (cardVariant === "imageOnly") {
-    return (
-      <View style={[cardStyles.card, cardStyles.imageOnlyCard]}>
-        <Image source={imageSource} style={cardStyles.image} />
-        {bodyText && <Text style={cardStyles.bodyText}>{bodyText}</Text>}
-        <Text style={cardStyles.headerText}>{headerText}</Text>
-      </View>
-    );
-  } else if (cardVariant === "imageAndBody") {
-    return (
-      <View style={cardStyles.card}>
-        <Image source={imageSource} style={cardStyles.image} />
-        <View style={cardStyles.cardTextWrapper}>
-          <Text style={cardStyles.headerText}>{headerText}</Text>
-          {bodyText && (
-            <Text style={cardStyles.bodyText}>
-              {bodyText.split("/n").map((line, index) => (
-                <Fragment key={index}>
-                  {line}
-                  {"\n"}
-                </Fragment>
-              ))}
-            </Text>
-          )}
-        </View>
-        <View style={cardStyles.buttonWrapper}>
-          {buttonCount >= 1 && (
-            <TouchableOpacity
-              style={[
-                cardStyles.button,
-                cardStyles[button1Variant || "neutral"],
-              ]}
-              onPress={() => {
-                if (button1OnClick) {
-                  button1OnClick();
-                } else if (button1Link) {
-                  //navigation.navigate(button1Link as never);
-                }
-              }}
-            >
-              {button1Icon && (
-                <FontAwesome
-                  name={button1Icon}
-                  style={cardStyles.buttonIcon}
-                  size={32}
-                />
-              )}
-              <Text style={cardStyles.buttonText}>{button1Text}</Text>
-            </TouchableOpacity>
-          )}
-          {buttonCount === 2 && button2OnClick && (
-            <TouchableOpacity
-              style={[cardStyles.button, cardStyles[button2Variant || "error"]]}
-              //onPress={button2OnClick}
-            >
-              {button2Icon && (
-                <FontAwesome
-                  name={button2Icon}
-                  style={cardStyles.buttonIcon}
-                  size={32}
-                />
-              )}
-              <Text style={cardStyles.buttonText}>{button2Text}</Text>
-            </TouchableOpacity>
-          )}
-        </View>
-      </View>
-    );
-  } else {
-    return null;
-  }
+    </View>
+  );
 };
+
+export default Card;

@@ -5,43 +5,14 @@ import sessionStore from "../session/sessionStore";
 import { ModemStatus } from "../../../shared/types/Modem";
 
 import fetchOntToken from "../util/fetchOntToken";
-import extractDeviceList from "../util/extractDeviceList";
 
 const USER_AGENT = env.USER_AGENT;
 const MODEM_URL_BASE = env.MODEM_URL_BASE;
 
 
-
-export const getDeviceList: RequestHandler = async (req, res, next) => {
-    const cookies = sessionStore.getAllCookies();
-
-    try {
-        const response = await axios.get(`${MODEM_URL_BASE}/html/bbsp/common/GetLanUserDevInfo.asp`, {
-            headers: {
-                "User-Agent": USER_AGENT,
-                Accept: "*/*",
-                "Accept-Language": "en-US,en;q=0.5",
-                "X-Requested-With": "XMLHttpRequest",
-                "Priority": "u=2",
-                "Pragma": "no-cache",
-                "Cache-Control": "no-cache",
-                referrer: `${MODEM_URL_BASE}/html/bbsp/common/GetLanUserDevInfo.asp`,
-                mode: "cors",
-                "Cookie": cookies,
-            },
-        });
-
-        const deviceList = extractDeviceList(response.data, true);
-        res.json({ deviceList });
-    } catch (error) {
-        next(error);
-    }
-};
-
 export const getModemStatus: RequestHandler = async (req, res, next) => {
-    const cookies = sessionStore.getAllCookies();
-
     try {
+        const cookies = sessionStore.getAllCookies();
         const response = await axios.get(`${MODEM_URL_BASE}/html/ssmp/deviceinfo/deviceinfo.asp`, {
             headers: {
                 "User-Agent": USER_AGENT,
@@ -74,9 +45,8 @@ export const getModemStatus: RequestHandler = async (req, res, next) => {
 };
 
 export const rebootModem: RequestHandler = async (req, res, next) => {
-    const cookies = sessionStore.getAllCookies();
-
     try {
+        const cookies = sessionStore.getAllCookies();
         /* 
             ! Before we can make the request to the modem to reboot we need the onttoken 
             ! from the DOM of the page (which will be passed as x.X_HW_Token)

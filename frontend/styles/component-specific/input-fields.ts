@@ -20,7 +20,7 @@ export const inputFieldStyles = StyleSheet.create({
     color: colors.primary500,
     width: "75%",
     marginBottom: 10,
-    
+
   },
 
   leftIcon: {

@@ -1,0 +1,1 @@
+Add function definitions with parameters to every function like server/src/util/extractDeviceList.ts

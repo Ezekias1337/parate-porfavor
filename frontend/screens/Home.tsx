@@ -4,7 +4,7 @@ import { View, Text, AppState } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { useNavigation, NavigationProp } from "@react-navigation/native";
 // Functions, Helpers, Utils, and Hooks
-import handleLogin from "../functions/component-specific/index/handleLogin";
+
 import view2G from "@/functions/network/view2G";
 import fetchData from "../functions/network/auth/fetchData";
 // Components

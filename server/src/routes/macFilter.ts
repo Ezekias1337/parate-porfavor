@@ -3,6 +3,9 @@ import * as macFilterControlsController from "../controllers/macFilter";
 
 const router = express.Router();
 
+// GET requests
+router.get("/get-device-list", macFilterControlsController.getDeviceList);
+
 // POST requests
 router.post("/get-ont-token",  macFilterControlsController.fetchOntTokenSource)
 router.post("/edit-mac-filter", macFilterControlsController.editMacFilter);

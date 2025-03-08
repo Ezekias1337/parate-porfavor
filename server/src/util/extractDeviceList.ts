@@ -1,4 +1,4 @@
-import Device from "../../../shared/types/Device";
+import { Device } from "../../../shared/types/Device";
 
 /**
  * Extracts the user device list from the HTML or ASP file content.
@@ -21,14 +21,24 @@ const extractDeviceList = (htmlContent: string, logList?: boolean): Device[] | n
                 hostName: decodeURIComponent(match[11].replace(/\\x2d/g, "-")), // Decode hostnames
                 onlineStatus: match[8] === "Online" ? "Online" : "Offline",
                 connectionType: match[9] === "ETH" ? "ETH" : "WIFI",
-                ssid: match[5],
+                ssid: match[5].replace(/([a-zA-Z])(\d+)$/, '$1-$2')
             });
         }
 
+        const deviceListOnlyOnline = deviceList.filter((device) => device.onlineStatus === "Online");
+        const deviceListSortedByConnectionType = deviceListOnlyOnline.sort((a, b) => {
+            if (a.connectionType === "ETH" && b.connectionType === "WIFI") {
+                return -1;
+            } else if (a.connectionType === "WIFI" && b.connectionType === "ETH") {
+                return 1;
+            }
+            return 0;
+        })
+
         if (logList) {
-            console.log(`Device list extracted: ${JSON.stringify(deviceList)}`);
+            console.log(`Device list extracted: ${JSON.stringify(deviceListSortedByConnectionType)}`);
         }
-        return deviceList;
+        return deviceListSortedByConnectionType;
     } catch (error) {
         console.error('Error parsing the HTML content:', error);
         return null;

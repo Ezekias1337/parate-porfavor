@@ -1,4 +1,4 @@
-type Device = {
+export type Device = {
     domain: string;
     macAddr: string;
     hostName: string;
@@ -7,5 +7,3 @@ type Device = {
     connectionType: string;
     ssid: string;
 };
-
-export default Device;

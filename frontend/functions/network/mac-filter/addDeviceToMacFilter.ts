@@ -12,7 +12,7 @@ const addDevicetoMacFilter = async (
     let infoOfDeviceToAdd: MacDevice = {
       deviceToAdd: {
         deviceMac: sourceMacAddress,
-        deviceName: deviceName,
+        deviceName: deviceName !== "" ? deviceName : sourceMacAddress,
       },
       ssidName: ssidName,
       wirelessOrEthernet: wirelessOrEthernet,
@@ -25,6 +25,7 @@ const addDevicetoMacFilter = async (
         "User-Agent":
           "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:132.0) Gecko/20100101 Firefox/132.0",
         Accept: "*/*",
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(infoOfDeviceToAdd),
     });

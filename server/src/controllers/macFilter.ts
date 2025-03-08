@@ -2,7 +2,7 @@ import { RequestHandler } from "express";
 import axios from "axios";
 import env from "../util/validateEnv";
 import sessionStore from "../session/sessionStore";
-import Device from "../../../shared/types/Device";
+import { Device } from "../../../shared/types/Device";
 import { ModemStatus } from "../../../shared/types/Modem";
 
 import fetchOntToken from "../util/fetchOntToken";
@@ -61,38 +61,66 @@ export const fetchOntTokenSourceHandler = async (ontToken: string | null, cookie
 }
 
 export const fetchOntTokenSource: RequestHandler = async (req, res, next) => {
-    const cookies = sessionStore.getAllCookies();
-    const wirelessOrEthernet = req.body.wirelessOrEthernet;
-    let ontToken = req.body.ontToken;
-
     try {
-        const tokenToReturn = fetchOntTokenSourceHandler(ontToken, cookies, wirelessOrEthernet);
-        res.json({ ontToken: tokenToReturn });
+        const cookies = sessionStore.getAllCookies();
+        console.log(req.body)
+        const wirelessOrEthernet = req.body.wirelessOrEthernet;
+        let ontToken = req.body.ontToken;
+        const tokenToReturn = await fetchOntTokenSourceHandler(ontToken, cookies, wirelessOrEthernet);
+        res.json(tokenToReturn);
     } catch (error) {
-        res.json({ ontToken: null });
+        next(error);
     }
 }
 
-export const editMacFilter: RequestHandler = async (req, res, next) => {
-    const cookies = sessionStore.getAllCookies();
-    const blacklistOrWhitelist = req.body.blacklistOrWhitelist;
-    const macFilterEnabledOrDisabled = req.body.macFilterEnabledOrDisabled;
-    const wirelessOrEthernet = req.body.wirelessOrEthernet;
-    let ontToken = req.body.ontToken;
-
+export const getDeviceList: RequestHandler = async (req, res, next) => {
     try {
+        const cookies = sessionStore.getAllCookies();
+        const response = await axios.get(`${MODEM_URL_BASE}/html/bbsp/common/GetLanUserDevInfo.asp`, {
+            headers: {
+                "User-Agent": USER_AGENT,
+                Accept: "*/*",
+                "Accept-Language": "en-US,en;q=0.5",
+                "X-Requested-With": "XMLHttpRequest",
+                "Priority": "u=2",
+                "Pragma": "no-cache",
+                "Cache-Control": "no-cache",
+                referrer: `${MODEM_URL_BASE}/html/bbsp/common/GetLanUserDevInfo.asp`,
+                mode: "cors",
+                "Cookie": cookies,
+            },
+        });
+
+        const deviceList = extractDeviceList(response.data, false);
+        res.json(deviceList);
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const editMacFilter: RequestHandler = async (req, res, next) => {
+    try {
+        const cookies = sessionStore.getAllCookies();
+        const blacklistOrWhitelist = req.body.blacklistOrWhitelist;
+        const macFilterEnabledOrDisabled = req.body.macFilterEnabledOrDisabled;
+        const wirelessOrEthernet = req.body.wirelessOrEthernet;
+        let ontToken = req.body.ontToken;
+
         ontToken = await fetchOntTokenSourceHandler(ontToken, cookies, wirelessOrEthernet);
 
-        let queryString;
+        let queryString: string;
+        let params: string;
 
         if (wirelessOrEthernet === "ethernet") {
-            queryString = `${MODEM_URL_BASE}/html/bbsp/macfilter/set.cgi?x=InternetGatewayDevice.X_HW_Security&RequestFile=html/bbsp/macfilter/macfilter.asp`, `x.MacFilterPolicy=${blacklistOrWhitelist === "blacklist" ? "0" : "1"}&x.MacFilterRight=${macFilterEnabledOrDisabled === "enabled" ? "1" : "0"}&x.X_HW_Token=${ontToken}`;
+            queryString = `${MODEM_URL_BASE}/html/bbsp/macfilter/set.cgi?x=InternetGatewayDevice.X_HW_Security&RequestFile=html/bbsp/macfilter/macfilter.asp`;
+            params = `x.MacFilterPolicy=${blacklistOrWhitelist === "blacklist" ? "0" : "1"}&x.MacFilterRight=${macFilterEnabledOrDisabled === "enabled" ? "1" : "0"}&x.X_HW_Token=${ontToken}`;
         } else {
-            queryString = `${MODEM_URL_BASE}/html/bbsp/wlanmacfilter/set.cgi?x=InternetGatewayDevice.X_HW_Security&RequestFile=html/bbsp/wlanmacfilter/wlanmacfilter.asp`, `x.MacFilterPolicy=${blacklistOrWhitelist === "blacklist" ? "0" : "1"}&x.MacFilterRight=${macFilterEnabledOrDisabled === "enabled" ? "1" : "0"}&x.X_HW_Token=${ontToken}`;
+            queryString = `${MODEM_URL_BASE}/html/bbsp/wlanmacfilter/set.cgi?x=InternetGatewayDevice.X_HW_Security&RequestFile=html/bbsp/wlanmacfilter/wlanmacfilter.asp`;
+            params = `x.MacFilterPolicy=${blacklistOrWhitelist === "blacklist" ? "0" : "1"}&x.MacFilterRight=${macFilterEnabledOrDisabled === "enabled" ? "1" : "0"}&x.X_HW_Token=${ontToken}`;
         }
 
 
-        await axios.post(queryString, {
+        await axios.post(queryString, params, {
             headers: {
                 "User-Agent": USER_AGENT,
                 "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
@@ -115,32 +143,39 @@ export const editMacFilter: RequestHandler = async (req, res, next) => {
 
 
 export const addDeviceToMacFilter: RequestHandler = async (req, res, next) => {
-    const cookies = sessionStore.getAllCookies();
-    const { deviceMac, deviceName } = req.body.deviceToAdd;
-    const wirelessOrEthernet = req.body.wirelessOrEthernet;
-    const ssidName = req.body.ssidName;
-    let ontToken = req.body.ontToken;
-
-    /* 
-        ! For some reason the mac address needs to be encoded with url encoding, so take the : and 
-        ! replace it with %3A before sending it to the modem
-    */
-    const deviceMacEncoded = deviceMac.replace(/:/g, "%3A");
-
     try {
+        const cookies = sessionStore.getAllCookies();
+        const { deviceMac, deviceName } = req.body.deviceToAdd;
+        const wirelessOrEthernet = req.body.wirelessOrEthernet;
+        const ssidName = req.body.ssidName;
+        let ontToken = req.body.ontToken;
+
+        /* 
+            ! For some reason the mac address needs to be encoded with url encoding, so take the : and 
+            ! replace it with %3A before sending it to the modem
+        */
+        const deviceMacEncoded = deviceMac.replace(/:/g, "%3A");
+
         ontToken = await fetchOntTokenSourceHandler(ontToken, cookies, wirelessOrEthernet);
-        let queryString;
+        let queryString: string;
+        let params: string;
+
         if (wirelessOrEthernet === "ethernet") {
-            queryString = `${MODEM_URL_BASE}/html/bbsp/macfilter/add.cgi?x=InternetGatewayDevice.X_HW_Security.MacFilter&RequestFile=html/bbsp/macfilter/macfilter.asp`, `x.SourceMACAddress=${deviceMacEncoded}&x.DeviceAlias=${deviceName}&x.X_HW_Token=${ontToken}`;
+            queryString = `${MODEM_URL_BASE}/html/bbsp/macfilter/add.cgi?x=InternetGatewayDevice.X_HW_Security.MacFilter&RequestFile=html/bbsp/macfilter/macfilter.asp`;
+            params = `x.SourceMACAddress=${deviceMacEncoded}&x.DeviceAlias=${deviceName}&x.X_HW_Token=${ontToken}`
         } else {
-            queryString = `${MODEM_URL_BASE}/html/bbsp/wlanmacfilter/add.cgi?x=InternetGatewayDevice.X_HW_Security.MacFilter&RequestFile=html/bbsp/wlanmacfilter/wlanmacfilter.asp`, `x.SourceMACAddress=${deviceMacEncoded}&x.SSIDName=${ssidName}&x.DeviceAlias=${deviceName}&x.X_HW_Token=${ontToken}`;
+            queryString = `${MODEM_URL_BASE}/html/bbsp/wlanmacfilter/add.cgi?x=InternetGatewayDevice.X_HW_Security.WLANMacFilter&RequestFile=html/bbsp/wlanmacfilter/wlanmacfilter.asp`;
+            params = `x.SourceMACAddress=${deviceMacEncoded}&x.SSIDName=${ssidName}&x.DeviceName=${deviceName}&x.Enable=1&x.X_HW_Token=${ontToken}`;
         }
+
+        console.log("queryString:", queryString);
+        console.log("params:", params);
 
         /* 
             ? Need to verify what happens if the device alias is non-existant
         */
 
-        await axios.post(queryString, {
+        await axios.post(queryString, params, {
             headers: {
                 "User-Agent": USER_AGENT,
                 "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
@@ -158,7 +193,6 @@ export const addDeviceToMacFilter: RequestHandler = async (req, res, next) => {
         res.json({ deviceAdded: true });
     } catch (error) {
         next(error);
-        res.json({ deviceAdded: false });
     }
 };
 
@@ -170,7 +204,7 @@ export const removeDeviceFromMacFilter: RequestHandler = async (req, res, next) 
 
     try {
         ontToken = await fetchOntTokenSourceHandler(ontToken, cookies, wirelessOrEthernet);
-        
+
         let queryString;
 
         if (wirelessOrEthernet === "ethernet") {
@@ -202,6 +236,5 @@ export const removeDeviceFromMacFilter: RequestHandler = async (req, res, next) 
         res.json({ devicesRemoved: true });
     } catch (error) {
         next(error);
-        res.json({ devicesRemoved: false });
     }
 };

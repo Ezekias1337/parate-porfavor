@@ -1,8 +1,9 @@
 import React from "react";
 import MainNavigator from "@/navigation/MainNavigator";
 import { StatusBar } from "expo-status-bar";
+import { SafeAreaView } from "react-native";
 // Auth Context
-import { AuthProvider, } from "../components/auth/authContext";
+import { AuthProvider } from "../components/auth/authContext";
 // Localization Context
 import { LocalizationProvider } from "../components/localization/LocalizationContext";
 
@@ -10,18 +11,14 @@ import { LocalizationProvider } from "../components/localization/LocalizationCon
 import { colors } from "../styles/variables";
 
 const App = () => (
-  <AuthProvider>
-    <LocalizationProvider>
-      {/* <NavigationContainer>
+  <SafeAreaView style={{ flex: 1 }}>
+    <AuthProvider>
+      <LocalizationProvider>
+        <StatusBar style="light" backgroundColor={colors.primary500} />
         <MainNavigator />
-        <Login />
-      </NavigationContainer> */}
-      {/* <Login /> */}
-      {/* <Home /> */}
-      <StatusBar style="light" backgroundColor={colors.primary500} />
-      <MainNavigator />
-    </LocalizationProvider>
-  </AuthProvider>
+      </LocalizationProvider>
+    </AuthProvider>
+  </SafeAreaView>
 );
 
 export default App;

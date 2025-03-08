@@ -2,13 +2,14 @@
 import { StyleSheet } from "react-native";
 
 // CSS
-import { colors, borderRadius, fontSizes } from "../variables";
+import { colors, borderRadius, fontSizes, borderWidth } from "../variables";
 
 export const buttonStyles = StyleSheet.create({
   button: {
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: borderRadius.borderRadius,
+    borderWidth: borderWidth.borderWidth,
     textAlign: "center",
     justifyContent: "center",
     alignItems: "center",

@@ -8,6 +8,8 @@ import ModemScreen from "../screens/Modem";
 import DevicesScreen from "../screens/Devices";
 // Components
 import TabIcon from "./TabIcon";
+// Functions
+import logout from "../functions/network/auth/logout";
 // Hooks
 import { useLocalization } from "../components/localization/LocalizationContext";
 import { useAuth } from "../components/auth/authContext";
@@ -19,7 +21,7 @@ const Tab = createBottomTabNavigator();
 
 const BottomTabs = () => {
   const { translate } = useLocalization();
-  const { logout } = useAuth();
+  const { logout: logoutAuthentication } = useAuth();
 
   return (
     <Tab.Navigator
@@ -75,6 +77,7 @@ const BottomTabs = () => {
           tabPress: async (e) => {
             e.preventDefault();
             await logout();
+            await logoutAuthentication();
           },
         }}
         options={{

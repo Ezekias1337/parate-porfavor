@@ -17,7 +17,7 @@ import { inputFieldStyles } from "../styles/component-specific/input-fields";
 const Login: React.FC = () => {
   const { translate } = useLocalization();
   const [loading, setLoading] = useState(false);
-  const [authError, setAuthError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -27,23 +27,26 @@ const Login: React.FC = () => {
     try {
       setLoading(true);
       const token = await login(username, password);
-      if (token != null) {
-        if (setAuthError) {
-          setAuthError(false);
+      if (token === null) {
+        setErrorMsg(translate("authError"));
+        setLoading(false);
+      } else if (token != null) {
+        if (errorMsg !== null) {
+          setErrorMsg(null);
         }
         setLoading(false);
         await authenticate(token);
       }
     } catch (error) {
       setLoading(false);
-      setAuthError(true);
+      setErrorMsg(translate("authError"));
       console.error("Login error:", error);
     }
   };
 
   return (
     <View style={loginStyles.container}>
-      {authError && (
+      {errorMsg !== null && (
         <View style={loginStyles.alertContainer}>
           <Alert
             bodyText={translate("authError")}

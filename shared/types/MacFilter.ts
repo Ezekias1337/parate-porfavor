@@ -17,6 +17,5 @@ export interface MacDevice {
 export interface MacFilter {
     blacklistOrWhitelist: BlacklistOrWhitelist,
     macFilterEnabledOrDisabled: MacFilterEnabledOrDisabled,
-    wirelessOrEthernet: WirelessOrEthernet,
     ontToken: OntToken,
 }

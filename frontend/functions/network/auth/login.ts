@@ -10,6 +10,9 @@ const login = async (username: string, password: string): Promise<string | null>
 
   try {
     const token = await getToken();
+    if(token === null) {
+      throw new Error("Failed to get token");
+    }
     const response = await fetchData("/api/auth/login", {
       method: "POST",
       headers: {
