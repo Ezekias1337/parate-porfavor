@@ -14,12 +14,12 @@ const getDeviceList = async (): Promise<Device[] | null> => {
 
     if (!response.ok) {
       throw new Error(
-        `Failed to add device to mac filter, status: ${response.status}`
+        `Failed to get device list, status: ${response.status}`
       );
     }
     return response.json();
   } catch (error) {
-    console.error("Error adding device to mac filter, status", error);
+    console.error("Error getting device list, error", error);
     return null
   }
 };

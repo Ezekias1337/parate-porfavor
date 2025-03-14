@@ -1,7 +1,7 @@
 import fetchData from "../auth/fetchData";
-import { WirelessOrEthernet, SSIDName, MacDevice, OntToken } from "../../../../shared/types/MacFilter"
+import { WirelessOrEthernet, OntToken } from "../../../../shared/types/MacFilter"
 
-const removeDevicetoMacFilter = async (
+const removeDeviceFromMacFilter = async (
   deviceIndecesToRemove: number[],
   wirelessOrEthernet: WirelessOrEthernet,
   ontToken: OntToken
@@ -12,6 +12,7 @@ const removeDevicetoMacFilter = async (
       wirelessOrEthernet: wirelessOrEthernet,
       ontToken: ontToken,
     };
+    console.log("infoOfDeviceToRemove: ", infoOfDeviceToRemove);
 
     const response = await fetchData("/api/mac-filter/remove-device-from-mac-filter", {
       method: "POST",
@@ -19,6 +20,7 @@ const removeDevicetoMacFilter = async (
         "User-Agent":
           "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:132.0) Gecko/20100101 Firefox/132.0",
         Accept: "*/*",
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(infoOfDeviceToRemove),
     });
@@ -35,4 +37,4 @@ const removeDevicetoMacFilter = async (
   }
 };
 
-export default removeDevicetoMacFilter;
+export default removeDeviceFromMacFilter;

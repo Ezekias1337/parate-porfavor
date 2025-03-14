@@ -1,4 +1,4 @@
-export type WirelessOrEthernet = "ethernet" | "wifi"
+export type WirelessOrEthernet = "ETH" | "WIFI";
 export type SSIDName = string | null;
 export type OntToken = string | null;
 export type BlacklistOrWhitelist = "blacklist" | "whitelist";
@@ -18,4 +18,5 @@ export interface MacFilter {
     blacklistOrWhitelist: BlacklistOrWhitelist,
     macFilterEnabledOrDisabled: MacFilterEnabledOrDisabled,
     ontToken: OntToken,
+    wirelessOrEthernet: WirelessOrEthernet,
 }

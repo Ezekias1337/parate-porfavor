@@ -10,7 +10,7 @@ const deviceStyles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     width: "100%",
-    height: "100%",
+    height: 500,
     overflowY: "scroll",
     paddingTop: 40,
     paddingBottom: 20
@@ -50,6 +50,7 @@ const deviceStyles = StyleSheet.create({
     flexWrap: "wrap",
     gap: 10,
     width: "85%",
+    height: 1000
   },
 
   switch: {

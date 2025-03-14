@@ -1,1 +1,2 @@
 Add function definitions with parameters to every function like server/src/util/extractDeviceList.ts
+Make sure all network functions have correct console log strings

@@ -24,9 +24,11 @@ const extractDeviceList = (htmlContent: string, logList?: boolean): Device[] | n
                 ssid: match[5].replace(/([a-zA-Z])(\d+)$/, '$1-$2')
             });
         }
+        
+        const deDupedArray = [...new Set(deviceList)];
+        const onlineDevices = deDupedArray.filter(device => device.onlineStatus === "Online");
 
-        const deviceListOnlyOnline = deviceList.filter((device) => device.onlineStatus === "Online");
-        const deviceListSortedByConnectionType = deviceListOnlyOnline.sort((a, b) => {
+        const deviceListSortedByConnectionType = onlineDevices.sort((a, b) => {
             if (a.connectionType === "ETH" && b.connectionType === "WIFI") {
                 return -1;
             } else if (a.connectionType === "WIFI" && b.connectionType === "ETH") {

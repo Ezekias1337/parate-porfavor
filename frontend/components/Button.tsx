@@ -20,7 +20,7 @@ import {
   buttonSizeToStyle,
 } from "../styles/component-specific/button";
 
-export type ButtonVariant = 
+export type ButtonVariant =
   | "primary"
   | "primaryDark"
   | "success"
@@ -30,17 +30,9 @@ export type ButtonVariant =
   | "neutral"
   | "neutralDark";
 
-interface ButtonProps {
+export type ButtonProps = {
   text: string;
-  variant:
-    | "primary"
-    | "primaryDark"
-    | "success"
-    | "warning"
-    | "error"
-    | "info"
-    | "neutral"
-    | "neutralDark";
+  variant: ButtonVariant;
   icon?: FontAwesomeIconNames; // Ensuring the icon is a valid FontAwesome icon name
   iconSize?: number;
   leftIcon?: boolean;
@@ -52,7 +44,7 @@ interface ButtonProps {
   buttonId?: string | null;
   additionalClassNames?: string;
   buttonSize?: "small" | "medium" | "large";
-}
+};
 
 const Button: FC<ButtonProps> = ({
   text,
@@ -73,7 +65,7 @@ const Button: FC<ButtonProps> = ({
 
   const handlePress = (event: GestureResponderEvent) => {
     if (url) {
-     navigation.navigate(url as never);
+      navigation.navigate(url as never);
     } else if (onClickHandler) {
       onClickHandler(event);
     }
@@ -92,7 +84,9 @@ const Button: FC<ButtonProps> = ({
       {loading ? (
         <ActivityIndicator color={buttonStyles.loader.color} />
       ) : (
-        <Text style={[buttonStyles.buttonText, buttonVariantToStyle[variant]]}>{text}</Text>
+        <Text style={[buttonStyles.buttonText, buttonVariantToStyle[variant]]}>
+          {text}
+        </Text>
       )}
       {rightIcon && icon && (
         <FontAwesome
