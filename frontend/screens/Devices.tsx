@@ -1,6 +1,6 @@
 // Library Imports
 import React, { useEffect, useState, useCallback } from "react";
-import { View, ActivityIndicator, Switch, Text, Modal } from "react-native";
+import { View, ActivityIndicator, Switch, Text } from "react-native";
 // Functions, Helpers, Utils, and Hooks
 import getDeviceList from "@/functions/network/mac-filter/getDeviceList";
 import getDeviceListFiltered from "@/functions/network/mac-filter/getFilteredDeviceList";
@@ -8,10 +8,11 @@ import addDevicetoMacFilter from "@/functions/network/mac-filter/addDeviceToMacF
 import removeDeviceFromMacFilter from "@/functions/network/mac-filter/removeDeviceFromMacFilter";
 import getOntToken from "@/functions/network/mac-filter/getOntToken";
 // Components
-import { useAuth } from "../components/auth/authContext";
-import Button from "../components/Button";
-import Alert from "../components/Alert";
-import Card from "../components/Card";
+import { useAuth } from "@/components/auth/authContext";
+import Button from "@/components/Button";
+import Alert from "@/components/Alert";
+import Card from "@/components/Card";
+import Modal from "@/components/Modal";
 // Types
 import { ButtonProps } from "../components/Button";
 import { Device } from "../../shared/types/Device";
@@ -25,6 +26,15 @@ import { useLocalization } from "../components/localization/LocalizationContext"
 // CSS
 import { colors } from "../styles/variables";
 import deviceStyles from "../styles/page-specific/device";
+
+/* 
+  TODO:
+  - When clicking on block indefinitely need to update state arrays to instantly reflect change without refresh
+  - Need to add logic to card rendering to handle when a device is filtered and or parental controls list
+  - Need to add add modal
+  - Need to add logic for refreshing ont token on failure.
+
+*/
 
 const Devices: React.FC = () => {
   const { translate } = useLocalization();
@@ -93,7 +103,7 @@ const Devices: React.FC = () => {
               headerText={
                 device.hostName !== "" ? device.hostName : device.macAddr
               }
-              bodyText={device.macAddr}
+              bodyText={`${device.ipAddress}/n${device.macAddr}`}
               cardIcon={device.connectionType === "WIFI" ? "wifi" : "desktop"}
               buttons={buttons}
               imageSource=""
@@ -125,6 +135,15 @@ const Devices: React.FC = () => {
             },
           });
 
+          buttons.push({
+            text: translate("blockInternetOnSchedule"),
+            variant: "primaryDark",
+            icon: "calendar",
+            onClickHandler: () => {
+              displayParentalControlsModal();
+            },
+          });
+
           return (
             <Card
               key={filteredDevice.macAddr}
@@ -143,6 +162,14 @@ const Devices: React.FC = () => {
           );
         })}
       </View>
+    );
+  };
+
+  const renderModal = (modalVisible: boolean, setModalVisible: React.Dispatch<React.SetStateAction<boolean>>) => {
+    return (
+      <Modal modalVisible={modalVisible} setModalVisible={setModalVisible}>
+        <Text>Modal</Text>
+      </Modal>
     );
   };
 
@@ -187,7 +214,9 @@ const Devices: React.FC = () => {
     */
   };
 
-  const displayParentalControlsModal = () => {};
+  const displayParentalControlsModal = () => {
+    setModalVisible(true);
+  };
 
   useEffect(() => {
     fetchDevices();
@@ -202,6 +231,7 @@ const Devices: React.FC = () => {
           {renderErrorMsg(errorMsg)}
           {renderRefreshButton()}
           {renderDeviceCards()}
+          {renderModal(modalVisible, setModalVisible)}
         </>
       )}
     </View>

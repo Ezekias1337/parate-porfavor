@@ -38,7 +38,7 @@ const cardStyles = StyleSheet.create({
   },
   bodyText: {
     fontSize: 14,
-    color: colors.primary700,
+    color: colors.neutral200,
   },
   cardTextWrapper: {
     marginVertical: 10,
