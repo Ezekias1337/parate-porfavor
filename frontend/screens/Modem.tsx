@@ -63,20 +63,20 @@ const Modem: React.FC = () => {
   // Countdown Timer for Logout
   useEffect(() => {
     if (modemRebooting) {
-      setSecondsBeforeLogout(5); // Set initial countdown value
+      setSecondsBeforeLogout(5);
 
       const interval = setInterval(() => {
         setSecondsBeforeLogout((prev) => {
           if (prev <= 1) {
             clearInterval(interval);
-            logout(); // Logout when countdown reaches 0
+            logout();
             return 0;
           }
-          return prev - 1; // Decrease countdown every second
+          return prev - 1;
         });
       }, 1000);
 
-      return () => clearInterval(interval); // Cleanup on unmount
+      return () => clearInterval(interval);
     }
   }, [modemRebooting, logout]);
 

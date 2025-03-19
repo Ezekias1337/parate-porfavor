@@ -1,20 +1,16 @@
 // Library Imports
-import React, { useEffect, useState, useCallback } from "react";
-import { View, ActivityIndicator, Switch, Text } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, ActivityIndicator } from "react-native";
 // Functions, Helpers, Utils, and Hooks
-import getDeviceList from "@/functions/network/mac-filter/getDeviceList";
-import getDeviceListFiltered from "@/functions/network/mac-filter/getFilteredDeviceList";
-import addDevicetoMacFilter from "@/functions/network/mac-filter/addDeviceToMacFilter";
-import removeDeviceFromMacFilter from "@/functions/network/mac-filter/removeDeviceFromMacFilter";
-import getOntToken from "@/functions/network/mac-filter/getOntToken";
+import fetchDevices from "@/functions/page-specific/modem/fetchDevices";
+import renderErrorMsg from "@/functions/page-specific/modem/render/renderErrorMsg";
+import renderButtons from "@/functions/page-specific/modem/render/renderButtons";
+import renderDeviceCards from "@/functions/page-specific/modem/render/renderDeviceCards";
+import renderModal from "@/functions/page-specific/modem/render/renderModal";
 // Components
 import { useAuth } from "@/components/auth/authContext";
-import Button from "@/components/Button";
-import Alert from "@/components/Alert";
-import Card from "@/components/Card";
-import Modal from "@/components/Modal";
+import { useLocalization } from "../components/localization/LocalizationContext";
 // Types
-import { ButtonProps } from "../components/Button";
 import { Device } from "../../shared/types/Device";
 import {
   MacFilter,
@@ -22,7 +18,6 @@ import {
   MacFilterEnabledOrDisabled,
   OntToken,
 } from "../../shared/types/MacFilter";
-import { useLocalization } from "../components/localization/LocalizationContext";
 // CSS
 import { colors } from "../styles/variables";
 import deviceStyles from "../styles/page-specific/device";
@@ -33,8 +28,23 @@ import deviceStyles from "../styles/page-specific/device";
   - Need to add logic to card rendering to handle when a device is filtered and or parental controls list
   - Need to add add modal
   - Need to add logic for refreshing ont token on failure.
-
+  - Remove parental controls from tabs on bottom and delete screen
+  - Add cleanup for page so if page unmounts all device data is cleaned up
+  - Move ModemStatusCard.tsx styles to its own file
+  
+  
+  ? Should be three buttons at top of page, one for refresh, one for creating a parental controls filter
+  and one for adjusting the parental controls filter
+  
+  When button is pressed to add device to parental controls, it should display dropdown of available templates
 */
+
+export interface ListOfStateSetters {
+  setDevices: React.Dispatch<React.SetStateAction<Device[]>>;
+  setFilteredDevices: React.Dispatch<React.SetStateAction<Device[]>>;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  setErrorMsg: React.Dispatch<React.SetStateAction<string | null>>;
+}
 
 const Devices: React.FC = () => {
   const { translate } = useLocalization();
@@ -45,181 +55,11 @@ const Devices: React.FC = () => {
   const [filteredDevices, setFilteredDevices] = useState<Device[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
 
-  const renderErrorMsg = (errorMsg: string | null) => {
-    if (errorMsg) {
-      return (
-        <View style={deviceStyles.alertContainer}>
-          <Alert
-            bodyText={errorMsg}
-            variant="error"
-            icon="exclamation-triangle"
-          />
-        </View>
-      );
-    }
-  };
-
-  const renderRefreshButton = () => {
-    return (
-      <View style={deviceStyles.buttonContainer}>
-        <Button
-          variant="primary"
-          buttonSize="small"
-          text={`${translate("refresh")} ${translate("devices")}`}
-          onClickHandler={fetchDevices}
-          icon="refresh"
-          leftIcon
-        />
-      </View>
-    );
-  };
-
-  const renderDeviceCards = () => {
-    return (
-      <View style={deviceStyles.devicesContainer}>
-        {devices.map((device) => {
-          const buttons: ButtonProps[] = [];
-
-          buttons.push({
-            text: translate("blockInternetIndefinitely"),
-            variant: "primary",
-            icon: "hourglass",
-            onClickHandler: async () => {
-              await addDeviceToMacFilter(device);
-            },
-          });
-          buttons.push({
-            text: translate("blockInternetOnSchedule"),
-            variant: "primaryDark",
-            icon: "calendar",
-            onClickHandler: () => {
-              displayParentalControlsModal();
-            },
-          });
-
-          return (
-            <Card
-              key={device.macAddr}
-              headerText={
-                device.hostName !== "" ? device.hostName : device.macAddr
-              }
-              bodyText={`${device.ipAddress}/n${device.macAddr}`}
-              cardIcon={device.connectionType === "WIFI" ? "wifi" : "desktop"}
-              buttons={buttons}
-              imageSource=""
-            />
-          );
-        })}
-
-        {filteredDevices.map((filteredDevice, index) => {
-          const buttons: ButtonProps[] = [];
-
-          buttons.push({
-            text: translate("unblockDevice"),
-            variant: "success",
-            icon: "unlock",
-            onClickHandler: async () => {
-              await removeDeviceFromMacFilter(
-                [index + 1],
-                filteredDevice.connectionType,
-                ontToken
-              );
-              const filteredDevicesCopy = [...filteredDevices];
-              const devicesCopy = [...devices];
-
-              filteredDevicesCopy.splice(index, 1);
-              devicesCopy.push(filteredDevice);
-
-              setDevices(devicesCopy);
-              setFilteredDevices(filteredDevicesCopy);
-            },
-          });
-
-          buttons.push({
-            text: translate("blockInternetOnSchedule"),
-            variant: "primaryDark",
-            icon: "calendar",
-            onClickHandler: () => {
-              displayParentalControlsModal();
-            },
-          });
-
-          return (
-            <Card
-              key={filteredDevice.macAddr}
-              headerText={
-                filteredDevice.hostName !== ""
-                  ? filteredDevice.hostName
-                  : filteredDevice.macAddr
-              }
-              bodyText={filteredDevice.macAddr}
-              cardIcon={
-                filteredDevice.connectionType === "WIFI" ? "wifi" : "desktop"
-              }
-              buttons={buttons}
-              imageSource=""
-            />
-          );
-        })}
-      </View>
-    );
-  };
-
-  const renderModal = (modalVisible: boolean, setModalVisible: React.Dispatch<React.SetStateAction<boolean>>) => {
-    return (
-      <Modal modalVisible={modalVisible} setModalVisible={setModalVisible}>
-        <Text>Modal</Text>
-      </Modal>
-    );
-  };
-
-  const fetchDevices = useCallback(async () => {
-    setLoading(true);
-    const devicesToSet = await getDeviceList();
-    const filteredDevicesToSet = await getDeviceListFiltered();
-
-    if (!devicesToSet || devicesToSet.length === 0) {
-      setErrorMsg(translate("serverError"));
-      setDevices([]);
-      setFilteredDevices([]);
-    } else {
-      setErrorMsg(null);
-      setDevices(devicesToSet);
-
-      if (filteredDevicesToSet) {
-        setFilteredDevices(filteredDevicesToSet);
-      }
-    }
-    setLoading(false);
-  }, [setLoading, setErrorMsg]);
-
-  const addDeviceToMacFilter = async (device: Device) => {
-    const ontTokenToUse = await getOntToken(
-      device.connectionType === "WIFI" ? "WIFI" : "ETH",
-      ontToken
-    );
-    setOntToken(ontTokenToUse);
-    await addDevicetoMacFilter(
-      device.macAddr,
-      device.hostName,
-      device.ssid,
-      device.connectionType === "WIFI" ? "WIFI" : "ETH",
-      ontTokenToUse
-    );
-
-    /* 
-                  
-      At the End the function needs to remove the device from the devices state array
-      and be added to the filteredDevices state array
-    */
-  };
-
-  const displayParentalControlsModal = () => {
-    setModalVisible(true);
-  };
-
   useEffect(() => {
-    fetchDevices();
+    fetchDevices(
+      { setDevices, setFilteredDevices, setLoading, setErrorMsg },
+      translate
+    );
   }, []);
 
   return (
@@ -229,8 +69,22 @@ const Devices: React.FC = () => {
       ) : (
         <>
           {renderErrorMsg(errorMsg)}
-          {renderRefreshButton()}
-          {renderDeviceCards()}
+          {renderButtons(
+            { setDevices, setFilteredDevices, setLoading, setErrorMsg },
+            translate
+          )}
+          {renderDeviceCards(
+            ontToken,
+            devices,
+            filteredDevices,
+            {
+              setModalVisible,
+              setDevices,
+              setFilteredDevices,
+              setOntToken,
+            },
+            translate
+          )}
           {renderModal(modalVisible, setModalVisible)}
         </>
       )}
