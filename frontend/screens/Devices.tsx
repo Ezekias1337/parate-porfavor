@@ -2,11 +2,11 @@
 import React, { useEffect, useState } from "react";
 import { View, ActivityIndicator } from "react-native";
 // Functions, Helpers, Utils, and Hooks
-import fetchDevices from "@/functions/page-specific/modem/fetchDevices";
-import renderErrorMsg from "@/functions/page-specific/modem/render/renderErrorMsg";
-import renderButtons from "@/functions/page-specific/modem/render/renderButtons";
-import renderDeviceCards from "@/functions/page-specific/modem/render/renderDeviceCards";
-import renderModal from "@/functions/page-specific/modem/render/renderModal";
+import fetchDevices from "@/functions/page-specific/devices/fetchDevices";
+import renderErrorMsg from "@/functions/page-specific/devices/render/renderErrorMsg";
+import renderButtons from "@/functions/page-specific/devices/render/renderButtons";
+import renderDeviceCards from "@/functions/page-specific/devices/render/renderDeviceCards";
+import renderModal from "@/functions/page-specific/devices/render/renderModal";
 // Components
 import { useAuth } from "@/components/auth/authContext";
 import { useLocalization } from "../components/localization/LocalizationContext";
