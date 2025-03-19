@@ -30,11 +30,10 @@ import deviceStyles from "../styles/page-specific/device";
   - Need to add logic for refreshing ont token on failure.
   - Remove parental controls from tabs on bottom and delete screen
   - Add cleanup for page so if page unmounts all device data is cleaned up
-  - Move ModemStatusCard.tsx styles to its own file
   
   
   ? Should be three buttons at top of page, one for refresh, one for creating a parental controls filter
-  and one for adjusting the parental controls filter
+  ? and one for adjusting the parental controls filter
   
   When button is pressed to add device to parental controls, it should display dropdown of available templates
 */
