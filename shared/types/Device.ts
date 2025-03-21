@@ -5,7 +5,7 @@ export type Device = {
     macAddr: string;
     hostName: string;
     ipAddress: string;
-    onlineStatus: string;
+    onlineStatus: "Online" | "Offline" | "Unknown";
     connectionType: WirelessOrEthernet;
     ssid: SSIDName;
 };

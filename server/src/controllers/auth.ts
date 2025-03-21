@@ -140,3 +140,30 @@ export const logout: RequestHandler = async (req, res, next) => {
     }
 };
 
+export const refreshToken: RequestHandler = async (req, res, next) => {
+    try {
+        const cookies = sessionStore.getAllCookies();
+
+        const responseHtml = await axios.get(`${MODEM_URL_BASE}/html/ssmp/common/refreshTime.asp`, {
+            headers: {
+                Host: MODEM_URL_BASE,
+                "User-Agent": USER_AGENT,
+                "Accept": "*/*",
+                "Accept-Language": "en-US,en;q=0.5",
+                "Accept-Encoding": "gzip, deflate",
+                referrer: `${MODEM_URL_BASE}/refresh.asp`,
+                "Connection": "keep-alive",
+                "Cookie": cookies,
+                "Cache-Control": "no-cache",
+                "Pragma": "no-cache",
+                mode: "cors",
+            },
+        });
+
+        console.log("Response HTML: ", responseHtml.data);
+        res.json(true);
+    } catch (error) {
+        next(error);
+    }
+};
+

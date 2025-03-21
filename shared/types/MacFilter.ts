@@ -1,4 +1,4 @@
-export type WirelessOrEthernet = "ETH" | "WIFI";
+export type WirelessOrEthernet = "ETH" | "WIFI" | "Unknown";
 export type SSIDName = string | null;
 export type OntToken = string | null;
 export type BlacklistOrWhitelist = "blacklist" | "whitelist";

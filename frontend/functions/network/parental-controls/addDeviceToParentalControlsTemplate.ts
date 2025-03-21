@@ -1,11 +1,14 @@
 import fetchData from "../auth/fetchData";
 
-const removeDeviceFromParentalControlsTemplate = async (
-  macIndex: number,
+
+const addDeviceToParentalControlsTemplate = async (
+  macAddress: string,
+  description: string = "",
+  templateInst: string = "1",
   token: string
 ): Promise<boolean> => {
   try {
-    const response = await fetchData("/api/parental-controls/remove-device-from-parental-controls-template", {
+    const response = await fetchData("/api/parental-controls/add-device-to-parental-controls", {
       method: "POST",
       headers: {
         "User-Agent":
@@ -18,14 +21,15 @@ const removeDeviceFromParentalControlsTemplate = async (
 
     if (!response.ok) {
       throw new Error(
-        `Failed to remove device from parental controls template, status: ${response.status}`
+        `Failed to add device to parental controls template, status: ${response.status}`
       );
     }
     return true
   } catch (error) {
-    console.error("Failed to remove device from parental controls template, status", error);
+    console.error("Failed to add device to parental controls template, status", error);
     return false;
   }
-};
+}
 
-export default removeDeviceFromParentalControlsTemplate;
+
+export default addDeviceToParentalControlsTemplate;

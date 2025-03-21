@@ -23,11 +23,6 @@ const MODEM_URL_BASE = env.MODEM_URL_BASE;
 */
 
 export const fetchOntTokenSourceHandler = async (ontToken: string | null, cookies: string, wirelessOrEthernet: string): Promise<string | null> => {
-    /* 
-        ! Before we can make the request to the modem to reboot we need the onttoken 
-        ! from the DOM of the page (which will be passed as x.X_HW_Token)
-    */
-
     try {
         if (ontToken === null) {
             let queryString;

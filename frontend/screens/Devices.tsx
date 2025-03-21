@@ -3,31 +3,35 @@ import React, { useEffect, useState } from "react";
 import { View, ActivityIndicator } from "react-native";
 // Functions, Helpers, Utils, and Hooks
 import fetchDevices from "@/functions/page-specific/devices/fetchDevices";
+import fetchParentalControlsData from "@/functions/page-specific/devices/fetchParentalControlsData";
 import renderErrorMsg from "@/functions/page-specific/devices/render/renderErrorMsg";
 import renderButtons from "@/functions/page-specific/devices/render/renderButtons";
 import renderDeviceCards from "@/functions/page-specific/devices/render/renderDeviceCards";
 import renderModal from "@/functions/page-specific/devices/render/renderModal";
+import useRefreshToken from "@/hooks/useRefreshToken";
 // Components
 import { useAuth } from "@/components/auth/authContext";
 import { useLocalization } from "../components/localization/LocalizationContext";
 // Types
 import { Device } from "../../shared/types/Device";
 import {
-  MacFilter,
-  BlacklistOrWhitelist,
-  MacFilterEnabledOrDisabled,
-  OntToken,
-} from "../../shared/types/MacFilter";
+  ParentalControlsData,
+  ParentalControlsDevice,
+  TimeRestriction,
+} from "../../shared/types/ParentalControls";
+import { OntToken } from "../../shared/types/MacFilter";
 // CSS
 import { colors } from "../styles/variables";
 import deviceStyles from "../styles/page-specific/device";
 
 /* 
   TODO:
+  - When switching between parental controls and mac filtering need to reset value of ontToken to null
+  
   - When clicking on block indefinitely need to update state arrays to instantly reflect change without refresh
   - Need to add logic to card rendering to handle when a device is filtered and or parental controls list
   - Need to add add modal
-  - Need to add logic for refreshing ont token on failure.
+  - Need to add logic for refreshing ont token on failure. I believe refreshTime.asp might have something to do with this
   - Remove parental controls from tabs on bottom and delete screen
   - Add cleanup for page so if page unmounts all device data is cleaned up
   
@@ -45,13 +49,31 @@ export interface ListOfStateSetters {
   setErrorMsg: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
+export interface ListOfParentalControlsStateSetters {
+  setParentalControls: React.Dispatch<
+    React.SetStateAction<ParentalControlsData>
+  >;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  setErrorMsg: React.Dispatch<React.SetStateAction<string | null>>;
+}
+
 const Devices: React.FC = () => {
   const { translate } = useLocalization();
+  const { isAuthenticated } = useAuth();
+  useRefreshToken(isAuthenticated);
+
   const [loading, setLoading] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [ontToken, setOntToken] = useState<OntToken>(null);
   const [devices, setDevices] = useState<Device[]>([]);
   const [filteredDevices, setFilteredDevices] = useState<Device[]>([]);
+  const [parentalControls, setParentalControls] =
+    useState<ParentalControlsData>({
+      templates: [],
+      connectionAttempts: 0,
+      devices: [],
+      timeRestrictions: {},
+    });
   const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
@@ -59,7 +81,16 @@ const Devices: React.FC = () => {
       { setDevices, setFilteredDevices, setLoading, setErrorMsg },
       translate
     );
+
+    fetchParentalControlsData(
+      { setParentalControls, setLoading, setErrorMsg },
+      translate
+    );
   }, []);
+
+  useEffect(() => {
+    console.log("parentalControls:", parentalControls);
+  }, [parentalControls]);
 
   return (
     <View style={deviceStyles.container}>

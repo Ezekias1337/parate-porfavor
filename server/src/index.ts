@@ -9,8 +9,8 @@ import http from "http";
 import authRoutes from "./routes/auth";
 import modemRoutes from "./routes/modem";
 import macFilterRoutes from "./routes/macFilter";
-/*import parentalControlsRoutes from "./routes/parentalControls"; 
-import wakeOnLanRoutes from "./routes/wakeOnLan";*/
+import parentalControlsRoutes from "./routes/parentalControls";
+/*import wakeOnLanRoutes from "./routes/wakeOnLan";*/
 
 // Server Configuration
 const app = express();
@@ -43,8 +43,8 @@ app.use((req, res, next) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/modem", modemRoutes);
 app.use("/api/mac-filter", macFilterRoutes);
-/*app.use("/api/parental-controls", parentalControlsRoutes); 
-app.use("/api/wake-on-lan", wakeOnLanRoutes); */
+app.use("/api/parental-controls", parentalControlsRoutes);
+/*app.use("/api/wake-on-lan", wakeOnLanRoutes); */
 
 // Allow credentials in CORS configuration
 app.options("*", cors(corsOptions));

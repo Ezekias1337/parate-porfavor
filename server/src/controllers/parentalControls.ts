@@ -1,14 +1,268 @@
+// Library Imports
 import { RequestHandler } from "express";
 import axios from "axios";
 import env from "../util/validateEnv";
 import sessionStore from "../session/sessionStore";
-
-
-
+// Functions, Helpers, and Utils
+import fetchOntToken from "../util/fetchOntToken";
+import extractParentalControlsData from "../util/extractParentalControlsData";
+// Types
+import { ParentalControlsDevice, ParentalControlsData, TimeRestriction } from "../../../shared/types/ParentalControls";
 
 const USER_AGENT = env.USER_AGENT;
 const MODEM_URL_BASE = env.MODEM_URL_BASE;
+/*        
+        Parental Control Help
+            The parental control function allows parents to set different constraints for the network surfing time and website access on working days and holidays. In this way, their children are allowed to access networks in specified time segments and free from age inappropriate contents. Configure multiple parental control policy templates as required, use MAC addresses to identify children web devices (such as a PC or Pad), and associate different web devices with different templates.
+            Template
+            On the Template tab page, click Add. Enter the template name, for example, kids. Then configure the parental control template step by step based on the configuration wizard.
+            Note:
+            1.A maximum of four time segments during which network surfing is allowed can be configured in each template.
+            2.The whitelist and blacklist are mutually exclusive in a template when you configure the website filtering policy.
+            3.A maximum of 128 websites can be configured for the filtering policy in each template.
+            4.A maximum of eight templates can be configured.
+            Overview
+            On the Overview tab page, bind web devices with the template configured (the kids template is used as an example here). If Apply on all devices is selected, all the web devices will perform network access control based on the kids template. If Apply on specified devices is selected, only the specified web devices will perform network access control based on the kids template.
+            Note:
+            1.A web device can be associated with only one template.
+            2.To change the template with which a device is associated, delete the device from the template, and click Add to bind a new template to this device.
+*/
 
+export const fetchOntTokenSourceHandler = async (ontToken: string | null, cookies: string): Promise<string | null> => {
+    try {
+        if (ontToken === null) {
+            const ontTokenSource = await axios.get(`${MODEM_URL_BASE}/html/bbsp/parentalctrl/parentalctrlmac.asp`, {
+                headers: {
+                    "User-Agent": USER_AGENT,
+                    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+                    "Accept-Language": "en-US,en;q=0.5",
+                    "Upgrade-Insecure-Requests": "1",
+                    "Priority": "u=4",
+                    "Pragma": "no-cache",
+                    "Cache-Control": "no-cache",
+                    referrer: `${env.MODEM_URL_BASE}/index.asp`,
+                    "mode": "cors",
+                    "Cookie": cookies,
+                },
+            });
+            ontToken = fetchOntToken(ontTokenSource.data);
+        }
+
+        return ontToken;
+    } catch (error) {
+        return null
+    }
+}
+
+export const fetchOntTokenSource: RequestHandler = async (req, res, next) => {
+    try {
+        const cookies = sessionStore.getAllCookies();
+        let ontToken = req.body.ontToken;
+        const tokenToReturn = await fetchOntTokenSourceHandler(ontToken, cookies);
+        res.json(tokenToReturn);
+    } catch (error) {
+        next(error);
+    }
+}
+
+export const getParentalControlsData: RequestHandler = async (req, res, next) => {
+    try {
+        const cookies = sessionStore.getAllCookies();
+
+        const responseHtml = await axios.get(`${MODEM_URL_BASE}/html/bbsp/common/parentalctrlinfo.asp`, {
+            headers: {
+                "User-Agent": USER_AGENT,
+                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+                "Accept-Language": "en-US,en;q=0.5",
+                "Content-Type": "application/x-www-form-urlencoded",
+                "Upgrade-Insecure-Requests": "1",
+                "Priority": "u=4",
+                "Pragma": "no-cache",
+                "Cache-Control": "no-cache",
+                referrer: `${MODEM_URL_BASE}/html/bbsp/macfilter/set.cgi?x=InternetGatewayDevice.X_HW_Security.MacFilter.1&RequestFile=html/bbsp/macfilter/macfilter.asp`,
+                mode: "cors",
+                "Cookie": cookies,
+            },
+        });
+
+        const listOfFilteredDevices = extractParentalControlsData(responseHtml.data);
+        res.json(listOfFilteredDevices);
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const addDeviceToParentalControls: RequestHandler = async (req, res, next) => {
+    try {
+        const cookies = sessionStore.getAllCookies();
+        const macAddr = req.body.macAddr;
+        const deviceDescription = req.body.description;
+        const templateNumber = req.body.templateNumber;
+        let ontToken = req.body.ontToken;
+
+        ontToken = await fetchOntTokenSourceHandler(ontToken, cookies);
+        const queryString = `x.MACAddress=${macAddr.replace(/:/g, "%3A")}
+            &x.Description=${deviceDescription}
+            &x.TemplateInst=${templateNumber}
+            &x.X_HW_Token=${ontToken}`;
+
+        const response = await axios.post(`${MODEM_URL_BASE}/html/bbsp/parentalctrl/add.cgi?x=InternetGatewayDevice.X_HW_Security.ParentalCtrl.MAC&RequestFile=html/bbsp/parentalctrl/parentalctrlmac.asp`, queryString, {
+            headers: {
+                "User-Agent": USER_AGENT,
+                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+                "Accept-Language": "en-US,en;q=0.5",
+                "Content-Type": "application/x-www-form-urlencoded",
+                "Upgrade-Insecure-Requests": "1",
+                "Priority": "u=4",
+                referrer: `${MODEM_URL_BASE}/html/bbsp/parentalctrl/parentalctrlmac.asp`,
+                mode: "cors",
+                "Cookie": cookies,
+            },
+        });
+        if (response.status === 200) {
+            res.json(true);
+        } else {
+            console.error("Failed to add device to parental controls, status:", response.status);
+            throw new Error(
+                `Failed to add device to parental controls, status: ${response.status}`
+            );
+        }
+    } catch (error) {
+        next(error);
+    }
+};
+
+
+export const addTimePeriodToParentalControls: RequestHandler = async (req, res, next) => {
+    try {
+        const cookies = sessionStore.getAllCookies();
+        const startTime = req.body.startTime;
+        const endTime = req.body.endTime;
+        const repeatDays = req.body.repeatDays;
+        const templateNumber = req.body.templateNumber;
+
+        let ontToken = req.body.ontToken;
+        ontToken = await fetchOntTokenSourceHandler(ontToken, cookies);
+
+        const queryString = `x.StartTime=${startTime}
+            &x.EndTime=${endTime}
+            &x.RepeatDay=${repeatDays.join(",")}
+            &x.TemplateInst=${templateNumber}
+            &y.DurationRight=0&y.DurationPolicy=0
+            &x.X_HW_Token=${ontToken}`;
+
+        const response = await axios.post(`${MODEM_URL_BASE}/html/bbsp/parentalctrl/`, queryString, {
+            headers: {
+                "User-Agent": USER_AGENT,
+                "Accept": "*/*",
+                "Accept-Language": "en-US,en;q=0.5",
+                "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+                "X-Requested-With": "XMLHttpRequest",
+                Priority: "u=0",
+                referrer: `${MODEM_URL_BASE}/html/bbsp/parentalctrl/parentalctrltime.asp?TemplateId=2&FlagStatus=EditTemplate`,
+                mode: "cors",
+                "Cookie": cookies,
+            },
+        });
+
+        if (response.status === 200) {
+            res.json(true);
+        } else {
+            console.error("Failed to add time period to parental controls template, status:", response.status);
+            throw new Error(
+                `Failed to add time period to parental controls template, status: ${response.status}`
+            );
+        }
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const createParentalControlTemplate: RequestHandler = async (req, res, next) => {
+    try {
+        const cookies = sessionStore.getAllCookies();
+        const templateName = req.body.templateName;
+        const templateStartDate = req.body.templateStartDate; // 2025-03-21 from modem's frontend gui should be sent as 20250321
+        const templateEndDate = req.body.templateEndDate;
+
+        let ontToken = req.body.ontToken;
+        ontToken = await fetchOntTokenSourceHandler(ontToken, cookies);
+
+        const queryString = `x_SAVE_A.Name=${templateName}
+        &x_SAVE_A.StartDate=${templateStartDate}
+        &x_SAVE_A.EndDate=${templateEndDate}
+        &x.X_HW_Token=${ontToken}`;
+
+        const response = await axios.post(`${MODEM_URL_BASE}/html/bbsp/parentalctrl/add.cgi?x_SAVE_A=InternetGatewayDevice.X_HW_Security.ParentalCtrl.Templates&RequestFile=html/bbsp/parentalctrl/parentalctrltime.asp`, queryString, {
+            headers: {
+                "User-Agent": USER_AGENT,
+                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+                "Accept-Language": "en-US,en;q=0.5",
+                "Content-Type": "application/x-www-form-urlencoded",
+                "Upgrade-Insecure-Requests": "1",
+                "Priority": "u=4",
+                "Pragma": "no-cache",
+                "Cache-Control": "no-cache",
+                referrer: `${MODEM_URL_BASE}/html/bbsp/macfilter/set.cgi?x=InternetGatewayDevice.X_HW_Security.MacFilter.1&RequestFile=html/bbsp/macfilter/macfilter.asp`,
+                mode: "cors",
+                "Cookie": cookies,
+            },
+        });
+
+        if (response.status === 200) {
+            res.json(true);
+        } else {
+            console.error("Failed to create parental controls template, status:", response.status);
+            throw new Error(
+                `Failed to create parental controls template, status: ${response.status}`
+            );
+        }
+    } catch (error) {
+        next(error);
+    }
+};
+
+
+
+export const removeDeviceFromParentalControls: RequestHandler = async (req, res, next) => {
+    try {
+        const cookies = sessionStore.getAllCookies();
+        const macDeviceIndex = req.body.macDeviceIndex;
+
+        let ontToken = req.body.ontToken;
+        ontToken = await fetchOntTokenSourceHandler(ontToken, cookies);
+
+        const queryString = `InternetGatewayDevice.X_HW_Security.ParentalCtrl.MAC.${macDeviceIndex}=
+            &x.X_HW_Token=${ontToken}`;
+
+        const response = await axios.post(`${MODEM_URL_BASE}/html/bbsp/parentalctrl/del.cgi?RequestFile=html/bbsp/parentalctrl/parentalctrlmac.asp`, queryString, {
+            headers: {
+                "User-Agent": USER_AGENT,
+                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+                "Accept-Language": "en-US,en;q=0.5",
+                "Content-Type": "application/x-www-form-urlencoded",
+                "Upgrade-Insecure-Requests": "1",
+                "Priority": "u=4",
+                "Pragma": "no-cache",
+                "Cache-Control": "no-cache",
+                referrer: `${MODEM_URL_BASE}/html/bbsp/parentalctrl/add.cgi?x=InternetGatewayDevice.X_HW_Security.ParentalCtrl.MAC&RequestFile=html/bbsp/parentalctrl/parentalctrlmac.asp`,
+                mode: "cors",
+                "Cookie": cookies,
+            },
+        });
+
+        if (response.status === 200) {
+            res.json(true);
+        } else {
+            console.error("Failed to remove device from parental controls template, status:", response.status);
+            throw new Error(
+                `Failed to remove device from parental controls template, status: ${response.status}`
+            );
+        }
+    } catch (error) {
+        next(error);
+    }
+};
 
 
 

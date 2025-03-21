@@ -6,6 +6,7 @@ const router = express.Router();
 
 // GET requests
 router.get("/get-token", AuthController.getToken);
+router.get("/refresh-token", AuthController.refreshToken);
 
 // POST requests
 router.post("/login", AuthController.login);
