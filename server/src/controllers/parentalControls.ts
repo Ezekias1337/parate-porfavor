@@ -7,7 +7,7 @@ import sessionStore from "../session/sessionStore";
 import fetchOntToken from "../util/fetchOntToken";
 import extractParentalControlsData from "../util/extractParentalControlsData";
 // Types
-import { ParentalControlsDevice, ParentalControlsData, TimeRestriction } from "../../../shared/types/ParentalControls";
+import { ParentalControlsDevice, ParentalControlsData, Template } from "../../../shared/types/ParentalControls";
 
 const USER_AGENT = env.USER_AGENT;
 const MODEM_URL_BASE = env.MODEM_URL_BASE;
