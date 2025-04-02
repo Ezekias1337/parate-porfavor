@@ -4,6 +4,7 @@ import { View, ActivityIndicator } from "react-native";
 // Functions, Helpers, Utils, and Hooks
 import getModemStatus from "../functions/network/modem/getModemStatus";
 import rebootModem from "../functions/network/modem/rebootModem";
+import useRefreshToken from "@/hooks/useRefreshToken";
 // Components
 import { useAuth } from "../components/auth/authContext";
 import Button from "../components/Button";
@@ -18,7 +19,8 @@ import modemStyles from "../styles/page-specific/modem";
 
 const Modem: React.FC = () => {
   const { translate } = useLocalization();
-  const { logout } = useAuth();
+  const { logout, isAuthenticated } = useAuth();
+  useRefreshToken(isAuthenticated);
 
   const [modemStatus, setModemStatus] = useState<ModemStatus | null>(null);
   const [displayButtons, setDisplayButtons] = useState(false);

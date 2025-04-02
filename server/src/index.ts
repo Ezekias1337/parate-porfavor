@@ -25,11 +25,11 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.use(express.json());
-app.use((req, res, next) => {
+/* app.use((req, res, next) => {
     console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
     console.log("Headers:", req.headers);
     next();
-});
+}); */
 
 /* 
     TODO: use pm2 to run the server

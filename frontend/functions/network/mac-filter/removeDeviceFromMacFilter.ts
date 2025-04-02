@@ -12,7 +12,6 @@ const removeDeviceFromMacFilter = async (
       wirelessOrEthernet: wirelessOrEthernet,
       ontToken: ontToken,
     };
-    console.log("infoOfDeviceToRemove: ", infoOfDeviceToRemove);
 
     const response = await fetchData("/api/mac-filter/remove-device-from-mac-filter", {
       method: "POST",

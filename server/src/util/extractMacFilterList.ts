@@ -17,7 +17,7 @@ const extractMacFilterList = (htmlContent: string, logList?: boolean): Device[] 
                 domain: "", // No domain available in this format
                 ipAddress: "", // Not provided in the mac filter list
                 macAddr: match[4].replace(/\\x3a/g, ":"), // Convert encoded MAC address
-                hostName: decodeURIComponent(match[3]), // Device Name (e.g., Chromecast)
+                hostName: decodeURIComponent(match[3]).replace(/\\x([0-9A-Fa-f]{2})/g, (_, hex) => String.fromCharCode(parseInt(hex, 16))), // Device Name (e.g., Chromecast)
                 onlineStatus: "Unknown", // Not specified in this format
                 connectionType: "WIFI", // Not specified in this format
                 ssid: match[2].replace(/\\x2d/g, "-") // Convert SSID encoding

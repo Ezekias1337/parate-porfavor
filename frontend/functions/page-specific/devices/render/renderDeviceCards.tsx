@@ -1,13 +1,8 @@
 // Library Imports
 import { View } from "react-native";
 // Functions, Helpers, Utils, and Hooks
-import getDeviceList from "@/functions/network/mac-filter/getDeviceList";
-import getDeviceListFiltered from "@/functions/network/mac-filter/getFilteredDeviceList";
-import addDevicetoMacFilter from "@/functions/network/mac-filter/addDeviceToMacFilter";
-import removeDeviceFromMacFilter from "@/functions/network/mac-filter/removeDeviceFromMacFilter";
-import getOntToken from "@/functions/network/mac-filter/getOntToken";
-
-import addDeviceToMacFilter from "../addDeviceToMacFilter";
+import removeDeviceFromMacFilterHandler from "../removeDeviceFromMacFilterHandler";
+import addDeviceToMacFilter from "../addDeviceToMacFilterHandler";
 import displayParentalControlsModal from "../displayParentalControlsModal";
 // Components
 import Card from "@/components/Card";
@@ -40,7 +35,7 @@ const renderDeviceCards = (
 ) => {
   return (
     <View style={deviceStyles.devicesContainer}>
-      {devices.map((device) => {
+      {devices.map((device, index) => {
         const buttons: ButtonProps[] = [];
 
         buttons.push({
@@ -48,7 +43,16 @@ const renderDeviceCards = (
           variant: "primary",
           icon: "hourglass",
           onClickHandler: async () => {
-            await addDeviceToMacFilter(device, ontToken, setOntToken);
+            await addDeviceToMacFilter({
+              device,
+              index: index,
+              ontToken,
+              setOntToken,
+              devices,
+              setDevices,
+              filteredDevices,
+              setFilteredDevices,
+            });
           },
         });
         buttons.push({
@@ -82,19 +86,16 @@ const renderDeviceCards = (
           variant: "success",
           icon: "unlock",
           onClickHandler: async () => {
-            await removeDeviceFromMacFilter(
-              [index + 1],
-              filteredDevice.connectionType,
-              ontToken
-            );
-            const filteredDevicesCopy = [...filteredDevices];
-            const devicesCopy = [...devices];
-
-            filteredDevicesCopy.splice(index, 1);
-            devicesCopy.push(filteredDevice);
-
-            setDevices(devicesCopy);
-            setFilteredDevices(filteredDevicesCopy);
+            await removeDeviceFromMacFilterHandler({
+              ontToken,
+              setOntToken,
+              filteredDevices,
+              setFilteredDevices,
+              index,
+              filteredDevice,
+              devices,
+              setDevices,
+            });
           },
         });
 

@@ -17,7 +17,7 @@ import { Device } from "../../shared/types/Device";
 import {
   ParentalControlsData,
   ParentalControlsDevice,
-  TimeRestriction,
+  Template,
 } from "../../shared/types/ParentalControls";
 import { OntToken } from "../../shared/types/MacFilter";
 // CSS
@@ -30,9 +30,6 @@ import deviceStyles from "../styles/page-specific/device";
   
   - When clicking on block indefinitely need to update state arrays to instantly reflect change without refresh
   - Need to add logic to card rendering to handle when a device is filtered and or parental controls list
-  - Need to add add modal
-  - Need to add logic for refreshing ont token on failure. I believe refreshTime.asp might have something to do with this
-  - Remove parental controls from tabs on bottom and delete screen
   - Add cleanup for page so if page unmounts all device data is cleaned up
   
   
@@ -72,7 +69,6 @@ const Devices: React.FC = () => {
       templates: [],
       connectionAttempts: 0,
       devices: [],
-      timeRestrictions: {},
     });
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -115,7 +111,7 @@ const Devices: React.FC = () => {
             },
             translate
           )}
-          {renderModal(modalVisible, setModalVisible)}
+          {renderModal(modalVisible, setModalVisible, parentalControls, translate)}
         </>
       )}
     </View>

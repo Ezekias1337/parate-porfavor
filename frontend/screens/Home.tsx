@@ -5,8 +5,7 @@ import { StatusBar } from "expo-status-bar";
 import { useNavigation, NavigationProp } from "@react-navigation/native";
 // Functions, Helpers, Utils, and Hooks
 
-import view2G from "@/functions/network/view2G";
-import fetchData from "../functions/network/auth/fetchData";
+import useRefreshToken from "@/hooks/useRefreshToken";
 // Components
 import Button from "../components/Button";
 import Alert from "../components/Alert";
@@ -22,6 +21,7 @@ const Home: React.FC = () => {
   const { translate, language } = useLocalization();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [authError, setAuthError] = useState(false);
+  useRefreshToken(isAuthenticated);
   
   
 

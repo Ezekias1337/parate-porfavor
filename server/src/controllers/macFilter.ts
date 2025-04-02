@@ -206,12 +206,6 @@ export const removeDeviceFromMacFilter: RequestHandler = async (req, res, next) 
             }
         }
 
-
-
-
-        console.log(queryString);
-        console.log(`${deviceIndicesString}x.X_HW_Token=${ontToken}`);
-
         await axios.post(queryString, `${deviceIndicesString}x.X_HW_Token=${ontToken}`, {
             headers: {
                 "User-Agent": USER_AGENT,
