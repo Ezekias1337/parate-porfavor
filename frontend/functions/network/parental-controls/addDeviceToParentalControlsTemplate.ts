@@ -4,10 +4,16 @@ import fetchData from "../auth/fetchData";
 const addDeviceToParentalControlsTemplate = async (
   macAddress: string,
   description: string = "",
-  templateInst: string = "1",
+  templateInst: number = 1,
   token: string
 ): Promise<boolean> => {
   try {
+    const infoOfDeviceToAdd = {
+      macAddress: macAddress,
+      description: description,
+      templateInst: templateInst
+    }
+
     const response = await fetchData("/api/parental-controls/add-device-to-parental-controls", {
       method: "POST",
       headers: {

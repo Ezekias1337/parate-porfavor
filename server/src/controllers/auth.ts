@@ -2,10 +2,13 @@
 import { RequestHandler } from "express";
 import axios from "axios";
 import env from "../util/validateEnv";
-// Functions, Helpers, and Utils
+// Auth
 import sessionStore from "../session/sessionStore";
+// Functions, Helpers, and Utils
 import runCurlCommand from "../util/runCurlCommand";
-
+// Types
+import OntToken from "@shared/types/OntToken";
+// Environment Variables
 const USER_AGENT = env.USER_AGENT;
 const MODEM_URL_BASE = env.MODEM_URL_BASE;
 
@@ -101,7 +104,7 @@ export const login: RequestHandler = async (req, res, next) => {
 };
 
 export const logout: RequestHandler = async (req, res, next) => {
-    const cookies = sessionStore.getAllCookies();
+    const cookies: string = sessionStore.getAllCookies();
 
     try {
         /* 
@@ -118,7 +121,7 @@ export const logout: RequestHandler = async (req, res, next) => {
             },
         });
 
-        const ontToken = ontTokenSource.data;
+        const ontToken: OntToken = ontTokenSource.data;
         await axios.post(`${MODEM_URL_BASE}/logout.cgi?RequestFile=html/logout.html`, `x.X_HW_Token=${ontToken}`, {
             headers: {
                 "User-Agent": USER_AGENT,
@@ -142,7 +145,7 @@ export const logout: RequestHandler = async (req, res, next) => {
 
 export const refreshToken: RequestHandler = async (req, res, next) => {
     try {
-        const cookies = sessionStore.getAllCookies();
+        const cookies: string = sessionStore.getAllCookies();
         await axios.get(`${MODEM_URL_BASE}/html/ssmp/common/refreshTime.asp`, {
             headers: {
                 Host: MODEM_URL_BASE,

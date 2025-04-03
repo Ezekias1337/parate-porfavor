@@ -15,7 +15,7 @@ import ParentalControlsTemplateCard from "@/components/page-specific/parental-co
 // Types
 import { Device } from "../../../../../shared/types/Device";
 import { ButtonProps } from "@/components/Button";
-import { OntToken } from "../../../../../shared/types/MacFilter";
+import OntToken from "../../../../../shared/types/OntToken";
 import { ParentalControlsData } from "../../../../../shared/types/ParentalControls";
 // CSS
 import deviceStyles from "../../../../styles/page-specific/device";

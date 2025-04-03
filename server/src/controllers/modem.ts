@@ -1,18 +1,22 @@
+// Library Imports
 import { RequestHandler } from "express";
 import axios from "axios";
 import env from "../util/validateEnv";
+// Auth
 import sessionStore from "../session/sessionStore";
-import { ModemStatus } from "../../../shared/types/Modem";
-
+// Functions, Helpers, and Utils
 import fetchOntToken from "../util/fetchOntToken";
-
+// Types
+import { ModemStatus } from "../../../shared/types/Modem";
+import OntToken from "@shared/types/OntToken";
+// Environment Variables
 const USER_AGENT = env.USER_AGENT;
 const MODEM_URL_BASE = env.MODEM_URL_BASE;
 
 
 export const getModemStatus: RequestHandler = async (req, res, next) => {
     try {
-        const cookies = sessionStore.getAllCookies();
+        const cookies: string = sessionStore.getAllCookies();
         const response = await axios.get(`${MODEM_URL_BASE}/html/ssmp/deviceinfo/deviceinfo.asp`, {
             headers: {
                 "User-Agent": USER_AGENT,
@@ -46,7 +50,7 @@ export const getModemStatus: RequestHandler = async (req, res, next) => {
 
 export const rebootModem: RequestHandler = async (req, res, next) => {
     try {
-        const cookies = sessionStore.getAllCookies();
+        const cookies: string = sessionStore.getAllCookies();
         /* 
             ! Before we can make the request to the modem to reboot we need the onttoken 
             ! from the DOM of the page (which will be passed as x.X_HW_Token)
@@ -63,7 +67,7 @@ export const rebootModem: RequestHandler = async (req, res, next) => {
                 "Cookie": cookies,
             },
         });
-        const ontToken = fetchOntToken(ontTokenSource.data);
+        const ontToken: OntToken = fetchOntToken(ontTokenSource.data);
 
         await axios.post(`${MODEM_URL_BASE}/html/ssmp/reset/set.cgi?x=InternetGatewayDevice.X_HW_DEBUG.SMP.DM.ResetBoard&RequestFile=html/ssmp/reset/reset.asp`, `x.X_HW_Token=${ontToken}`, {
             method: "POST",

@@ -1,5 +1,6 @@
 import fetchData from "../auth/fetchData";
-import { BlacklistOrWhitelist, MacFilterEnabledOrDisabled, WirelessOrEthernet, OntToken, MacFilter } from "../../../../shared/types/MacFilter"
+import { BlacklistOrWhitelist, MacFilterEnabledOrDisabled, WirelessOrEthernet, MacFilter } from "../../../../shared/types/MacFilter"
+import OntToken from "../../../../shared/types/OntToken";
 
 const editMacFilter = async (
   blacklistOrWhitelist: BlacklistOrWhitelist,

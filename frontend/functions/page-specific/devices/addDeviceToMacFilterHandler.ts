@@ -3,7 +3,7 @@ import getOntToken from "@/functions/network/mac-filter/getOntToken";
 import addDeviceToMacFilter from "@/functions/network/mac-filter/addDeviceToMacFilter";
 // Types
 import { Device } from "../../../../shared/types/Device";
-import { OntToken } from "../../../../shared/types/MacFilter";
+import OntToken from "../../../../shared/types/OntToken";
 
 interface AddDeviceArguments {
     device: Device;

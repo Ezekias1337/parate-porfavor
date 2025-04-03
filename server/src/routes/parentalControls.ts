@@ -6,5 +6,10 @@ const router = express.Router();
 // GET requests
 router.get("/get-parental-controls-data", ParentalControlsController.getParentalControlsData);
 // POST requests
-/* router.post("/reboot-modem", ModemController.rebootModem); */
+router.post("/get-ont-token", ParentalControlsController.fetchOntTokenSource)
+router.post("/add-device-to-parental-controls", ParentalControlsController.addDeviceToParentalControls);
+router.post("/add-time-period-to-parental-controls", ParentalControlsController.addTimePeriodToParentalControls);
+router.post("/create-parental-controls-template", ParentalControlsController.createParentalControlsTemplate);
+// DELETE requests
+router.delete("/remove-device-from-parental-controls", ParentalControlsController.removeDeviceFromParentalControls);
 export default router;

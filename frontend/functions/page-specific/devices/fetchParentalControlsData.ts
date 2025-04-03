@@ -18,7 +18,6 @@ const fetchParentalControlsData = async (
                 templates: [],
                 connectionAttempts: 0,
                 devices: [],
-                timeRestrictions: {},
             })
         } else {
             setErrorMsg(null);

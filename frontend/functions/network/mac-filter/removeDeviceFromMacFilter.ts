@@ -1,5 +1,6 @@
 import fetchData from "../auth/fetchData";
-import { WirelessOrEthernet, OntToken } from "../../../../shared/types/MacFilter"
+import { WirelessOrEthernet } from "../../../../shared/types/MacFilter"
+import OntToken from "../../../../shared/types/OntToken";
 
 const removeDeviceFromMacFilter = async (
   deviceIndecesToRemove: number[],
@@ -14,7 +15,7 @@ const removeDeviceFromMacFilter = async (
     };
 
     const response = await fetchData("/api/mac-filter/remove-device-from-mac-filter", {
-      method: "POST",
+      method: "DELETE",
       headers: {
         "User-Agent":
           "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:132.0) Gecko/20100101 Firefox/132.0",

@@ -19,7 +19,7 @@ import {
   ParentalControlsDevice,
   Template,
 } from "../../shared/types/ParentalControls";
-import { OntToken } from "../../shared/types/MacFilter";
+import OntToken from "../../shared/types/OntToken";
 // CSS
 import { colors } from "../styles/variables";
 import deviceStyles from "../styles/page-specific/device";

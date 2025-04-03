@@ -83,7 +83,7 @@ export const LocalizationProvider: React.FC<{ children: React.ReactNode }> = ({
           friday: "Friday",
           saturday: "Saturday",
           allowedInternetPeriod: "Allowed Internet Period",
-          selectRestriction: "Select Restriction",
+          applyRestriction: "Apply Restriction",
           devicesUnderRestriction: "Devices Under Restriction",
         },
         es: {
@@ -137,7 +137,7 @@ export const LocalizationProvider: React.FC<{ children: React.ReactNode }> = ({
           friday: "Viernes",
           saturday: "Sabado",
           allowedInternetPeriod: "Período de Internet Permitido",
-          selectRestriction: "Seleccionar Restricción",
+          applyRestriction: "Aplicar Restricción",
           devicesUnderRestriction: "Dispositivos Restringidos",
         },
       };

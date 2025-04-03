@@ -1,5 +1,6 @@
 import fetchData from "../auth/fetchData";
-import { WirelessOrEthernet, SSIDName, MacDevice, OntToken } from "../../../../shared/types/MacFilter"
+import { WirelessOrEthernet, SSIDName, MacDevice } from "../../../../shared/types/MacFilter";
+import OntToken from "../../../../shared/types/OntToken";
 
 const addDevicetoMacFilter = async (
   sourceMacAddress: string,

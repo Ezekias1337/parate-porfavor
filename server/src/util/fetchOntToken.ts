@@ -1,13 +1,14 @@
 import * as cheerio from 'cheerio';
+import OntToken from '@shared/types/OntToken';
 
 /**
  * Extracts the `onttoken` value from an HTML or ASP file content.
  * @param {string} htmlContent - The raw HTML/ASP file content to be parsed.
  * @param {boolean} logToken - Optional flag to log the extracted token.
- * @returns {string | null} - The extracted token or null if not found.
+ * @returns {OntToken} - The extracted token or null if not found.
 */
 
-const fetchOntToken = (htmlContent: string, logToken?: boolean): string | null => {
+const fetchOntToken = (htmlContent: string, logToken?: boolean): OntToken => {
     try {
         const $ = cheerio.load(htmlContent);
         const token = $('input[name="onttoken"]').val();

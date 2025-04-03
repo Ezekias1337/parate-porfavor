@@ -9,7 +9,7 @@ import Card from "@/components/Card";
 // Types
 import { Device } from "../../../../../shared/types/Device";
 import { ButtonProps } from "@/components/Button";
-import { OntToken } from "../../../../../shared/types/MacFilter";
+import OntToken from "../../../../../shared/types/OntToken";
 // CSS
 import deviceStyles from "../../../../styles/page-specific/device";
 // Functions, Helpers, Utils, and Hooks

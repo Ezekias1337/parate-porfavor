@@ -1,6 +1,6 @@
 // Library Imports
-import React, { FC, Fragment } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React, { FC, Fragment, useState, useEffect } from "react";
+import { View, Text, StyleSheet, TextInput } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { useLocalization } from "../../localization/LocalizationContext";
 // Constants
@@ -19,6 +19,7 @@ import { Device } from "../../../../shared/types/Device";
 import Button from "../../Button";
 // CSS
 import { colors, fontSizes, borderRadius } from "../../../styles/variables";
+import { inputFieldStyles } from "@/styles/component-specific/input-fields";
 
 interface ParentalControlsTemplateCardProps {
   template: Template;
@@ -32,6 +33,10 @@ const ParentalControlsTemplateCard: FC<ParentalControlsTemplateCardProps> = ({
   modalDevice,
 }) => {
   const { translate } = useLocalization();
+
+  const [deviceDescription, setDeviceDescription] = useState<string>("");
+  const [showInput, setShowInput] = useState<boolean>(false);
+
   const devicesBelongingToTemplate: ParentalControlsDevice[] = devices.filter(
     (device) => device.templateId === template.id
   );
@@ -76,22 +81,67 @@ const ParentalControlsTemplateCard: FC<ParentalControlsTemplateCardProps> = ({
         </Text>
       </View>
 
-      <View style={templateCardStyles.row}>
-        <Button
-          text={translate("selectRestriction")}
-          onClickHandler={async() =>{
-            /* await addDeviceToParentalControlsTemplate(
+      {!showInput && (
+        <View style={templateCardStyles.row}>
+          <Button
+            text={translate("applyRestriction")}
+            onClickHandler={() => {
+              setShowInput(true);
+            }}
+            variant="primary"
+            leftIcon
+            icon="lock"
+          />
+        </View>
+      )}
+
+      {showInput && (
+        <View>
+          <View style={templateCardStyles.row}>
+            <TextInput
+              placeholder={translate("username")}
+              value={deviceDescription}
+              onChangeText={setDeviceDescription}
+              style={inputFieldStyles.textInput}
+              placeholderTextColor={colors.primary300}
+            />
+          </View>
+          <View style={templateCardStyles.row}>
+            <Button
+              text={translate("applyRestriction")}
+              onClickHandler={async () => {
+                /* await addDeviceToParentalControlsTemplate(
+                  modalDevice!.macAddr,
+                  deviceDescription,
+                  template.id,
+                  token: "",
+                ) */
+
+                
+              }}
+              variant="primary"
+              leftIcon
+              icon="lock"
+            />
+            <Button
+              text={translate("applyRestriction")}
+              onClickHandler={() => {
+                setShowInput(true);
+
+                /* await addDeviceToParentalControlsTemplate(
               modalDevice!.macAddr,
               modalDevice!.description,
               template.id,
               token: "",
             ) */
-          }}
-          variant="primary"
-          leftIcon
-          icon="lock"
-        />
-      </View>
+              }}
+              variant="primary"
+              leftIcon
+              icon="lock"
+            />
+          </View>
+        </View>
+      )}
     </View>
   );
 };

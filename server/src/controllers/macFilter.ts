@@ -1,14 +1,18 @@
+// Library Imports
 import { RequestHandler } from "express";
 import axios from "axios";
 import env from "../util/validateEnv";
+// Auth
 import sessionStore from "../session/sessionStore";
-import { Device } from "../../../shared/types/Device";
-import { ModemStatus } from "../../../shared/types/Modem";
-
+// Functions, Helpers, and Utils
 import fetchOntToken from "../util/fetchOntToken";
 import extractDeviceList from "../util/extractDeviceList";
 import extractMacFilterList from "../util/extractMacFilterList";
-
+// Types
+import { Device } from "../../../shared/types/Device";
+import { WirelessOrEthernet, BlacklistOrWhitelist, MacFilterEnabledOrDisabled, SSIDName } from "@shared/types/MacFilter";
+import OntToken from "@shared/types/OntToken";
+// Environment Variables
 const USER_AGENT = env.USER_AGENT;
 const MODEM_URL_BASE = env.MODEM_URL_BASE;
 
@@ -22,7 +26,7 @@ const MODEM_URL_BASE = env.MODEM_URL_BASE;
     ? so that it doesn't need to be constantly refreshed
 */
 
-export const fetchOntTokenSourceHandler = async (ontToken: string | null, cookies: string, wirelessOrEthernet: string): Promise<string | null> => {
+export const fetchOntTokenSourceHandler = async (ontToken: OntToken, cookies: string, wirelessOrEthernet: OntToken): Promise<string | null> => {
     try {
         if (ontToken === null) {
             let queryString;
@@ -58,10 +62,10 @@ export const fetchOntTokenSourceHandler = async (ontToken: string | null, cookie
 
 export const fetchOntTokenSource: RequestHandler = async (req, res, next) => {
     try {
-        const cookies = sessionStore.getAllCookies();
-        const wirelessOrEthernet = req.body.wirelessOrEthernet;
-        let ontToken = req.body.ontToken;
-        const tokenToReturn = await fetchOntTokenSourceHandler(ontToken, cookies, wirelessOrEthernet);
+        const cookies: string = sessionStore.getAllCookies();
+        const wirelessOrEthernet: WirelessOrEthernet = req.body.wirelessOrEthernet;
+        let ontToken: OntToken = req.body.ontToken;
+        const tokenToReturn: OntToken = await fetchOntTokenSourceHandler(ontToken, cookies, wirelessOrEthernet);
         res.json(tokenToReturn);
     } catch (error) {
         next(error);
@@ -70,7 +74,7 @@ export const fetchOntTokenSource: RequestHandler = async (req, res, next) => {
 
 export const getDeviceList: RequestHandler = async (req, res, next) => {
     try {
-        const cookies = sessionStore.getAllCookies();
+        const cookies: string = sessionStore.getAllCookies();
         const response = await axios.get(`${MODEM_URL_BASE}/html/bbsp/common/GetLanUserDevInfo.asp`, {
             headers: {
                 "User-Agent": USER_AGENT,
@@ -86,7 +90,7 @@ export const getDeviceList: RequestHandler = async (req, res, next) => {
             },
         });
 
-        const deviceList = extractDeviceList(response.data, false);
+        const deviceList: Device[] | null = extractDeviceList(response.data, false);
         res.json(deviceList);
     } catch (error) {
         next(error);
@@ -95,18 +99,18 @@ export const getDeviceList: RequestHandler = async (req, res, next) => {
 
 export const editMacFilter: RequestHandler = async (req, res, next) => {
     try {
-        const cookies = sessionStore.getAllCookies();
-        const blacklistOrWhitelist = req.body.blacklistOrWhitelist;
-        const macFilterEnabledOrDisabled = req.body.macFilterEnabledOrDisabled;
-        const wirelessOrEthernet = req.body.wirelessOrEthernet;
-        let ontToken = req.body.ontToken;
+        const cookies: string = sessionStore.getAllCookies();
+        const blacklistOrWhitelist: BlacklistOrWhitelist = req.body.blacklistOrWhitelist;
+        const macFilterEnabledOrDisabled: MacFilterEnabledOrDisabled = req.body.macFilterEnabledOrDisabled;
+        const wirelessOrEthernet: WirelessOrEthernet = req.body.wirelessOrEthernet;
+        let ontToken: OntToken = req.body.ontToken;
 
         ontToken = await fetchOntTokenSourceHandler(ontToken, cookies, wirelessOrEthernet);
 
         let queryString: string;
         let params: string;
 
-        if (wirelessOrEthernet === "ethernet") {
+        if (wirelessOrEthernet === "ETH") {
             queryString = `${MODEM_URL_BASE}/html/bbsp/macfilter/set.cgi?x=InternetGatewayDevice.X_HW_Security&RequestFile=html/bbsp/macfilter/macfilter.asp`;
             params = `x.MacFilterPolicy=${blacklistOrWhitelist === "blacklist" ? "0" : "1"}&x.MacFilterRight=${macFilterEnabledOrDisabled === "enabled" ? "1" : "0"}&x.X_HW_Token=${ontToken}`;
         } else {
@@ -139,11 +143,11 @@ export const editMacFilter: RequestHandler = async (req, res, next) => {
 
 export const addDeviceToMacFilter: RequestHandler = async (req, res, next) => {
     try {
-        const cookies = sessionStore.getAllCookies();
+        const cookies: string = sessionStore.getAllCookies();
         const { deviceMac, deviceName } = req.body.deviceToAdd;
-        const wirelessOrEthernet = req.body.wirelessOrEthernet;
-        const ssidName = req.body.ssidName;
-        let ontToken = req.body.ontToken;
+        const wirelessOrEthernet: WirelessOrEthernet = req.body.wirelessOrEthernet;
+        const ssidName: SSIDName = req.body.ssidName;
+        let ontToken: OntToken = req.body.ontToken;
 
         /* 
             ! For some reason the mac address needs to be encoded with url encoding, so take the : and 
@@ -151,10 +155,10 @@ export const addDeviceToMacFilter: RequestHandler = async (req, res, next) => {
         */
         let queryString: string;
         let params: string;
-        const deviceMacEncoded = deviceMac.replace(/:/g, "%3A");
+        const deviceMacEncoded: string = deviceMac.replace(/:/g, "%3A");
         ontToken = await fetchOntTokenSourceHandler(ontToken, cookies, wirelessOrEthernet);
 
-        if (wirelessOrEthernet === "ethernet") {
+        if (wirelessOrEthernet === "ETH") {
             queryString = `${MODEM_URL_BASE}/html/bbsp/macfilter/add.cgi?x=InternetGatewayDevice.X_HW_Security.MacFilter&RequestFile=html/bbsp/macfilter/macfilter.asp`;
             params = `x.SourceMACAddress=${deviceMacEncoded}&x.DeviceAlias=${deviceName}&x.X_HW_Token=${ontToken}`
         } else {
@@ -185,16 +189,16 @@ export const addDeviceToMacFilter: RequestHandler = async (req, res, next) => {
 
 export const removeDeviceFromMacFilter: RequestHandler = async (req, res, next) => {
     try {
-        const cookies = sessionStore.getAllCookies();
+        const cookies: string = sessionStore.getAllCookies();
         const deviceIndicesToRemove: number[] = req.body.deviceIndecesToRemove;
-        const wirelessOrEthernet = req.body.wirelessOrEthernet;
-        let ontToken = req.body.ontToken;
+        const wirelessOrEthernet: WirelessOrEthernet = req.body.wirelessOrEthernet;
+        let ontToken: OntToken = req.body.ontToken;
         ontToken = await fetchOntTokenSourceHandler(ontToken, cookies, wirelessOrEthernet);
 
         let queryString;
         let deviceIndicesString: string = "";
 
-        if (wirelessOrEthernet === "ethernet") {
+        if (wirelessOrEthernet === "ETH") {
             queryString = `${MODEM_URL_BASE}/html/bbsp/macfilter/del.cgi?x=InternetGatewayDevice.X_HW_Security.MacFilter&RequestFile=html/bbsp/macfilter/macfilter.asp`;
             for (const index of deviceIndicesToRemove) {
                 deviceIndicesString += `InternetGatewayDevice.X_HW_Security.MacFilter.${index}=&`;
@@ -237,7 +241,7 @@ export const getListOfFilteredDevices: RequestHandler = async (req, res, next) =
     
     */
     try {
-        const cookies = sessionStore.getAllCookies();
+        const cookies: string = sessionStore.getAllCookies();
 
         const responseHtml = await axios.get(`${MODEM_URL_BASE}/html/bbsp/wlanmacfilter/wlanmacfilter.asp`, {
             headers: {
@@ -255,7 +259,7 @@ export const getListOfFilteredDevices: RequestHandler = async (req, res, next) =
             },
         });
 
-        const listOfFilteredDevices = extractMacFilterList(responseHtml.data);
+        const listOfFilteredDevices: Device[] | null = extractMacFilterList(responseHtml.data);
         res.json(listOfFilteredDevices);
     } catch (error) {
         next(error);

@@ -12,10 +12,14 @@ export interface ParentalControlsData {
     devices: ParentalControlsDevice[];
 }
 
+export type startTime = number; // Time in HHMM format (e.g., 0800 for 8:00 AM)
+export type endTime = number; // Time in HHMM format (e.g., 1600 for 4:00 PM)
+export type repeatDays = number[]; // Array of days (1 = Monday, 7 = Sunday)
+
 export interface Template {
     id: number;
     name: string;
-    startTime: number; // Time in HHMM format (e.g., 0800 for 8:00 AM)
-    endTime: number; // Time in HHMM format (e.g., 1600 for 4:00 PM)
-    repeatDays: number[]; // Array of days (1 = Monday, 7 = Sunday)
+    startTime: startTime;
+    endTime: endTime;
+    repeatDays: repeatDays;
 }

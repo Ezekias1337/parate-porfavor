@@ -1,21 +1,14 @@
 import fetchData from "../auth/fetchData";
-import { WirelessOrEthernet } from "../../../../shared/types/MacFilter"
 import OntToken from "../../../../shared/types/OntToken";
 
 const getOntToken = async (
-  wirelessOrEthernet: WirelessOrEthernet,
   ontToken: OntToken
 ): Promise<OntToken> => {
   try {
     if (typeof ontToken === "string") {
       return ontToken;
     }
-
-    let infoNeededForToken = {
-      wirelessOrEthernet: wirelessOrEthernet,
-      ontToken: ontToken,
-    };
-    const response = await fetchData("/api/mac-filter/get-ont-token", {
+    const response = await fetchData("/api/parental-controls/get-ont-token", {
       method: "POST",
       headers: {
         "User-Agent":
@@ -23,7 +16,7 @@ const getOntToken = async (
         Accept: "*/*",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(infoNeededForToken),
+      body: JSON.stringify(ontToken),
     });
 
     const responseJson = await response.json();

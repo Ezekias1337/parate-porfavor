@@ -1,8 +1,10 @@
+import OntToken from "./OntToken";
 export type WirelessOrEthernet = "ETH" | "WIFI" | "Unknown";
 export type SSIDName = string | null;
-export type OntToken = string | null;
 export type BlacklistOrWhitelist = "blacklist" | "whitelist";
 export type MacFilterEnabledOrDisabled = "enabled" | "disabled";
+
+
 
 export interface MacDevice {
     deviceToAdd: {
