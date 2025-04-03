@@ -2,7 +2,7 @@
     "name": "parate-porfavor",
     "private": true,
     "scripts": {
-        "start": "concurrently \"npm run start --prefix frontend\" \"npm run dev --prefix server\""
+        "dev": "concurrently \"npm run start --prefix frontend\" \"npm run dev --prefix server\""
     },
     "devDependencies": {
         "concurrently": "^8.2.2"

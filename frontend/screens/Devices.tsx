@@ -71,6 +71,7 @@ const Devices: React.FC = () => {
       devices: [],
     });
   const [modalVisible, setModalVisible] = useState(false);
+  const [modalDevice, setModalDevice] = useState<Device | null>(null);
 
   useEffect(() => {
     fetchDevices(
@@ -85,8 +86,11 @@ const Devices: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    console.log("parentalControls:", parentalControls);
-  }, [parentalControls]);
+    if (!modalVisible) {
+      setModalDevice(null);
+    }
+  }, [modalVisible]);
+  
 
   return (
     <View style={deviceStyles.container}>
@@ -107,11 +111,18 @@ const Devices: React.FC = () => {
               setModalVisible,
               setDevices,
               setFilteredDevices,
+              setModalDevice,
               setOntToken,
             },
             translate
           )}
-          {renderModal(modalVisible, setModalVisible, parentalControls, translate)}
+          {renderModal({
+            modalVisible,
+            setModalVisible,
+            modalDevice,
+            parentalControlsData: parentalControls,
+            translate,
+          })}
         </>
       )}
     </View>

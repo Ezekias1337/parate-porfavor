@@ -18,6 +18,7 @@ interface ListOfStateSetters {
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
   setDevices: React.Dispatch<React.SetStateAction<Device[]>>;
   setFilteredDevices: React.Dispatch<React.SetStateAction<Device[]>>;
+  setModalDevice: React.Dispatch<React.SetStateAction<Device | null>>;
   setOntToken: React.Dispatch<React.SetStateAction<OntToken>>;
 }
 
@@ -29,6 +30,7 @@ const renderDeviceCards = (
     setModalVisible,
     setDevices,
     setFilteredDevices,
+    setModalDevice,
     setOntToken,
   }: ListOfStateSetters,
   translate: (key: string) => string
@@ -60,6 +62,7 @@ const renderDeviceCards = (
           variant: "primaryDark",
           icon: "calendar",
           onClickHandler: () => {
+            setModalDevice(device);
             displayParentalControlsModal(setModalVisible);
           },
         });
@@ -104,6 +107,7 @@ const renderDeviceCards = (
           variant: "primaryDark",
           icon: "calendar",
           onClickHandler: () => {
+            setModalDevice(filteredDevice);
             displayParentalControlsModal(setModalVisible);
           },
         });

@@ -1,33 +1,35 @@
 // Library Imports
 import React, { FC, Fragment } from "react";
-import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { useLocalization } from "../../localization/LocalizationContext";
 // Constants
 import daysMap from "../../../constants/Days";
 // Functions, Helpers, Utils, and Hooks
 import convertTo12HourFormat from "@/helpers/convertTo12HourFormat";
-
+import addDeviceToParentalControlsTemplate from "@/functions/network/parental-controls/addDeviceToParentalControlsTemplate";
 // Interfaces and Types
 import {
   ParentalControlsData,
   ParentalControlsDevice,
   Template,
 } from "../../../../shared/types/ParentalControls";
-
+import { Device } from "../../../../shared/types/Device";
 // Components
-
+import Button from "../../Button";
 // CSS
 import { colors, fontSizes, borderRadius } from "../../../styles/variables";
 
 interface ParentalControlsTemplateCardProps {
   template: Template;
   devices: ParentalControlsDevice[];
+  modalDevice: Device | null;
 }
 
 const ParentalControlsTemplateCard: FC<ParentalControlsTemplateCardProps> = ({
   template,
   devices,
+  modalDevice,
 }) => {
   const { translate } = useLocalization();
   const devicesBelongingToTemplate: ParentalControlsDevice[] = devices.filter(
@@ -49,19 +51,22 @@ const ParentalControlsTemplateCard: FC<ParentalControlsTemplateCardProps> = ({
       </View>
 
       <View style={templateCardStyles.row}>
+        <FontAwesome name="clock-o" size={40} color={colors.primary300} />
         <Text style={templateCardStyles.text}>
           {`${convertTo12HourFormat(
             template.startTime
           )} - ${convertTo12HourFormat(template.endTime)} `}
         </Text>
       </View>
-      
+
       <View style={templateCardStyles.row}>
+        <FontAwesome name="calendar" size={35} color={colors.primary300} />
         <Text style={templateCardStyles.text}>{arrayOfDays.join(", ")}</Text>
       </View>
       <View style={templateCardStyles.row}>
+        <FontAwesome name="desktop" size={30} color={colors.primary300} />
         <Text style={templateCardStyles.text}>
-          Devices Associated:{" "}
+          {translate("devicesUnderRestriction")}:{" "}
           {devicesBelongingToTemplate.map((device) => (
             <Fragment key={device.macAddr}>
               {device.description}
@@ -69,6 +74,23 @@ const ParentalControlsTemplateCard: FC<ParentalControlsTemplateCardProps> = ({
             </Fragment>
           ))}
         </Text>
+      </View>
+
+      <View style={templateCardStyles.row}>
+        <Button
+          text={translate("selectRestriction")}
+          onClickHandler={async() =>{
+            /* await addDeviceToParentalControlsTemplate(
+              modalDevice!.macAddr,
+              modalDevice!.description,
+              template.id,
+              token: "",
+            ) */
+          }}
+          variant="primary"
+          leftIcon
+          icon="lock"
+        />
       </View>
     </View>
   );
@@ -83,15 +105,13 @@ const templateCardStyles = StyleSheet.create({
     borderColor: colors.neutral100,
     borderWidth: 1,
     shadowColor: colors.neutral100,
-    shadowOpacity: 0.1,
+    shadowOpacity: 0.2,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 8,
-    /* elevation: 5,
-    width: "85%", */
   },
   title: {
-    fontSize: fontSizes.header3,
-    color: colors.neutral100,
+    fontSize: fontSizes.header2,
+    color: colors.primary100,
     fontWeight: "bold",
   },
   bold: {
@@ -110,8 +130,13 @@ const templateCardStyles = StyleSheet.create({
     color: colors.neutral100,
   },
   row: {
-    flexDirection: "column",
-    alignItems: "flex-start",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    display: "flex",
+    gap: 10,
+    marginTop: 5,
+    marginBottom: 5,
   },
 });
 

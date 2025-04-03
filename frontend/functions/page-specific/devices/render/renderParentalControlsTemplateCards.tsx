@@ -23,6 +23,7 @@ import deviceStyles from "../../../../styles/page-specific/device";
 
 const renderParentalControlsTemplateCards = (
   parentalControlsData: ParentalControlsData,
+  modalDevice: Device | null,
   translate: (key: string) => string
 ) => {
   return (
@@ -33,6 +34,7 @@ const renderParentalControlsTemplateCards = (
             key={template.id}
             template={template}
             devices={parentalControlsData.devices}
+            modalDevice={modalDevice}
           />
         );
       })}
