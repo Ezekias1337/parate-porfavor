@@ -1,4 +1,6 @@
 import fetchData from "../auth/fetchData";
+// Types
+import OntToken from "../../../../shared/types/OntToken";
 
 /* 
   Need to use the types defined in shared folder for props
@@ -8,7 +10,7 @@ const removeValidationPeriodFromTemplate = async (
   startTime: string,
   endTime: string,
   repeatDays: string, // A string of comma-separated days (e.g., "7,1,2,3,4,5,6")
-  token: string,
+  ontToken: string,
   isWholeDay: boolean = false // Optional flag for Whole Day, Every Day
 ): Promise<boolean> => {
   try {

@@ -7,20 +7,27 @@ import { Device } from "../../../shared/types/Device";
  * @returns {Device[] | null} - The extracted device list or null if not found.
  */
 const extractMacFilterList = (htmlContent: string, logList?: boolean): Device[] | null => {
-    const macFilterRegex = /new stMacFilter\("(.*?)","(.*?)","(.*?)","(.*?)"\)/g;
+    const macFilterRegex = /new stMacFilter\("(.*?)","(.*?)","(.*?)"(?:,"(.*?)")?\)/g;
     let match;
     const deviceList: Device[] = [];
 
     try {
         while ((match = macFilterRegex.exec(htmlContent)) !== null) {
+            // Determine whether match[3] is a MAC address or a hostname
+            const isMacAddress = match[3].includes("\\x3a");
+            const macAddr = match[4] || match[2]; // Use match[4] if available; otherwise, use match[2]
+            const hostName = isMacAddress ? macAddr.replace(/\\x3a/g, ":") : 
+                decodeURIComponent(match[3]).replace(/\\x([0-9A-Fa-f]{2})/g, (_, hex) => String.fromCharCode(parseInt(hex, 16)));
+            const isEthernet = match[2].includes("\\x2d") ? false : true;
+
             deviceList.push({
-                domain: "", // No domain available in this format
-                ipAddress: "", // Not provided in the mac filter list
-                macAddr: match[4].replace(/\\x3a/g, ":"), // Convert encoded MAC address
-                hostName: decodeURIComponent(match[3]).replace(/\\x([0-9A-Fa-f]{2})/g, (_, hex) => String.fromCharCode(parseInt(hex, 16))), // Device Name (e.g., Chromecast)
-                onlineStatus: "Unknown", // Not specified in this format
-                connectionType: "WIFI", // Not specified in this format
-                ssid: match[2].replace(/\\x2d/g, "-") // Convert SSID encoding
+                domain: "",
+                ipAddress: "",
+                macAddr: macAddr.replace(/\\x3a/g, ":"), // Convert MAC address format
+                hostName, // Either the hostname or the MAC address if unavailable
+                onlineStatus: "Unknown",
+                connectionType: isEthernet ? "ETH" : "WIFI",
+                ssid: isEthernet ? "" : match[2].replace(/\\x2d/g, "-"), // SSID only applies to WLAN format
             });
         }
 

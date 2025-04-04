@@ -232,18 +232,10 @@ export const removeDeviceFromMacFilter: RequestHandler = async (req, res, next) 
 };
 
 export const getListOfFilteredDevices: RequestHandler = async (req, res, next) => {
-    /* 
-        First make a get request to: http://192.168.1.254/html/bbsp/wlanmacfilter/wlanmacfilter.asp
-        
-        then parse the html for the following variable
-    
-        var MacFilterSrc = new Array(new stMacFilter("InternetGatewayDevice.X_HW_Security.WLANMacFilter.1","SSID\x2d1","Chromecast","14\x3ac1\x3a4e\x3a0f\x3aba\x3a89"),null);
-    
-    */
     try {
         const cookies: string = sessionStore.getAllCookies();
 
-        const responseHtml = await axios.get(`${MODEM_URL_BASE}/html/bbsp/wlanmacfilter/wlanmacfilter.asp`, {
+        const responseHtmlEth = await axios.get(`${MODEM_URL_BASE}/html/bbsp/macfilter/macfilter.asp`, {
             headers: {
                 "User-Agent": USER_AGENT,
                 "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
@@ -253,14 +245,37 @@ export const getListOfFilteredDevices: RequestHandler = async (req, res, next) =
                 "Priority": "u=4",
                 "Pragma": "no-cache",
                 "Cache-Control": "no-cache",
-                referrer: `${MODEM_URL_BASE}/html/bbsp/macfilter/set.cgi?x=InternetGatewayDevice.X_HW_Security.MacFilter.1&RequestFile=html/bbsp/macfilter/macfilter.asp`,
                 mode: "cors",
                 "Cookie": cookies,
             },
         });
+        const listOfFilteredEthDevices: Device[] | null = extractMacFilterList(responseHtmlEth.data);
 
-        const listOfFilteredDevices: Device[] | null = extractMacFilterList(responseHtml.data);
-        res.json(listOfFilteredDevices);
+        const responseHtmlWlan = await axios.get(`${MODEM_URL_BASE}/html/bbsp/wlanmacfilter/wlanmacfilter.asp`, {
+            headers: {
+                "User-Agent": USER_AGENT,
+                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+                "Accept-Language": "en-US,en;q=0.5",
+                "Content-Type": "application/x-www-form-urlencoded",
+                "Upgrade-Insecure-Requests": "1",
+                "Priority": "u=4",
+                "Pragma": "no-cache",
+                "Cache-Control": "no-cache",
+                mode: "cors",
+                "Cookie": cookies,
+            },
+        });
+        const listOfFilteredWlanDevices: Device[] | null = extractMacFilterList(responseHtmlWlan.data);
+
+        let listOfFilteredDevicesJoined: Device[] = [];
+        if (listOfFilteredEthDevices !== null) {
+            listOfFilteredDevicesJoined = listOfFilteredDevicesJoined.concat(listOfFilteredEthDevices);
+        }
+        if (listOfFilteredWlanDevices !== null) {
+            listOfFilteredDevicesJoined = listOfFilteredDevicesJoined.concat(listOfFilteredWlanDevices);
+        }
+
+        res.json(listOfFilteredDevicesJoined);
     } catch (error) {
         next(error);
     }

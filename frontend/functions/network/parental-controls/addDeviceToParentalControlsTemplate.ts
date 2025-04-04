@@ -1,17 +1,21 @@
 import fetchData from "../auth/fetchData";
-
+// Types
+import OntToken from "../../../../shared/types/OntToken";
 
 const addDeviceToParentalControlsTemplate = async (
   macAddress: string,
   description: string = "",
   templateInst: number = 1,
-  token: string
+  ontToken: OntToken
 ): Promise<boolean> => {
   try {
     const infoOfDeviceToAdd = {
-      macAddress: macAddress,
-      description: description,
-      templateInst: templateInst
+      deviceToAdd: {
+        deviceMac: macAddress,
+        deviceDescription: description,
+        templateInst: templateInst
+      },
+      ontToken: ontToken
     }
 
     const response = await fetchData("/api/parental-controls/add-device-to-parental-controls", {
@@ -22,7 +26,7 @@ const addDeviceToParentalControlsTemplate = async (
         Accept: "*/*",
         "Content-Type": "application/json",
       },
-      //body: JSON.stringify(infoOfDeviceToAdd),
+      body: JSON.stringify(infoOfDeviceToAdd),
     });
 
     if (!response.ok) {

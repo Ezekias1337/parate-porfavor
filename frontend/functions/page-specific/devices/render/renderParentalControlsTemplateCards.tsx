@@ -16,28 +16,55 @@ import ParentalControlsTemplateCard from "@/components/page-specific/parental-co
 import { Device } from "../../../../../shared/types/Device";
 import { ButtonProps } from "@/components/Button";
 import OntToken from "../../../../../shared/types/OntToken";
-import { ParentalControlsData } from "../../../../../shared/types/ParentalControls";
+import { ParentalControlsData, Template } from "../../../../../shared/types/ParentalControls";
 // CSS
 import deviceStyles from "../../../../styles/page-specific/device";
 // Functions, Helpers, Utils, and Hooks
 
-const renderParentalControlsTemplateCards = (
-  parentalControlsData: ParentalControlsData,
-  modalDevice: Device | null,
-  translate: (key: string) => string
-) => {
+interface RenderParentalControlsTemplateCardsProps {
+  parentalControlsData: ParentalControlsData;
+  modalDevice: Device | null;
+  selectedTemplate: Template | null;
+  setSelectedTemplate: React.Dispatch<React.SetStateAction<Template | null>>;
+  ontToken: OntToken;
+  translate: (key: string) => string;
+}
+
+const renderParentalControlsTemplateCards = ({
+  parentalControlsData,
+  modalDevice,
+  selectedTemplate,
+  setSelectedTemplate,
+  ontToken,
+  translate
+}: RenderParentalControlsTemplateCardsProps) => {
+  
   return (
     <View style={deviceStyles.devicesContainer}>
-      {parentalControlsData.templates.map((template) => {
+      {selectedTemplate === null && parentalControlsData.templates.map((template) => {
         return (
           <ParentalControlsTemplateCard
             key={template.id}
             template={template}
             devices={parentalControlsData.devices}
             modalDevice={modalDevice}
+            selectedTemplate={selectedTemplate}
+            setSelectedTemplate={setSelectedTemplate}
+            ontToken={ontToken}
           />
         );
       })}
+      
+      {selectedTemplate !== null && (
+        <ParentalControlsTemplateCard
+          template={selectedTemplate}
+          devices={parentalControlsData.devices}
+          modalDevice={modalDevice}
+          selectedTemplate={selectedTemplate}
+          setSelectedTemplate={setSelectedTemplate}
+          ontToken={ontToken}
+        />
+      )}
     </View>
   );
 };

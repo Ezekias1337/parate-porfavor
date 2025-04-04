@@ -4,6 +4,7 @@ import { View, ActivityIndicator } from "react-native";
 // Functions, Helpers, Utils, and Hooks
 import fetchDevices from "@/functions/page-specific/devices/fetchDevices";
 import fetchParentalControlsData from "@/functions/page-specific/devices/fetchParentalControlsData";
+import handleTokenSwap from "@/functions/page-specific/devices/handleTokenSwap";
 import renderErrorMsg from "@/functions/page-specific/devices/render/renderErrorMsg";
 import renderButtons from "@/functions/page-specific/devices/render/renderButtons";
 import renderDeviceCards from "@/functions/page-specific/devices/render/renderDeviceCards";
@@ -27,6 +28,7 @@ import deviceStyles from "../styles/page-specific/device";
 /* 
   TODO:
   - When switching between parental controls and mac filtering need to reset value of ontToken to null
+  - Need to check if device can be on mac filtering and parental controls at the same time
   
   - When clicking on block indefinitely need to update state arrays to instantly reflect change without refresh
   - Need to add logic to card rendering to handle when a device is filtered and or parental controls list
@@ -64,6 +66,9 @@ const Devices: React.FC = () => {
   const [ontToken, setOntToken] = useState<OntToken>(null);
   const [devices, setDevices] = useState<Device[]>([]);
   const [filteredDevices, setFilteredDevices] = useState<Device[]>([]);
+  const [selectedTemplate, setSelectedTemplate] = useState<Template | null>(
+    null
+  );
   const [parentalControls, setParentalControls] =
     useState<ParentalControlsData>({
       templates: [],
@@ -86,11 +91,16 @@ const Devices: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (!modalVisible) {
-      setModalDevice(null);
-    }
+    handleTokenSwap({
+      modalVisible,
+      setOntToken,
+      setModalDevice,
+    });
   }, [modalVisible]);
-  
+
+  useEffect(() => {
+    console.log("ontToken changed:", ontToken);
+  }, [ontToken]);
 
   return (
     <View style={deviceStyles.container}>
@@ -121,7 +131,11 @@ const Devices: React.FC = () => {
             setModalVisible,
             modalDevice,
             parentalControlsData: parentalControls,
+            ontToken,
+            setOntToken,
             translate,
+            selectedTemplate,
+            setSelectedTemplate,
           })}
         </>
       )}

@@ -1,10 +1,10 @@
 // Library Imports
 import { Text } from "react-native";
-import {useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 // Components
 import Modal from "@/components/Modal";
 // Types
-import { ParentalControlsData } from "../../../../../shared/types/ParentalControls";
+import { ParentalControlsData, Template } from "../../../../../shared/types/ParentalControls";
 import { Device } from "../../../../../shared/types/Device";
 import OntToken from "../../../../../shared/types/OntToken";
 // Functions, Helpers, Utils, and Hooks
@@ -16,7 +16,11 @@ interface RenderModalProps {
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
   modalDevice: Device | null;
   parentalControlsData: ParentalControlsData;
+  ontToken: OntToken;
+  setOntToken: React.Dispatch<React.SetStateAction<OntToken>>;
   translate: (key: string) => string;
+  selectedTemplate: Template | null;
+  setSelectedTemplate: React.Dispatch<React.SetStateAction<Template | null>>;
 }
 
 const renderModal = ({
@@ -24,13 +28,22 @@ const renderModal = ({
   setModalVisible,
   parentalControlsData,
   modalDevice,
+  ontToken,
   translate,
+  selectedTemplate,
+  setSelectedTemplate,
 }: RenderModalProps) => {
-  const [ontToken, setOntToken] = useState<OntToken | null>(null);
-  
+
   return (
     <Modal modalVisible={modalVisible} setModalVisible={setModalVisible}>
-      {renderParentalControlsTemplateCards(parentalControlsData, modalDevice, translate)}
+      {renderParentalControlsTemplateCards({
+        parentalControlsData,
+        modalDevice,
+        selectedTemplate,
+        setSelectedTemplate,
+        ontToken,
+        translate,
+      })}
     </Modal>
   );
 };

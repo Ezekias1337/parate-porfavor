@@ -15,6 +15,7 @@ import {
   Template,
 } from "../../../../shared/types/ParentalControls";
 import { Device } from "../../../../shared/types/Device";
+import  OntToken  from "../../../../shared/types/OntToken";
 // Components
 import Button from "../../Button";
 // CSS
@@ -25,17 +26,21 @@ interface ParentalControlsTemplateCardProps {
   template: Template;
   devices: ParentalControlsDevice[];
   modalDevice: Device | null;
+  selectedTemplate: Template | null;
+  setSelectedTemplate: React.Dispatch<React.SetStateAction<Template | null>>;
+  ontToken: OntToken;
 }
 
 const ParentalControlsTemplateCard: FC<ParentalControlsTemplateCardProps> = ({
   template,
   devices,
   modalDevice,
+  selectedTemplate,
+  setSelectedTemplate,
+  ontToken,
 }) => {
   const { translate } = useLocalization();
-
   const [deviceDescription, setDeviceDescription] = useState<string>("");
-  const [showInput, setShowInput] = useState<boolean>(false);
 
   const devicesBelongingToTemplate: ParentalControlsDevice[] = devices.filter(
     (device) => device.templateId === template.id
@@ -81,12 +86,12 @@ const ParentalControlsTemplateCard: FC<ParentalControlsTemplateCardProps> = ({
         </Text>
       </View>
 
-      {!showInput && (
+      {selectedTemplate !== template && (
         <View style={templateCardStyles.row}>
           <Button
             text={translate("applyRestriction")}
             onClickHandler={() => {
-              setShowInput(true);
+              setSelectedTemplate(template);
             }}
             variant="primary"
             leftIcon
@@ -95,49 +100,49 @@ const ParentalControlsTemplateCard: FC<ParentalControlsTemplateCardProps> = ({
         </View>
       )}
 
-      {showInput && (
+      {selectedTemplate === template && (
         <View>
           <View style={templateCardStyles.row}>
             <TextInput
-              placeholder={translate("username")}
+              placeholder={translate("description")}
               value={deviceDescription}
               onChangeText={setDeviceDescription}
-              style={inputFieldStyles.textInput}
+              style={[inputFieldStyles.textInput, templateCardStyles.input]}
               placeholderTextColor={colors.primary300}
             />
           </View>
-          <View style={templateCardStyles.row}>
+          <View style={templateCardStyles.buttonRow}>
             <Button
-              text={translate("applyRestriction")}
+              text={translate("saveChanges")}
               onClickHandler={async () => {
-                /* await addDeviceToParentalControlsTemplate(
+                await addDeviceToParentalControlsTemplate(
                   modalDevice!.macAddr,
                   deviceDescription,
                   template.id,
-                  token: "",
-                ) */
-
+                  ontToken,
+                )
+                /* 
+                  Need to show some loading state
+                  and then update the device list array to reflect
+                  the button change
+                  
+                  Need to dismiss the modal as well and
+                  reset stateful values (need to check which ones)
+                */
                 
               }}
-              variant="primary"
+              variant="success"
               leftIcon
-              icon="lock"
+              icon="save"
             />
             <Button
-              text={translate("applyRestriction")}
+              text={translate("cancel")}
               onClickHandler={() => {
-                setShowInput(true);
-
-                /* await addDeviceToParentalControlsTemplate(
-              modalDevice!.macAddr,
-              modalDevice!.description,
-              template.id,
-              token: "",
-            ) */
+                setSelectedTemplate(null);
               }}
-              variant="primary"
+              variant="neutral"
               leftIcon
-              icon="lock"
+              icon="ban"
             />
           </View>
         </View>
@@ -187,6 +192,13 @@ const templateCardStyles = StyleSheet.create({
     gap: 10,
     marginTop: 5,
     marginBottom: 5,
+  },
+  buttonRow: {
+    flexDirection: "column",
+    gap: 10,
+  },
+  input: {
+    width: "100%",
   },
 });
 

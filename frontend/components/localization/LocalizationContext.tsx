@@ -75,6 +75,7 @@ export const LocalizationProvider: React.FC<{ children: React.ReactNode }> = ({
           offline: "Offline",
           or: "or",
           saveChanges: "Save Changes",
+          cancel: "Cancel",
           sunday: "Sunday",
           monday: "Monday",
           tuesday: "Tuesday",
@@ -85,6 +86,7 @@ export const LocalizationProvider: React.FC<{ children: React.ReactNode }> = ({
           allowedInternetPeriod: "Allowed Internet Period",
           applyRestriction: "Apply Restriction",
           devicesUnderRestriction: "Devices Under Restriction",
+          description: "Description",
         },
         es: {
           welcome: "Bienvenido",
@@ -129,6 +131,7 @@ export const LocalizationProvider: React.FC<{ children: React.ReactNode }> = ({
           offline: "Desconectado",
           or: "o",
           saveChanges: "Guardar Cambios",
+          cancel: "Cancelar",
           sunday: "Domingo",
           monday: "Lunes",
           tuesday: "Martes",
@@ -139,6 +142,7 @@ export const LocalizationProvider: React.FC<{ children: React.ReactNode }> = ({
           allowedInternetPeriod: "Período de Internet Permitido",
           applyRestriction: "Aplicar Restricción",
           devicesUnderRestriction: "Dispositivos Restringidos",
+          description: "Descripción",
         },
       };
 

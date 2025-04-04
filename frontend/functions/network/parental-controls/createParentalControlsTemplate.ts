@@ -1,11 +1,12 @@
 import fetchData from "../auth/fetchData";
-
+// Types
+import OntToken from "../../../../shared/types/OntToken";
 
 const createParentalControlsTemplate = async (
   name: string,
   startDate: string,
   endDate: string,
-  token: string
+  ontToken: OntToken
 ): Promise<boolean> => {
   try {
     const response = await fetchData("/api/parental-controls/create-parental-controls-template", {

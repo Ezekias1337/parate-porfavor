@@ -1,8 +1,10 @@
 import fetchData from "../auth/fetchData";
+// Types
+import OntToken from "../../../../shared/types/OntToken";
 
 const removeDeviceFromParentalControlsTemplate = async (
   macIndex: number,
-  token: string
+  ontToken: OntToken
 ): Promise<boolean> => {
   try {
     const response = await fetchData("/api/parental-controls/remove-device-from-parental-controls-template", {

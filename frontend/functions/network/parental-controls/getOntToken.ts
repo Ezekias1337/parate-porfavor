@@ -16,7 +16,7 @@ const getOntToken = async (
         Accept: "*/*",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(ontToken),
+      body: JSON.stringify({ontToken}),
     });
 
     const responseJson = await response.json();
