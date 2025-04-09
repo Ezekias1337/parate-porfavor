@@ -810,7 +810,7 @@ WriteTemplateOption();
 <tr>
 <td id="submitButton" class="table_submit" style="text-align:center">
  
-<input type="hidden" name="onttoken" id="hwonttoken" value="fdea9afe10bdc9dfe9b962c8998861f7ebddf526519f2158">
+<input type="hidden" name="onttoken" id="hwonttoken" value="2f7d7984bd7e5e0c14d4ce152fa8f1816166c0dbb944c1ac">
 <button type="button" id='ButtonApply' onclick = "OnApply();" class="ApplyButtoncss buttonwidth_100px"><script>document.write(parentalctrl_language['bbsp_app']);</script> </button>
 &nbsp;
 <button type="button" id='ButtonCancel' onclick="OnCancel();" class="CancleButtonCss buttonwidth_100px"><script>document.write(parentalctrl_language['bbsp_cancel']);</script> </button>

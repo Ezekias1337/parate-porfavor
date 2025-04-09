@@ -42,7 +42,7 @@ const removeDeviceFromMacFilterHandler = async (
         const devicesCopy = [...devices];
 
         filteredDevicesCopy.splice(index, 1);
-        devicesCopy.push(filteredDevice);
+        devicesCopy.splice(index, 0, filteredDevice)
 
         setDevices(devicesCopy);
         setFilteredDevices(filteredDevicesCopy);

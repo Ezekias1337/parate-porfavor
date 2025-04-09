@@ -60,6 +60,7 @@ const extractParentalControlsData = (htmlContent: string, logList?: boolean): Pa
                 startTime: parseInt(startTimeStr, 10),
                 endTime: parseInt(endTimeStr, 10),
                 repeatDays,
+                devices: []
             };
         }
 
@@ -71,15 +72,21 @@ const extractParentalControlsData = (htmlContent: string, logList?: boolean): Pa
                 ...timeRestrictionsMap[index], // Merge the time restriction data
             });
         });
+        
+        // Combine template names with their respective associated devices
+        deviceList.forEach(device => {
+            const templateId = device.templateId;
+            templates[templateId - 1].devices.push(device);
+        })
 
         if (logList) {
             console.log(`Extracted Data: ${JSON.stringify({ templates, connectionAttempts, devices: deviceList })}`);
         }
 
-        return { templates, connectionAttempts, devices: deviceList };
+        return { templates, connectionAttempts };
     } catch (error) {
         console.error("Error parsing the parental controls data:", error);
-        return { templates: [], connectionAttempts: 0, devices: [] };
+        return { templates: [], connectionAttempts: 0 };
     }
 };
 

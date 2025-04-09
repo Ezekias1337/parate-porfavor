@@ -87,6 +87,7 @@ export const LocalizationProvider: React.FC<{ children: React.ReactNode }> = ({
           applyRestriction: "Apply Restriction",
           devicesUnderRestriction: "Devices Under Restriction",
           description: "Description",
+          modify: "Modify",
         },
         es: {
           welcome: "Bienvenido",
@@ -143,6 +144,7 @@ export const LocalizationProvider: React.FC<{ children: React.ReactNode }> = ({
           applyRestriction: "Aplicar Restricción",
           devicesUnderRestriction: "Dispositivos Restringidos",
           description: "Descripción",
+          modify: "Modificar",
         },
       };
 

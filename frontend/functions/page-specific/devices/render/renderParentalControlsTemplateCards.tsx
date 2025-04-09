@@ -9,6 +9,8 @@ import getOntToken from "@/functions/network/mac-filter/getOntToken";
 
 import addDeviceToMacFilter from "../addDeviceToMacFilterHandler";
 import displayParentalControlsModal from "../displayParentalControlsModal";
+
+import extractParentalControlsDevicesFromTemplates from "../extractParentalControlsDevicesFromTemplates"
 // Components
 import Card from "@/components/Card";
 import ParentalControlsTemplateCard from "@/components/page-specific/parental-controls/ParentalControlsTemplateCard";
@@ -16,7 +18,11 @@ import ParentalControlsTemplateCard from "@/components/page-specific/parental-co
 import { Device } from "../../../../../shared/types/Device";
 import { ButtonProps } from "@/components/Button";
 import OntToken from "../../../../../shared/types/OntToken";
-import { ParentalControlsData, Template } from "../../../../../shared/types/ParentalControls";
+import {
+  ParentalControlsData,
+  ParentalControlsDevice,
+  Template,
+} from "../../../../../shared/types/ParentalControls";
 // CSS
 import deviceStyles from "../../../../styles/page-specific/device";
 // Functions, Helpers, Utils, and Hooks
@@ -36,29 +42,31 @@ const renderParentalControlsTemplateCards = ({
   selectedTemplate,
   setSelectedTemplate,
   ontToken,
-  translate
+  translate,
 }: RenderParentalControlsTemplateCardsProps) => {
-  
+  const parentalControlsDevices = extractParentalControlsDevicesFromTemplates(parentalControlsData);
+
   return (
     <View style={deviceStyles.devicesContainer}>
-      {selectedTemplate === null && parentalControlsData.templates.map((template) => {
-        return (
-          <ParentalControlsTemplateCard
-            key={template.id}
-            template={template}
-            devices={parentalControlsData.devices}
-            modalDevice={modalDevice}
-            selectedTemplate={selectedTemplate}
-            setSelectedTemplate={setSelectedTemplate}
-            ontToken={ontToken}
-          />
-        );
-      })}
-      
+      {selectedTemplate === null &&
+        parentalControlsData.templates.map((template) => {
+          return (
+            <ParentalControlsTemplateCard
+              key={template.id}
+              template={template}
+              devices={parentalControlsDevices}
+              modalDevice={modalDevice}
+              selectedTemplate={selectedTemplate}
+              setSelectedTemplate={setSelectedTemplate}
+              ontToken={ontToken}
+            />
+          );
+        })}
+
       {selectedTemplate !== null && (
         <ParentalControlsTemplateCard
           template={selectedTemplate}
-          devices={parentalControlsData.devices}
+          devices={parentalControlsDevices}
           modalDevice={modalDevice}
           selectedTemplate={selectedTemplate}
           setSelectedTemplate={setSelectedTemplate}

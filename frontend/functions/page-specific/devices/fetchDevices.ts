@@ -14,7 +14,7 @@ const fetchDevices = async (
         const devicesToSet = await getDeviceList();
         const filteredDevicesToSet = await getDeviceListFiltered();
 
-        if (!devicesToSet || devicesToSet.length === 0) {
+        if (!devicesToSet || (devicesToSet?.length === 0 && filteredDevicesToSet?.length === 0)) {
             setErrorMsg(translate("serverError"));
             setDevices([]);
             setFilteredDevices([]);

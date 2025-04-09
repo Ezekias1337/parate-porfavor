@@ -7,8 +7,6 @@ import sessionStore from "../session/sessionStore";
 // Functions, Helpers, and Utils
 import fetchOntToken from "../util/fetchOntToken";
 import extractParentalControlsData from "../util/extractParentalControlsData";
-import customModemEncode from "../util/customModemEncode";
-import customModemDecode from "../util/customModemDecode";
 import runCurlCommand from "../util/runCurlCommand";
 // Types
 import { ParentalControlsDevice, ParentalControlsData, Template, startTime, endTime, repeatDays } from "../../../shared/types/ParentalControls";
@@ -91,63 +89,51 @@ export const getParentalControlsData: RequestHandler = async (req, res, next) =>
             },
         });
 
-        const listOfFilteredDevices: ParentalControlsData = extractParentalControlsData(responseHtml.data);
-        res.json(listOfFilteredDevices);
+        const parentalControlsData: ParentalControlsData = extractParentalControlsData(responseHtml.data);
+        res.json(parentalControlsData);
     } catch (error) {
         next(error);
     }
 };
+
 
 export const addDeviceToParentalControls: RequestHandler = async (req, res, next) => {
     try {
         const { deviceMac, deviceDescription, templateInst } = req.body.deviceToAdd;
         let ontToken: OntToken = req.body.ontToken;
-        const cookies: string = sessionStore.getAllCookies(); // Example: Cookie=sid=xyz...
+        const cookies: string = sessionStore.getAllCookies();
 
         // Refresh the ontToken if needed
         ontToken = await fetchOntTokenSourceHandler(ontToken, cookies);
 
-        //const encodedMac = deviceMac.split(":").join("%3A");
-        //const encodedDesc = customModemEncode(deviceDescription);
         const url = `${process.env.MODEM_URL_BASE}/html/bbsp/parentalctrl/add.cgi?x=InternetGatewayDevice.X_HW_Security.ParentalCtrl.MAC&RequestFile=html/bbsp/parentalctrl/parentalctrlmac.asp`;
 
-        const curlCommand = `
-            curl -s -X POST "${url}" \\
-            -H "User-Agent: ${USER_AGENT}" \\
-            -H "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8" \\
-            -H "Accept-Language: en-US,en;q=0.5" \\
-            -H "Content-Type: application/x-www-form-urlencoded" \\
-            -H "Upgrade-Insecure-Requests: 1" \\
-            -H "Priority: u=4" \\
-            -H "Pragma: no-cache" \\
-            -H "Cache-Control: no-cache" \\
-            -H "Referer: ${process.env.MODEM_URL_BASE}/html/bbsp/parentalctrl/parentalctrlmac.asp" \\
-            -H "Cookie: ${cookies}" \\
-            --data-urlencode "x.MACAddress=${deviceMac}" \\
-            --data-urlencode "x.Description=${deviceDescription}" \\
-            --data-urlencode "x.TemplateInst=${templateInst}" \\
-            --data-urlencode "x.X_HW_Token=${ontToken}" \\
-            > response.txt
-        `;
+        const queryString = `
+        x.MACAddress=${deviceMac}
+        &x.Description=${deviceDescription}
+        &x.TemplateInst=${templateInst}
+        &x.X_HW_Token=${ontToken}`;
 
-        await runCurlCommand(curlCommand);
-
-        const fs = require("fs");
-        const responseBody = fs.readFileSync("response.txt", "utf8");
-
-        if (responseBody.includes("successful") || responseBody.includes("OK")) {
-            res.json(true);
-        } else {
-            console.error("Failed to add device:", responseBody);
-            throw new Error("Failed to add device to parental controls");
-        }
+        await axios.post(url, queryString, {
+            headers: {
+                "User-Agent": USER_AGENT,
+                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+                "Accept-Language": "en-US,en;q=0.5",
+                "Content-Type": "application/x-www-form-urlencoded",
+                "Upgrade-Insecure-Requests": "1",
+                "Priority": "u=4",
+                "Pragma": "no-cache",
+                "Cache-Control": "no-cache",
+                "Referer": `${process.env.MODEM_URL_BASE}/html/bbsp/parentalctrl/parentalctrlmac.asp`,
+                "Origin": `${process.env.MODEM_URL_BASE}`,
+                "Cookie": cookies,
+            },
+        });
+        res.json(true);
     } catch (error) {
         next(error);
     }
 };
-
-
-
 
 
 export const addTimePeriodToParentalControls: RequestHandler = async (req, res, next) => {

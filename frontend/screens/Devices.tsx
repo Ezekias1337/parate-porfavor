@@ -29,9 +29,10 @@ import deviceStyles from "../styles/page-specific/device";
   TODO:
   - When switching between parental controls and mac filtering need to reset value of ontToken to null
   - Need to check if device can be on mac filtering and parental controls at the same time
+    ! SOLVED: DEVICE CAN BE ON BOTH
   
-  - When clicking on block indefinitely need to update state arrays to instantly reflect change without refresh
-  - Need to add logic to card rendering to handle when a device is filtered and or parental controls list
+  - If device is online, show a badge that states so,
+    otherwise show offline/blocked badge inside the card
   - Add cleanup for page so if page unmounts all device data is cleaned up
   
   
@@ -73,7 +74,6 @@ const Devices: React.FC = () => {
     useState<ParentalControlsData>({
       templates: [],
       connectionAttempts: 0,
-      devices: [],
     });
   const [modalVisible, setModalVisible] = useState(false);
   const [modalDevice, setModalDevice] = useState<Device | null>(null);
@@ -117,6 +117,7 @@ const Devices: React.FC = () => {
             ontToken,
             devices,
             filteredDevices,
+            parentalControls,
             {
               setModalVisible,
               setDevices,
