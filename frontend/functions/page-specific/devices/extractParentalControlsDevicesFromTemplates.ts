@@ -2,8 +2,12 @@
 import { ParentalControlsDevice, ParentalControlsData } from "../../../../shared/types/ParentalControls";
 
 const extractParentalControlsDevicesFromTemplates = (
-    parentalControlsData: ParentalControlsData,
+    parentalControlsData: ParentalControlsData | null,
 ): ParentalControlsDevice[] => {
+    if (!parentalControlsData) {
+        return [];
+    }
+
     const parentalControlsDevices: ParentalControlsDevice[] = [];
 
     for (const template of parentalControlsData.templates) {

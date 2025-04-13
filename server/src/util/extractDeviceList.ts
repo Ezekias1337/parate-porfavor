@@ -21,7 +21,9 @@ const extractDeviceList = (htmlContent: string, logList?: boolean): Device[] | n
                 hostName: decodeURIComponent(match[11].replace(/\\x2d/g, "-")), // Decode hostnames
                 onlineStatus: match[8] === "Online" ? "Online" : "Offline",
                 connectionType: match[9] === "ETH" ? "ETH" : "WIFI",
-                ssid: match[5].replace(/([a-zA-Z])(\d+)$/, '$1-$2')
+                ssid: match[5].replace(/([a-zA-Z])(\d+)$/, '$1-$2'),
+                macFiltered: false,
+                parentalControlRestrictionApplied: false
             });
         }
         

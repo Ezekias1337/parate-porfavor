@@ -1,8 +1,7 @@
 import fetchData from "../auth/fetchData";
 import { ParentalControlsData } from "../../../../shared/types/ParentalControls"
 
-// Fetch modem status function
-const getParentalControlsData = async (): Promise<ParentalControlsData | null> => {
+const getParentalControlsData = async (): Promise<ParentalControlsData> => {
   try {
     const response = await fetchData("/api/parental-controls/get-parental-controls-data", {
       method: "GET",
@@ -21,7 +20,10 @@ const getParentalControlsData = async (): Promise<ParentalControlsData | null> =
     return response.json();
   } catch (error) {
     console.error("Error fetching modem status:", error);
-    return null;
+    return {
+      templates: [],
+      connectionAttempts: 0,
+    };
   }
 };
 

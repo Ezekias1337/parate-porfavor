@@ -3,7 +3,7 @@ import { View } from "react-native";
 // Components
 import Alert from "@/components/Alert";
 // CSS
-import deviceStyles from "../../../../styles/page-specific/device";
+import deviceStyles from "../../styles/page-specific/device";
 
 const renderErrorMsg = (errorMsg: string | null) => {
   if (errorMsg) {

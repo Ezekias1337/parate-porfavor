@@ -40,9 +40,16 @@ const removeDeviceFromMacFilterHandler = async (
         );
         const filteredDevicesCopy = [...filteredDevices];
         const devicesCopy = [...devices];
-
+        const filteredDeviceCopy = { ...filteredDevice, domain: "Temporary Until Next Re-render" };
+        /* 
+            ? Since renderDeviceCardButton1 checks the domain name to determine
+            ? which button to show, we need to update the domain to cause a re-render
+            ? and show the correct button
+        */
+        
+        
         filteredDevicesCopy.splice(index, 1);
-        devicesCopy.splice(index, 0, filteredDevice)
+        devicesCopy.splice(index, 0, filteredDeviceCopy)
 
         setDevices(devicesCopy);
         setFilteredDevices(filteredDevicesCopy);

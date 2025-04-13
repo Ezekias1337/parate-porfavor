@@ -28,6 +28,7 @@ const extractMacFilterList = (htmlContent: string, logList?: boolean): Device[] 
                 onlineStatus: "Unknown",
                 connectionType: isEthernet ? "ETH" : "WIFI",
                 ssid: isEthernet ? "" : match[2].replace(/\\x2d/g, "-"), // SSID only applies to WLAN format
+                macFiltered: true,
             });
         }
 

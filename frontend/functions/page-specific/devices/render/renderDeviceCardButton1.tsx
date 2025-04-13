@@ -1,19 +1,9 @@
-// Library Imports
-import { View } from "react-native";
-// Components
-import Button from "@/components/Button";
-// Functions, Helpers, Utils, and Hooks
-import fetchDevices from "../fetchDevices";
 import addDeviceToMacFilterHandler from "../addDeviceToMacFilterHandler";
 import removeDeviceFromMacFilterHandler from "../removeDeviceFromMacFilterHandler";
-
-// CSS
-import deviceStyles from "../../../../styles/page-specific/device";
 // Types
 import { Device } from "../../../../../shared/types/Device";
 import { ButtonProps } from "../../../../components/Button";
 import OntToken from "../../../../../shared/types/OntToken";
-import { ListOfStateSetters } from "../../../../screens/Devices";
 
 interface renderButtonArguments {
   device: Device;
@@ -38,7 +28,7 @@ const renderDeviceCardButton1 = ({
   setOntToken,
   translate,
 }: renderButtonArguments): ButtonProps => {
-  if (device.domain !== "") {
+  if (device.connectionType === "Unknown" || device.domain !== "") {
     return {
       text: translate("blockInternetIndefinitely"),
       variant: "primary",
@@ -60,7 +50,7 @@ const renderDeviceCardButton1 = ({
   } else {
     return {
       text: translate("unblockDevice"),
-      variant: "success",
+      variant: "warning",
       icon: "unlock",
       onClickHandler: async () => {
         await removeDeviceFromMacFilterHandler({

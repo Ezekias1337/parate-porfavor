@@ -16,7 +16,7 @@ interface AddDeviceArguments {
     setFilteredDevices: React.Dispatch<React.SetStateAction<Device[]>>;
 }
 
-const addDeviceToMacFilterHandler = async ({
+const addDeviceToParentalControlsHandler = async ({
     device,
     index,
     ontToken,
@@ -60,4 +60,4 @@ const addDeviceToMacFilterHandler = async ({
     }
 };
 
-export default addDeviceToMacFilterHandler;
+export default addDeviceToParentalControlsHandler;

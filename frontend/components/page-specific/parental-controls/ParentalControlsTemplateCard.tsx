@@ -8,6 +8,7 @@ import daysMap from "../../../constants/Days";
 // Functions, Helpers, Utils, and Hooks
 import convertTo12HourFormat from "@/helpers/convertTo12HourFormat";
 import addDeviceToParentalControlsTemplate from "@/functions/network/parental-controls/addDeviceToParentalControlsTemplate";
+import renderErrorMsg from "@/functions/general/renderErrorMsg";
 // Interfaces and Types
 import {
   ParentalControlsData,
@@ -15,7 +16,7 @@ import {
   Template,
 } from "../../../../shared/types/ParentalControls";
 import { Device } from "../../../../shared/types/Device";
-import  OntToken  from "../../../../shared/types/OntToken";
+import OntToken from "../../../../shared/types/OntToken";
 // Components
 import Button from "../../Button";
 // CSS
@@ -28,6 +29,7 @@ interface ParentalControlsTemplateCardProps {
   modalDevice: Device | null;
   selectedTemplate: Template | null;
   setSelectedTemplate: React.Dispatch<React.SetStateAction<Template | null>>;
+  setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
   ontToken: OntToken;
 }
 
@@ -37,10 +39,13 @@ const ParentalControlsTemplateCard: FC<ParentalControlsTemplateCardProps> = ({
   modalDevice,
   selectedTemplate,
   setSelectedTemplate,
+  setModalVisible,
   ontToken,
 }) => {
   const { translate } = useLocalization();
   const [deviceDescription, setDeviceDescription] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const devicesBelongingToTemplate: ParentalControlsDevice[] = devices.filter(
     (device) => device.templateId === template.id
@@ -83,6 +88,7 @@ const ParentalControlsTemplateCard: FC<ParentalControlsTemplateCardProps> = ({
               {", "}
             </Fragment>
           ))}
+          {devicesBelongingToTemplate.length === 0 && translate("noDevices")}
         </Text>
       </View>
 
@@ -115,12 +121,28 @@ const ParentalControlsTemplateCard: FC<ParentalControlsTemplateCardProps> = ({
             <Button
               text={translate("saveChanges")}
               onClickHandler={async () => {
-                await addDeviceToParentalControlsTemplate(
-                  modalDevice!.macAddr,
-                  deviceDescription,
-                  template.id,
-                  ontToken,
-                )
+                try {
+                  setLoading(true);
+                  await addDeviceToParentalControlsTemplate(
+                    modalDevice!.macAddr,
+                    deviceDescription,
+                    template.id,
+                    ontToken
+                  );
+                  setErrorMsg(null);
+                  setLoading(false);
+                  
+                  /* 
+                    Need to give device.templateId a value in order to update the state
+                    without refreshing the page
+                  */
+                  
+                  setModalVisible(false);
+                } catch (error) {
+                  setErrorMsg(translate("failedToAddParentalControls"));
+                  setLoading(false);
+                }
+
                 /* 
                   Need to show some loading state
                   and then update the device list array to reflect
@@ -129,11 +151,11 @@ const ParentalControlsTemplateCard: FC<ParentalControlsTemplateCardProps> = ({
                   Need to dismiss the modal as well and
                   reset stateful values (need to check which ones)
                 */
-                
               }}
               variant="success"
               leftIcon
               icon="save"
+              loading={loading}
             />
             <Button
               text={translate("cancel")}
@@ -145,6 +167,7 @@ const ParentalControlsTemplateCard: FC<ParentalControlsTemplateCardProps> = ({
               icon="ban"
             />
           </View>
+          {renderErrorMsg(errorMsg)}
         </View>
       )}
     </View>

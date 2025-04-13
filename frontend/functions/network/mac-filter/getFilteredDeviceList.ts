@@ -1,7 +1,7 @@
 import fetchData from "../auth/fetchData";
 import { Device } from "../../../../shared/types/Device";
 
-const getFilteredDeviceList = async (): Promise<Device[] | null> => {
+const getFilteredDeviceList = async (): Promise<Device[]> => {
     try {
         const response = await fetchData("/api/mac-filter/get-list-of-filtered-devices", {
             method: "GET",
@@ -20,7 +20,7 @@ const getFilteredDeviceList = async (): Promise<Device[] | null> => {
         return response.json();
     } catch (error) {
         console.error("Error adding device to mac filter, status", error);
-        return null
+        return []
     }
 };
 

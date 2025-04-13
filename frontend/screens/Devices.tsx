@@ -2,10 +2,9 @@
 import React, { useEffect, useState } from "react";
 import { View, ActivityIndicator } from "react-native";
 // Functions, Helpers, Utils, and Hooks
-import fetchDevices from "@/functions/page-specific/devices/fetchDevices";
-import fetchParentalControlsData from "@/functions/page-specific/devices/fetchParentalControlsData";
+import fetchDevicesAndParentalControls from "@/functions/page-specific/devices/fetchDevicesAndParentalControls";
 import handleTokenSwap from "@/functions/page-specific/devices/handleTokenSwap";
-import renderErrorMsg from "@/functions/page-specific/devices/render/renderErrorMsg";
+import renderErrorMsg from "@/functions/general/renderErrorMsg";
 import renderButtons from "@/functions/page-specific/devices/render/renderButtons";
 import renderDeviceCards from "@/functions/page-specific/devices/render/renderDeviceCards";
 import renderModal from "@/functions/page-specific/devices/render/renderModal";
@@ -17,7 +16,6 @@ import { useLocalization } from "../components/localization/LocalizationContext"
 import { Device } from "../../shared/types/Device";
 import {
   ParentalControlsData,
-  ParentalControlsDevice,
   Template,
 } from "../../shared/types/ParentalControls";
 import OntToken from "../../shared/types/OntToken";
@@ -44,15 +42,7 @@ import deviceStyles from "../styles/page-specific/device";
 
 export interface ListOfStateSetters {
   setDevices: React.Dispatch<React.SetStateAction<Device[]>>;
-  setFilteredDevices: React.Dispatch<React.SetStateAction<Device[]>>;
-  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  setErrorMsg: React.Dispatch<React.SetStateAction<string | null>>;
-}
-
-export interface ListOfParentalControlsStateSetters {
-  setParentalControls: React.Dispatch<
-    React.SetStateAction<ParentalControlsData>
-  >;
+  setParentalControls: React.Dispatch<Template[]>;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   setErrorMsg: React.Dispatch<React.SetStateAction<string | null>>;
 }
@@ -66,26 +56,16 @@ const Devices: React.FC = () => {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [ontToken, setOntToken] = useState<OntToken>(null);
   const [devices, setDevices] = useState<Device[]>([]);
-  const [filteredDevices, setFilteredDevices] = useState<Device[]>([]);
   const [selectedTemplate, setSelectedTemplate] = useState<Template | null>(
     null
   );
-  const [parentalControls, setParentalControls] =
-    useState<ParentalControlsData>({
-      templates: [],
-      connectionAttempts: 0,
-    });
+  const [parentalControls, setParentalControls] = useState<Template[]>();
   const [modalVisible, setModalVisible] = useState(false);
   const [modalDevice, setModalDevice] = useState<Device | null>(null);
 
   useEffect(() => {
-    fetchDevices(
-      { setDevices, setFilteredDevices, setLoading, setErrorMsg },
-      translate
-    );
-
-    fetchParentalControlsData(
-      { setParentalControls, setLoading, setErrorMsg },
+    fetchDevicesAndParentalControls(
+      { setDevices, setParentalControls, setLoading, setErrorMsg },
       translate
     );
   }, []);
@@ -98,10 +78,6 @@ const Devices: React.FC = () => {
     });
   }, [modalVisible]);
 
-  useEffect(() => {
-    console.log("ontToken changed:", ontToken);
-  }, [ontToken]);
-
   return (
     <View style={deviceStyles.container}>
       {loading && !errorMsg ? (
@@ -110,10 +86,10 @@ const Devices: React.FC = () => {
         <>
           {renderErrorMsg(errorMsg)}
           {renderButtons(
-            { setDevices, setFilteredDevices, setLoading, setErrorMsg },
+            { setDevices, setParentalControls, setLoading, setErrorMsg },
             translate
           )}
-          {renderDeviceCards(
+          {/* {renderDeviceCards(
             ontToken,
             devices,
             filteredDevices,
@@ -137,7 +113,8 @@ const Devices: React.FC = () => {
             translate,
             selectedTemplate,
             setSelectedTemplate,
-          })}
+            setLoading,
+          })} */}
         </>
       )}
     </View>

@@ -12,7 +12,7 @@ import extractParentalControlsDevicesFromTemplates from "../extractParentalContr
 import Card from "@/components/Card";
 // Types
 import { Device } from "../../../../../shared/types/Device";
-import { ParentalControlsData } from "../../../../../shared/types/ParentalControls";
+import { ParentalControlsData, ParentalControlsDevice } from "../../../../../shared/types/ParentalControls";
 import { ButtonProps } from "@/components/Button";
 import OntToken from "../../../../../shared/types/OntToken";
 // CSS
@@ -41,33 +41,9 @@ const renderDeviceCards = (
   }: ListOfStateSetters,
   translate: (key: string) => string
 ) => {
-  /* 
-    Need to have separate function for:
-     rendering 1st button
-     rendering 2nd button
-     
-    Both functions need to determine state
-    
-    For button 1:
-      if device is not filtered, display block button
-      if device is filtered display unblock button
-      
-    For button 2:
-      if device is currently restricted, show option to modify
-      if modify option is selected user is presented with option to:
-        remove the restriction, or change the template, or change the device description
-        (Changing the device description would require first removing the device and subsequently
-        re-adding, this is a low priority feature)
-        
-        
-      ! To distinguish between unfiltered and filtered devices check the domain attribute.
-      
-      ? If the domain attribute is: "" it is filtered
-        */
-
   const arrayOfParentalControlDevices =
     extractParentalControlsDevicesFromTemplates(parentalControls);
-  const mergedDeviceArray = [
+  const mergedDeviceArray: ParentalControlsDevice[] = [
     ...arrayOfParentalControlDevices,
     ...filteredDevices,
     ...devices,
@@ -99,12 +75,19 @@ const renderDeviceCards = (
           translate,
         });
         buttons.push(button2);
+        
+        let headerText = device.macAddr;
+        if (device.hostName !== "") {
+          headerText = device.hostName;
+        } else if(device.description !== undefined) {
+          headerText = device.description;
+        } 
 
         return (
           <Card
             key={device.macAddr + index}
             headerText={
-              device.hostName !== "" ? device.hostName : device.macAddr
+              headerText
             }
             bodyText={device.macAddr}
             cardIcon={device.connectionType === "WIFI" ? "wifi" : "desktop"}

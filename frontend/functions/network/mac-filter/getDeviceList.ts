@@ -1,7 +1,7 @@
 import fetchData from "../auth/fetchData";
 import { Device } from "../../../../shared/types/Device";
 
-const getDeviceList = async (): Promise<Device[] | null> => {
+const getDeviceList = async (): Promise<Device[]> => {
   try {
     const response = await fetchData("/api/mac-filter/get-device-list", {
       method: "GET",
@@ -20,7 +20,7 @@ const getDeviceList = async (): Promise<Device[] | null> => {
     return response.json();
   } catch (error) {
     console.error("Error getting device list, error", error);
-    return null
+    return []
   }
 };
 

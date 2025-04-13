@@ -1,6 +1,3 @@
-// Library Imports
-import { Text } from "react-native";
-import { useState, useEffect } from "react";
 // Components
 import Modal from "@/components/Modal";
 // Types
@@ -8,7 +5,6 @@ import { ParentalControlsData, Template } from "../../../../../shared/types/Pare
 import { Device } from "../../../../../shared/types/Device";
 import OntToken from "../../../../../shared/types/OntToken";
 // Functions, Helpers, Utils, and Hooks
-import getOntToken from "@/functions/network/parental-controls/getOntToken";
 import renderParentalControlsTemplateCards from "./renderParentalControlsTemplateCards";
 
 interface RenderModalProps {
@@ -21,6 +17,7 @@ interface RenderModalProps {
   translate: (key: string) => string;
   selectedTemplate: Template | null;
   setSelectedTemplate: React.Dispatch<React.SetStateAction<Template | null>>;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const renderModal = ({
@@ -41,6 +38,7 @@ const renderModal = ({
         modalDevice,
         selectedTemplate,
         setSelectedTemplate,
+        setModalVisible,
         ontToken,
         translate,
       })}

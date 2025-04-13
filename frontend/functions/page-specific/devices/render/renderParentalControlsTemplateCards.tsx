@@ -32,6 +32,7 @@ interface RenderParentalControlsTemplateCardsProps {
   modalDevice: Device | null;
   selectedTemplate: Template | null;
   setSelectedTemplate: React.Dispatch<React.SetStateAction<Template | null>>;
+  setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
   ontToken: OntToken;
   translate: (key: string) => string;
 }
@@ -41,6 +42,7 @@ const renderParentalControlsTemplateCards = ({
   modalDevice,
   selectedTemplate,
   setSelectedTemplate,
+  setModalVisible,
   ontToken,
   translate,
 }: RenderParentalControlsTemplateCardsProps) => {
@@ -59,6 +61,7 @@ const renderParentalControlsTemplateCards = ({
               selectedTemplate={selectedTemplate}
               setSelectedTemplate={setSelectedTemplate}
               ontToken={ontToken}
+              setModalVisible={setModalVisible}
             />
           );
         })}
@@ -71,6 +74,7 @@ const renderParentalControlsTemplateCards = ({
           selectedTemplate={selectedTemplate}
           setSelectedTemplate={setSelectedTemplate}
           ontToken={ontToken}
+          setModalVisible={setModalVisible}
         />
       )}
     </View>

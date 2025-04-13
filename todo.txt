@@ -1,2 +1,128 @@
-Add function definitions with parameters to every function like server/src/util/extractDeviceList.ts
-Make sure all network functions have correct console log strings
+devices,
+filteredDevices,
+parentalControlDevices need to be combined into a single array
+
+Also, the object needs attributes for which restrictions 
+are currently applied
+
+When combining the arrays together need to check for duplicates for devices
+that have both macFilter and parentalControls applied
+
+For example: 
+
+macFiltered: boolean;
+parentalControlRestrictionApplied: boolean;
+
+Also remove ParentalControlsDevice type
+
+
+
+
+
+
+getDeviceList:
+
+[
+	{
+		"domain": "InternetGatewayDevice.LANDevice.1.X_HW_UserDev.4",
+		"ipAddress": "192.168.1.75",
+		"macAddr": "4c:cc:6a:05:1e:7c",
+		"hostName": "linux-desktop",
+		"onlineStatus": "Online",
+		"connectionType": "ETH",
+		"ssid": "LAN-1"
+	},
+	{
+		"domain": "InternetGatewayDevice.LANDevice.1.X_HW_UserDev.96",
+		"ipAddress": "192.168.1.71",
+		"macAddr": "02:0f:b5:4b:b9:cc",
+		"hostName": "Google-Nest-Mini",
+		"onlineStatus": "Online",
+		"connectionType": "WIFI",
+		"ssid": "SSID-5"
+	}
+]
+
+export type Device = {
+    domain: string;
+    macAddr: string;
+    hostName: string;
+    ipAddress: string;
+    onlineStatus: "Online" | "Offline" | "Unknown";
+    connectionType: WirelessOrEthernet;
+    ssid: SSIDName;
+};
+
+parentalControls:
+
+{
+	"templates": [
+		{
+			"id": 1,
+			"name": "Test",
+			"startTime": 1600,
+			"endTime": 2200,
+			"repeatDays": [
+				7,
+				1,
+				2,
+				3,
+				5
+			],
+			"devices": []
+		},
+		{
+			"id": 2,
+			"name": "Test 2",
+			"startTime": 800,
+			"endTime": 1000,
+			"repeatDays": [
+				1,
+				2
+			],
+			"devices": [
+				{
+					"domain": "",
+					"ipAddress": "",
+					"macAddr": "4c:24:ce:41:50:b8",
+					"hostName": "",
+					"onlineStatus": "Unknown",
+					"connectionType": "Unknown",
+					"ssid": "Unknown",
+					"description": "Hello Bitch",
+					"templateId": 2
+				}
+			]
+		}
+	]
+}
+
+export type Device = {
+    macAddr: string;
+    description: string,
+    templateId: number
+};
+
+macFiltered:
+
+[
+	{
+		"domain": "",
+		"ipAddress": "",
+		"macAddr": "14:c1:4e:0f:ba:89",
+		"hostName": "Chromecast",
+		"onlineStatus": "Unknown",
+		"connectionType": "WIFI",
+		"ssid": "SSID-1"
+	}
+]
+
+export type Device = {
+    macAddr: string;
+    hostName: string;
+    onlineStatus: "Online" | "Offline" | "Unknown";
+    connectionType: WirelessOrEthernet;
+    ssid: SSIDName;
+};
+
+

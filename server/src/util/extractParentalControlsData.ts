@@ -45,7 +45,8 @@ const extractParentalControlsData = (htmlContent: string, logList?: boolean): Pa
                 connectionType: "Unknown",
                 ssid: "Unknown",
                 description: description,
-                templateId: templateId // Add templateId to each device
+                templateId: templateId,
+                parentalControlRestrictionApplied: true
             });
         }
 
@@ -72,11 +73,13 @@ const extractParentalControlsData = (htmlContent: string, logList?: boolean): Pa
                 ...timeRestrictionsMap[index], // Merge the time restriction data
             });
         });
-        
+
         // Combine template names with their respective associated devices
         deviceList.forEach(device => {
             const templateId = device.templateId;
-            templates[templateId - 1].devices.push(device);
+            if (templateId) {
+                templates[templateId - 1].devices.push(device);
+            }
         })
 
         if (logList) {

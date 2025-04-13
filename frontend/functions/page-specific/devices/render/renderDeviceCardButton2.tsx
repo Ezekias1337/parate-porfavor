@@ -1,19 +1,6 @@
-// Library Imports
-import { View } from "react-native";
-// Components
-import Button from "@/components/Button";
-// Functions, Helpers, Utils, and Hooks
-import fetchDevices from "../fetchDevices";
-import addDeviceToMacFilterHandler from "../addDeviceToMacFilterHandler";
-import removeDeviceFromMacFilterHandler from "../removeDeviceFromMacFilterHandler";
-
-// CSS
-import deviceStyles from "../../../../styles/page-specific/device";
 // Types
 import { Device } from "../../../../../shared/types/Device";
 import { ButtonProps } from "../../../../components/Button";
-import OntToken from "../../../../../shared/types/OntToken";
-import { ListOfStateSetters } from "../../../../screens/Devices";
 import { ParentalControlsDevice } from "../../../../../shared/types/ParentalControls";
 
 interface renderButtonArguments {
@@ -44,9 +31,9 @@ const renderDeviceCardButton2 = ({
   
   if (device.templateId) {
     return {
-      text: translate("modify"),
+      text: translate("removeScheduleRestriction"),
       variant: "warning",
-      icon: "pencil",
+      icon: "calendar-times-o",
 
       onClickHandler: async () => {
         /* await addDeviceToMacFilterHandler({
