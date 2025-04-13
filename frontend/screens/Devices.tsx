@@ -78,6 +78,10 @@ const Devices: React.FC = () => {
     });
   }, [modalVisible]);
 
+  useEffect(() => {
+    console.log("Devices: ", devices);
+  }, [devices]);
+
   return (
     <View style={deviceStyles.container}>
       {loading && !errorMsg ? (

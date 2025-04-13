@@ -17,26 +17,54 @@ const fetchDevicesAndParentalControls = async (
         const devicesToSet = await getDeviceList();
         const filteredDevicesToSet = await getDeviceListFiltered();
         const parentalControlsToSet = await getParentalControlsData();
-        
-        
-        if(parentalControlsToSet.templates.length >= 0) {
+        const parentalControlsDevices = extractParentalControlsDevicesFromTemplates(
+            parentalControlsToSet);
+
+        if (parentalControlsToSet.templates.length >= 0) {
             setParentalControls(parentalControlsToSet.templates);
         }
 
-        const parentalControlsDevices = extractParentalControlsDevicesFromTemplates(
-            parentalControlsToSet);
+        /* 
+            now need to check for duplicates and combine them where needed
+            
+            Devices from getDeviceList NEVER have duplicates,
+            filteredDevices from getDeviceListFiltered can have duplicates
+            
+            
+        */
+        const duplicateDevices: Device[] = [];
+        for (const [index, device] of filteredDevicesToSet.entries()) {
+            let dupe = parentalControlsDevices.find(
+                (dupe) => dupe.macAddr === device.macAddr
+            );
+            
+            if(dupe) {
+                dupe.hostName = device.hostName;
+                dupe.connectionType = device.connectionType;
+                dupe.ssid = device.ssid;
+                dupe.macFiltered = device.macFiltered;
+                
+                
+            }
+        }
+            
+        
+
+
         const mergedDeviceArray: Device[] = [
             ...parentalControlsDevices,
             ...filteredDevicesToSet,
             ...devicesToSet
         ];
 
+
+
         if (mergedDeviceArray.length === 0) {
             setErrorMsg(translate("serverError"));
             setDevices([]);
         } else {
             setErrorMsg(null);
-            setDevices(devicesToSet);
+            setDevices(mergedDeviceArray);
         }
     } catch (error) {
         setErrorMsg(translate("fetchError"));

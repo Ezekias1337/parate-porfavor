@@ -8,6 +8,8 @@ export type Device = {
     onlineStatus?: "Online" | "Offline" | "Unknown";
     connectionType?: WirelessOrEthernet;
     ssid?: SSIDName;  
+    description?: string;
+    templateId?: number;
     macFiltered?: boolean;
     parentalControlRestrictionApplied?: boolean;
 };
