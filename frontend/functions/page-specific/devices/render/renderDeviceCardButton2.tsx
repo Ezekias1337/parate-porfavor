@@ -29,7 +29,7 @@ const renderDeviceCardButton2 = ({
   
   
   
-  if (device.templateId) {
+  if (device.parentalControlRestrictionApplied) {
     return {
       text: translate("removeScheduleRestriction"),
       variant: "warning",

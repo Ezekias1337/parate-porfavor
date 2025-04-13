@@ -56,14 +56,14 @@ const renderDeviceCards = (
         });
         buttons.push(button1);
 
-        /*   const button2 = renderDeviceCardButton2({
+          const button2 = renderDeviceCardButton2({
           device,
           setModalDevice,
           setModalVisible,
           displayParentalControlsModal,
           translate,
         });
-        buttons.push(button2); */
+        buttons.push(button2);
 
         let headerText: string;
         if (device.hostName && device.hostName !== "") {
