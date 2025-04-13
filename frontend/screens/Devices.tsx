@@ -24,11 +24,7 @@ import { colors } from "../styles/variables";
 import deviceStyles from "../styles/page-specific/device";
 
 /* 
-  TODO:
-  - When switching between parental controls and mac filtering need to reset value of ontToken to null
-  - Need to check if device can be on mac filtering and parental controls at the same time
-    ! SOLVED: DEVICE CAN BE ON BOTH
-  
+  TODO:  
   - If device is online, show a badge that states so,
     otherwise show offline/blocked badge inside the card
   - Add cleanup for page so if page unmounts all device data is cleaned up
@@ -93,21 +89,18 @@ const Devices: React.FC = () => {
             { setDevices, setParentalControls, setLoading, setErrorMsg },
             translate
           )}
-          {/* {renderDeviceCards(
+          {renderDeviceCards(
             ontToken,
             devices,
-            filteredDevices,
-            parentalControls,
             {
               setModalVisible,
               setDevices,
-              setFilteredDevices,
               setModalDevice,
               setOntToken,
             },
             translate
           )}
-          {renderModal({
+          {/* {renderModal({
             modalVisible,
             setModalVisible,
             modalDevice,

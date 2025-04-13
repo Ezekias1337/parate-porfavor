@@ -12,8 +12,6 @@ interface AddDeviceArguments {
     setOntToken: React.Dispatch<React.SetStateAction<OntToken>>;
     devices: Device[];
     setDevices: React.Dispatch<React.SetStateAction<Device[]>>;
-    filteredDevices: Device[];
-    setFilteredDevices: React.Dispatch<React.SetStateAction<Device[]>>;
 }
 
 const addDeviceToMacFilterHandler = async ({
@@ -23,8 +21,6 @@ const addDeviceToMacFilterHandler = async ({
     setOntToken,
     devices,
     setDevices,
-    filteredDevices,
-    setFilteredDevices
 }: AddDeviceArguments) => {
     try {
         const ontTokenToUse = await getOntToken(
@@ -32,6 +28,10 @@ const addDeviceToMacFilterHandler = async ({
             ontToken
         );
         setOntToken(ontTokenToUse);
+        
+        if(!device.hostName || !device.ssid) {
+            throw new Error("Device object is not complete");
+        }
 
         await addDeviceToMacFilter(
             device.macAddr,
@@ -42,19 +42,10 @@ const addDeviceToMacFilterHandler = async ({
         );
 
         const devicesCopy = [...devices];
-        const filteredDevicesCopy = [...filteredDevices];
-        const deviceCopy = { ...device, domain: "" };
-        /* 
-            ? Since renderDeviceCardButton1 checks the domain name to determine
-            ? which button to show, we need to update the domain to cause a re-render
-            ? and show the correct button
-        */
-
-        devicesCopy.splice(index, 1)
-        filteredDevicesCopy.push(deviceCopy);
+        const deviceCopy = { ...device, macFiltered: true };
+        devicesCopy[index] = deviceCopy;
 
         setDevices(devicesCopy);
-        setFilteredDevices(filteredDevicesCopy);
     } catch (error) {
         console.error(error);
     }

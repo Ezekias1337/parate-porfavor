@@ -12,7 +12,7 @@ const fetchDevicesAndParentalControls = async (
     translate: (key: string) => string
 ): Promise<void> => {
     setLoading(true);
-
+    
     try {
         const devicesToSet = await getDeviceList();
         const filteredDevicesToSet = await getDeviceListFiltered();
@@ -24,40 +24,28 @@ const fetchDevicesAndParentalControls = async (
             setParentalControls(parentalControlsToSet.templates);
         }
 
-        /* 
-            now need to check for duplicates and combine them where needed
-            
-            Devices from getDeviceList NEVER have duplicates,
-            filteredDevices from getDeviceListFiltered can have duplicates
-            
-            
-        */
-        const duplicateDevices: Device[] = [];
-        for (const [index, device] of filteredDevicesToSet.entries()) {
-            let dupe = parentalControlsDevices.find(
+
+        for (const device of filteredDevicesToSet) {
+            let dupeIndex = parentalControlsDevices.findIndex(
                 (dupe) => dupe.macAddr === device.macAddr
             );
+            let dupe = parentalControlsDevices[dupeIndex];
             
             if(dupe) {
-                dupe.hostName = device.hostName;
-                dupe.connectionType = device.connectionType;
-                dupe.ssid = device.ssid;
-                dupe.macFiltered = device.macFiltered;
-                
-                
+                device.description = dupe.description;
+                device.templateId = dupe.templateId;
+                device.parentalControlRestrictionApplied = true;
+                parentalControlsDevices.splice(dupeIndex, 1);
             }
         }
-            
         
-
-
+        
+        
         const mergedDeviceArray: Device[] = [
             ...parentalControlsDevices,
             ...filteredDevicesToSet,
             ...devicesToSet
         ];
-
-
 
         if (mergedDeviceArray.length === 0) {
             setErrorMsg(translate("serverError"));

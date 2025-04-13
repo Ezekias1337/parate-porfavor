@@ -9,8 +9,6 @@ interface renderButtonArguments {
   device: Device;
   devices: Device[];
   setDevices: React.Dispatch<React.SetStateAction<Device[]>>;
-  filteredDevices: Device[];
-  setFilteredDevices: React.Dispatch<React.SetStateAction<Device[]>>;
   index: number;
   ontToken: OntToken;
   setOntToken: React.Dispatch<React.SetStateAction<OntToken>>;
@@ -21,14 +19,12 @@ const renderDeviceCardButton1 = ({
   device,
   devices,
   setDevices,
-  filteredDevices,
-  setFilteredDevices,
   index,
   ontToken,
   setOntToken,
   translate,
 }: renderButtonArguments): ButtonProps => {
-  if (device.connectionType === "Unknown" || device.domain !== "") {
+  if (device.macFiltered === false) {
     return {
       text: translate("blockInternetIndefinitely"),
       variant: "primary",
@@ -42,8 +38,6 @@ const renderDeviceCardButton1 = ({
           setOntToken,
           devices,
           setDevices,
-          filteredDevices,
-          setFilteredDevices,
         });
       },
     };
@@ -56,12 +50,10 @@ const renderDeviceCardButton1 = ({
         await removeDeviceFromMacFilterHandler({
           ontToken,
           setOntToken,
-          filteredDevices,
-          setFilteredDevices,
-          index,
-          filteredDevice: device,
           devices,
           setDevices,
+          index,
+          device,
         });
       },
     };
