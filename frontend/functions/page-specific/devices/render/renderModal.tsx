@@ -33,10 +33,6 @@ const renderModal = ({
   selectedTemplate,
   setSelectedTemplate,
 }: RenderModalProps) => {
- /*  if (!parentalControlsData) {
-    return;
-  } */
- 
   if(!parentalControlsData ) {
     return <></>
   }

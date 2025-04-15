@@ -13,7 +13,6 @@ const renderButtons = (
   {
     setDevices,
     setParentalControls,
-    setParentalControlsFullData,
     setLoading,
     setErrorMsg,
   }: ListOfStateSetters,
@@ -27,7 +26,7 @@ const renderButtons = (
         text={`${translate("refresh")} ${translate("devices")}`}
         onClickHandler={async () => {
           await fetchDevicesAndParentalControls(
-            { setDevices, setParentalControls, setParentalControlsFullData, setLoading, setErrorMsg },
+            { setDevices, setParentalControls, setLoading, setErrorMsg },
             translate
           );
         }}

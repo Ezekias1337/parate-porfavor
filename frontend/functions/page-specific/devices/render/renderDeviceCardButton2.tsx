@@ -12,8 +12,7 @@ interface renderButtonArguments {
   ) => void;
   translate: (key: string) => string;
   setDevices: React.Dispatch<React.SetStateAction<Device[]>>;
-  setParentalControls: React.Dispatch<Template[]>;
-  setParentalControlsFullData: React.Dispatch<
+  setParentalControls: React.Dispatch<
     ParentalControlsData
   >;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
@@ -28,7 +27,6 @@ const renderDeviceCardButton2 = ({
   translate,
   setDevices,
   setParentalControls,
-  setParentalControlsFullData,
   setLoading,
   setErrorMsg,
 }: renderButtonArguments): ButtonProps | null => {
@@ -66,7 +64,7 @@ const renderDeviceCardButton2 = ({
           {
             setDevices,
             setParentalControls,
-            setParentalControlsFullData,
+            setParentalControls,
             setLoading,
             setErrorMsg,
           },

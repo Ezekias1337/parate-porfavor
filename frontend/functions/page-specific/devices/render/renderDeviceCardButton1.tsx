@@ -11,8 +11,7 @@ interface renderButtonArguments {
   device: Device;
   devices: Device[];
   setDevices: React.Dispatch<React.SetStateAction<Device[]>>;
-  setParentalControls: React.Dispatch<Template[]>;
-  setParentalControlsFullData: React.Dispatch<
+  setParentalControls: React.Dispatch<
     ParentalControlsData
   >;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
@@ -28,7 +27,6 @@ const renderDeviceCardButton1 = ({
   devices,
   setDevices,
   setParentalControls,
-  setParentalControlsFullData,
   setLoading,
   setErrorMsg,
   index,
@@ -76,7 +74,6 @@ const renderDeviceCardButton1 = ({
           {
             setDevices,
             setParentalControls,
-            setParentalControlsFullData,
             setLoading,
             setErrorMsg,
           },

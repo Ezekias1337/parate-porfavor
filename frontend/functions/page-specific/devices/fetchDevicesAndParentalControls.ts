@@ -8,7 +8,7 @@ import { ListOfStateSetters } from "../../../screens/Devices";
 import { Device } from "../../../../shared/types/Device";
 
 const fetchDevicesAndParentalControls = async (
-    { setDevices, setParentalControls, setParentalControlsFullData, setLoading, setErrorMsg }: ListOfStateSetters,
+    { setDevices,  setParentalControls, setLoading, setErrorMsg }: ListOfStateSetters,
     translate: (key: string) => string
 ): Promise<void> => {
     setLoading(true);
@@ -20,10 +20,8 @@ const fetchDevicesAndParentalControls = async (
         const parentalControlsDevices = extractParentalControlsDevicesFromTemplates(
             parentalControlsToSet);
 
-        setParentalControlsFullData(parentalControlsToSet);
-        if (parentalControlsToSet.templates.length >= 0) {
-            setParentalControls(parentalControlsToSet.templates);
-        }
+        setParentalControls(parentalControlsToSet);
+
 
         for (const device of filteredDevicesToSet) {
             let dupeIndex = parentalControlsDevices.findIndex(
