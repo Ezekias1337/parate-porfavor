@@ -1,6 +1,7 @@
 // Library Imports
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View } from "react-native";
+import { saveEncrypted, loadEncrypted } from "@/utils/secureStorage";
 // Functions, Helpers, Utils, and Hooks
 import login from "@/functions/network/auth/login";
 // Components
@@ -19,14 +20,29 @@ const Login: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [loginCredentials, setLoginCredentials] = useState({
+    username: "",
+    password: "",
+  });
   const { login: authenticate } = useAuth();
+
+  const handleInputChange =
+    (field: "username" | "password") => (text: string) => {
+      const newCredentials = {
+        ...loginCredentials,
+        [field]: text,
+      };
+
+      setLoginCredentials(newCredentials);
+    };
 
   const handleLogin = async () => {
     try {
       setLoading(true);
-      const token = await login(username, password);
+      const token = await login(
+        loginCredentials.username,
+        loginCredentials.password
+      );
       if (token === null) {
         setErrorMsg(translate("authError"));
         setLoading(false);
@@ -44,6 +60,22 @@ const Login: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    if (loginCredentials.username && loginCredentials.password) {
+      saveEncrypted("loginCreds", loginCredentials);
+    }
+  }, [loginCredentials]);
+
+  useEffect(() => {
+    const loadCreds = async () => {
+      const stored = await loadEncrypted("loginCreds");
+      if (stored) {
+        setLoginCredentials(stored);
+      }
+    };
+    loadCreds();
+  }, []);
+
   return (
     <View style={loginStyles.container}>
       {errorMsg !== null && (
@@ -58,18 +90,20 @@ const Login: React.FC = () => {
 
       <TextInput
         placeholder={translate("username")}
-        value={username}
-        onChangeText={setUsername}
+        value={loginCredentials.username}
+        onChangeText={handleInputChange("username")}
         style={inputFieldStyles.textInput}
         placeholderTextColor={colors.primary300}
+        id="username"
       />
       <TextInput
         placeholder={translate("password")}
-        value={password}
-        onChangeText={setPassword}
+        value={loginCredentials.password}
+        onChangeText={handleInputChange("password")}
         secureTextEntry
         style={inputFieldStyles.textInput}
         placeholderTextColor={colors.primary300}
+        id="password"
       />
       <View style={loginStyles.buttonContainer}>
         <Button

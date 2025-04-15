@@ -44,6 +44,9 @@ app.use("/api/auth", authRoutes);
 app.use("/api/modem", modemRoutes);
 app.use("/api/mac-filter", macFilterRoutes);
 app.use("/api/parental-controls", parentalControlsRoutes);
+app.use("/test-forwarding", (req, res) => {
+    res.json("ALOHA WEY");
+});
 /*app.use("/api/wake-on-lan", wakeOnLanRoutes); */
 
 // Allow credentials in CORS configuration
@@ -51,6 +54,6 @@ app.options("*", cors(corsOptions));
 
 const server = http.createServer(app);
 
-server.listen(BACKEND_PORT, () => {
+server.listen(BACKEND_PORT, '0.0.0.0', () => {
     console.log(`Listening on port: ${BACKEND_PORT}`);
 });
