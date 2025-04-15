@@ -1,14 +1,23 @@
 // Types
 import { Device } from "../../../../../shared/types/Device";
 import { ButtonProps } from "../../../../components/Button";
-import { ParentalControlsDevice } from "../../../../../shared/types/ParentalControls";
+import { Template, ParentalControlsData } from "../../../../../shared/types/ParentalControls";
 
 interface renderButtonArguments {
-  device: ParentalControlsDevice;
+  device: Device;
   setModalDevice: React.Dispatch<React.SetStateAction<Device | null>>;
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
-  displayParentalControlsModal: (setModalVisible: React.Dispatch<React.SetStateAction<boolean>>) => void;
+  displayParentalControlsModal: (
+    setModalVisible: React.Dispatch<React.SetStateAction<boolean>>
+  ) => void;
   translate: (key: string) => string;
+  setDevices: React.Dispatch<React.SetStateAction<Device[]>>;
+  setParentalControls: React.Dispatch<Template[]>;
+  setParentalControlsFullData: React.Dispatch<
+    ParentalControlsData
+  >;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  setErrorMsg: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 const renderDeviceCardButton2 = ({
@@ -17,7 +26,12 @@ const renderDeviceCardButton2 = ({
   setModalVisible,
   displayParentalControlsModal,
   translate,
-}: renderButtonArguments): ButtonProps => {
+  setDevices,
+  setParentalControls,
+  setParentalControlsFullData,
+  setLoading,
+  setErrorMsg,
+}: renderButtonArguments): ButtonProps | null => {
   /* 
     ? - if device is currently restricted, show option to modify
     ? - if modify option is selected user is presented with option to:
@@ -25,11 +39,13 @@ const renderDeviceCardButton2 = ({
     ?     (Changing the device description would require first removing the device and subsequently
     ?     re-adding, this is a low priority feature)
   */
-  
-  
-  
-  
-  if (device.parentalControlRestrictionApplied) {
+
+  if (device.macFiltered !== undefined && device.macFiltered === true) {
+    return null;
+  } else if (
+    device.parentalControlRestrictionApplied !== undefined &&
+    device.parentalControlRestrictionApplied === true
+  ) {
     return {
       text: translate("removeScheduleRestriction"),
       variant: "warning",
@@ -45,6 +61,17 @@ const renderDeviceCardButton2 = ({
           setDevices,
           filteredDevices,
           setFilteredDevices,
+          
+          await fetchDevicesAndParentalControls(
+          {
+            setDevices,
+            setParentalControls,
+            setParentalControlsFullData,
+            setLoading,
+            setErrorMsg,
+          },
+          translate
+        );
         }); */
       },
     };
@@ -54,10 +81,12 @@ const renderDeviceCardButton2 = ({
       variant: "primaryDark",
       icon: "calendar",
       onClickHandler: () => {
+        console.log("showing modal")
+        
         setModalDevice(device);
         displayParentalControlsModal(setModalVisible);
       },
-    }
+    };
   }
 };
 

@@ -9,7 +9,7 @@ import fetchOntToken from "../util/fetchOntToken";
 import extractParentalControlsData from "../util/extractParentalControlsData";
 import runCurlCommand from "../util/runCurlCommand";
 // Types
-import { ParentalControlsDevice, ParentalControlsData, Template, startTime, endTime, repeatDays } from "../../../shared/types/ParentalControls";
+import { ParentalControlsData, startTime, endTime, repeatDays } from "../../../shared/types/ParentalControls";
 import OntToken from "@shared/types/OntToken";
 // Environment Variables
 const USER_AGENT = env.USER_AGENT;
@@ -109,7 +109,7 @@ export const addDeviceToParentalControls: RequestHandler = async (req, res, next
         const url = `${process.env.MODEM_URL_BASE}/html/bbsp/parentalctrl/add.cgi?x=InternetGatewayDevice.X_HW_Security.ParentalCtrl.MAC&RequestFile=html/bbsp/parentalctrl/parentalctrlmac.asp`;
         const queryString = `x.MACAddress=${deviceMac}&x.Description=${deviceDescription}&x.TemplateInst=${templateInst}&x.X_HW_Token=${ontToken}`;
 
-        const test = await axios.post(url, queryString, {
+        await axios.post(url, queryString, {
             headers: {
                 "User-Agent": USER_AGENT,
                 "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",

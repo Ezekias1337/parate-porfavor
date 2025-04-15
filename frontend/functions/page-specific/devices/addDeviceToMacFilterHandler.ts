@@ -28,6 +28,7 @@ const addDeviceToMacFilterHandler = async ({
             ontToken
         );
         setOntToken(ontTokenToUse);
+        console.log("device: ", device);
         
         if(!device.hostName || !device.ssid) {
             throw new Error("Device object is not complete");

@@ -11,8 +11,8 @@ import addDeviceToParentalControlsTemplate from "@/functions/network/parental-co
 import renderErrorMsg from "@/functions/general/renderErrorMsg";
 // Interfaces and Types
 import {
-  ParentalControlsData,
-  ParentalControlsDevice,
+/*   ParentalControlsData,
+  ParentalControlsDevice, */
   Template,
 } from "../../../../shared/types/ParentalControls";
 import { Device } from "../../../../shared/types/Device";
@@ -25,7 +25,7 @@ import { inputFieldStyles } from "@/styles/component-specific/input-fields";
 
 interface ParentalControlsTemplateCardProps {
   template: Template;
-  devices: ParentalControlsDevice[];
+  devices: Device[];
   modalDevice: Device | null;
   selectedTemplate: Template | null;
   setSelectedTemplate: React.Dispatch<React.SetStateAction<Template | null>>;
@@ -47,7 +47,7 @@ const ParentalControlsTemplateCard: FC<ParentalControlsTemplateCardProps> = ({
   const [loading, setLoading] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  const devicesBelongingToTemplate: ParentalControlsDevice[] = devices.filter(
+  const devicesBelongingToTemplate: Device[] = devices.filter(
     (device) => device.templateId === template.id
   );
   let arrayOfDays: string[] = [];

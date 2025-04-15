@@ -14,7 +14,7 @@ import Card from "@/components/Card";
 import { Device } from "../../../../../shared/types/Device";
 import {
   ParentalControlsData,
-  ParentalControlsDevice,
+  Template,
 } from "../../../../../shared/types/ParentalControls";
 import { ButtonProps } from "@/components/Button";
 import OntToken from "../../../../../shared/types/OntToken";
@@ -25,6 +25,10 @@ import deviceStyles from "../../../../styles/page-specific/device";
 interface ListOfStateSetters {
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
   setDevices: React.Dispatch<React.SetStateAction<Device[]>>;
+  setParentalControls: React.Dispatch<Template[]>;
+  setParentalControlsFullData: React.Dispatch<ParentalControlsData>;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  setErrorMsg: React.Dispatch<React.SetStateAction<string | null>>;
   setModalDevice: React.Dispatch<React.SetStateAction<Device | null>>;
   setOntToken: React.Dispatch<React.SetStateAction<OntToken>>;
 }
@@ -35,6 +39,10 @@ const renderDeviceCards = (
   {
     setModalVisible,
     setDevices,
+    setParentalControls,
+    setParentalControlsFullData,
+    setLoading,
+    setErrorMsg,
     setModalDevice,
     setOntToken,
   }: ListOfStateSetters,
@@ -49,21 +57,34 @@ const renderDeviceCards = (
           device,
           devices,
           setDevices,
+          setParentalControls,
+          setParentalControlsFullData,
+          setLoading,
+          setErrorMsg,
           index,
           ontToken,
           setOntToken,
           translate,
         });
-        buttons.push(button1);
+        if (button1) {
+          buttons.push(button1);
+        }
 
-          const button2 = renderDeviceCardButton2({
+        const button2 = renderDeviceCardButton2({
           device,
           setModalDevice,
           setModalVisible,
           displayParentalControlsModal,
+          setDevices,
+          setParentalControls,
+          setParentalControlsFullData,
+          setLoading,
+          setErrorMsg,
           translate,
         });
-        buttons.push(button2);
+        if (button2) {
+          buttons.push(button2);
+        }
 
         let headerText: string;
         if (device.hostName && device.hostName !== "") {

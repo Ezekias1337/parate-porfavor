@@ -114,6 +114,7 @@ const Button: FC<ButtonProps> = ({
       onPress={handlePress}
       disabled={disabled || loading}
       testID={buttonId || undefined}
+      
     >
       {renderButtonContent()}
     </TouchableOpacity>

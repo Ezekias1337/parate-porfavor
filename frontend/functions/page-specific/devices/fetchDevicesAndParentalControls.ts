@@ -8,11 +8,11 @@ import { ListOfStateSetters } from "../../../screens/Devices";
 import { Device } from "../../../../shared/types/Device";
 
 const fetchDevicesAndParentalControls = async (
-    { setDevices, setParentalControls, setLoading, setErrorMsg }: ListOfStateSetters,
+    { setDevices, setParentalControls, setParentalControlsFullData, setLoading, setErrorMsg }: ListOfStateSetters,
     translate: (key: string) => string
 ): Promise<void> => {
     setLoading(true);
-    
+
     try {
         const devicesToSet = await getDeviceList();
         const filteredDevicesToSet = await getDeviceListFiltered();
@@ -20,32 +20,33 @@ const fetchDevicesAndParentalControls = async (
         const parentalControlsDevices = extractParentalControlsDevicesFromTemplates(
             parentalControlsToSet);
 
+        setParentalControlsFullData(parentalControlsToSet);
         if (parentalControlsToSet.templates.length >= 0) {
             setParentalControls(parentalControlsToSet.templates);
         }
-
 
         for (const device of filteredDevicesToSet) {
             let dupeIndex = parentalControlsDevices.findIndex(
                 (dupe) => dupe.macAddr === device.macAddr
             );
             let dupe = parentalControlsDevices[dupeIndex];
-            
-            if(dupe) {
+
+            if (dupe) {
                 device.description = dupe.description;
                 device.templateId = dupe.templateId;
                 device.parentalControlRestrictionApplied = true;
                 parentalControlsDevices.splice(dupeIndex, 1);
             }
         }
-        
-        
-        
+
+
+
         const mergedDeviceArray: Device[] = [
             ...parentalControlsDevices,
             ...filteredDevicesToSet,
             ...devicesToSet
         ];
+        console.log("mergedDeviceArray", mergedDeviceArray);
 
         if (mergedDeviceArray.length === 0) {
             setErrorMsg(translate("serverError"));

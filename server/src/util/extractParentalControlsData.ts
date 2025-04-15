@@ -1,4 +1,6 @@
-import { ParentalControlsDevice, ParentalControlsData, Template } from "../../../shared/types/ParentalControls";
+import {  ParentalControlsData, Template } from "../../../shared/types/ParentalControls";
+
+import { Device } from "../../../shared/types/Device";
 
 const extractParentalControlsData = (htmlContent: string, logList?: boolean): ParentalControlsData => {
     const childListRegex = /new ChildListClass\("InternetGatewayDevice[^"]*","(.*?)","(.*?)","(\d+)"\)/g;
@@ -7,7 +9,7 @@ const extractParentalControlsData = (htmlContent: string, logList?: boolean): Pa
     const durationListRegex = /new DurationListClass\("InternetGatewayDevice\.X_HW_Security\.ParentalCtrl\.Templates\.(\d+)\.Duration\.(\d+)","([\d\\x3a]+)","([\d\\x3a]+)","([\d\\x2c]+)"\)/g;
 
     let match;
-    const deviceList: ParentalControlsDevice[] = [];
+    const deviceList: Device[] = [];
     const templates: Template[] = [];
     let connectionAttempts = 0;
     const tempTemplateNames: string[] = [];

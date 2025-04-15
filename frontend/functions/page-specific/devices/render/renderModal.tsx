@@ -1,7 +1,10 @@
 // Components
 import Modal from "@/components/Modal";
 // Types
-import { ParentalControlsData, Template } from "../../../../../shared/types/ParentalControls";
+import {
+  ParentalControlsData,
+  Template,
+} from "../../../../../shared/types/ParentalControls";
 import { Device } from "../../../../../shared/types/Device";
 import OntToken from "../../../../../shared/types/OntToken";
 // Functions, Helpers, Utils, and Hooks
@@ -11,7 +14,7 @@ interface RenderModalProps {
   modalVisible: boolean;
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
   modalDevice: Device | null;
-  parentalControlsData: ParentalControlsData;
+  parentalControlsData: ParentalControlsData | null;
   ontToken: OntToken;
   setOntToken: React.Dispatch<React.SetStateAction<OntToken>>;
   translate: (key: string) => string;
@@ -30,6 +33,13 @@ const renderModal = ({
   selectedTemplate,
   setSelectedTemplate,
 }: RenderModalProps) => {
+ /*  if (!parentalControlsData) {
+    return;
+  } */
+ 
+  if(!parentalControlsData ) {
+    return <></>
+  }
 
   return (
     <Modal modalVisible={modalVisible} setModalVisible={setModalVisible}>

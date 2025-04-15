@@ -39,6 +39,7 @@ import deviceStyles from "../styles/page-specific/device";
 export interface ListOfStateSetters {
   setDevices: React.Dispatch<React.SetStateAction<Device[]>>;
   setParentalControls: React.Dispatch<Template[]>;
+  setParentalControlsFullData: React.Dispatch<ParentalControlsData>;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   setErrorMsg: React.Dispatch<React.SetStateAction<string | null>>;
 }
@@ -56,12 +57,20 @@ const Devices: React.FC = () => {
     null
   );
   const [parentalControls, setParentalControls] = useState<Template[]>();
+  const [parentalControlsFullData, setParentalControlsFullData] =
+    useState<ParentalControlsData | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalDevice, setModalDevice] = useState<Device | null>(null);
 
   useEffect(() => {
     fetchDevicesAndParentalControls(
-      { setDevices, setParentalControls, setLoading, setErrorMsg },
+      {
+        setDevices,
+        setParentalControls,
+        setParentalControlsFullData,
+        setLoading,
+        setErrorMsg,
+      },
       translate
     );
   }, []);
@@ -74,10 +83,6 @@ const Devices: React.FC = () => {
     });
   }, [modalVisible]);
 
-  useEffect(() => {
-    console.log("Devices: ", devices);
-  }, [devices]);
-
   return (
     <View style={deviceStyles.container}>
       {loading && !errorMsg ? (
@@ -86,7 +91,13 @@ const Devices: React.FC = () => {
         <>
           {renderErrorMsg(errorMsg)}
           {renderButtons(
-            { setDevices, setParentalControls, setLoading, setErrorMsg },
+            {
+              setDevices,
+              setParentalControls,
+              setParentalControlsFullData,
+              setLoading,
+              setErrorMsg,
+            },
             translate
           )}
           {renderDeviceCards(
@@ -95,23 +106,27 @@ const Devices: React.FC = () => {
             {
               setModalVisible,
               setDevices,
+              setParentalControls,
+              setParentalControlsFullData,
+              setLoading,
+              setErrorMsg,
               setModalDevice,
               setOntToken,
             },
             translate
           )}
-          {/* {renderModal({
+          {renderModal({
             modalVisible,
             setModalVisible,
             modalDevice,
-            parentalControlsData: parentalControls,
+            parentalControlsData: parentalControlsFullData,
             ontToken,
             setOntToken,
             translate,
             selectedTemplate,
             setSelectedTemplate,
             setLoading,
-          })} */}
+          })}
         </>
       )}
     </View>

@@ -1,14 +1,15 @@
 // Types
-import { ParentalControlsDevice, ParentalControlsData } from "../../../../shared/types/ParentalControls";
+import { ParentalControlsData } from "../../../../shared/types/ParentalControls";
+import { Device } from "../../../../shared/types/Device";
 
 const extractParentalControlsDevicesFromTemplates = (
     parentalControlsData: ParentalControlsData | null,
-): ParentalControlsDevice[] => {
+): Device[] => {
     if (!parentalControlsData) {
         return [];
     }
 
-    const parentalControlsDevices: ParentalControlsDevice[] = [];
+    const parentalControlsDevices: Device[] = [];
 
     for (const template of parentalControlsData.templates) {
         if (template.devices) {

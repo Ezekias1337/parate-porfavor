@@ -1,6 +1,7 @@
 // Functions, Helpers, Utils, and Hooks
 import getOntToken from "@/functions/network/mac-filter/getOntToken";
 import removeDeviceFromMacFilter from "@/functions/network/mac-filter/removeDeviceFromMacFilter";
+import fetchDevicesAndParentalControls from "./fetchDevicesAndParentalControls";
 // Types
 import { Device } from "../../../../shared/types/Device";
 import OntToken from "../../../../shared/types/OntToken";
@@ -29,8 +30,8 @@ const removeDeviceFromMacFilterHandler = async (
             ontToken
         );
         setOntToken(ontTokenToUse);
-        
-        if(!device.connectionType) {
+
+        if (!device.connectionType) {
             throw new Error("Device connection type is not defined");
         }
 

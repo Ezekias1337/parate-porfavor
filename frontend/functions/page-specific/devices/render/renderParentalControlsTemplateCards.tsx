@@ -20,7 +20,6 @@ import { ButtonProps } from "@/components/Button";
 import OntToken from "../../../../../shared/types/OntToken";
 import {
   ParentalControlsData,
-  ParentalControlsDevice,
   Template,
 } from "../../../../../shared/types/ParentalControls";
 // CSS

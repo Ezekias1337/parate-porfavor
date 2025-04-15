@@ -1,11 +1,6 @@
 // Types
 import { Device } from "./Device";
 
-export interface ParentalControlsDevice extends Device {
-    description?: string;
-    templateId?: number;
-}
-
 export interface ParentalControlsData {
     templates: Template[];
     connectionAttempts: number;
@@ -21,5 +16,5 @@ export interface Template {
     startTime: startTime;
     endTime: endTime;
     repeatDays: repeatDays;
-    devices: ParentalControlsDevice[];
+    devices: Device[];
 }
