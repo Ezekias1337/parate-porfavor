@@ -46,6 +46,11 @@ const Login: React.FC = () => {
         loginCredentials.username,
         loginCredentials.password
       );
+      
+      if (loginCredentials.username && loginCredentials.password) {
+        saveEncrypted("loginCreds", loginCredentials);
+      }
+      
       if (token === null) {
         setErrorMsg(translate("authError"));
         setLoading(false);
@@ -62,12 +67,6 @@ const Login: React.FC = () => {
       console.error("Login error:", error);
     }
   };
-
-  useEffect(() => {
-    if (loginCredentials.username && loginCredentials.password) {
-      saveEncrypted("loginCreds", loginCredentials);
-    }
-  }, [loginCredentials]);
 
   useEffect(() => {
     const loadCreds = async () => {

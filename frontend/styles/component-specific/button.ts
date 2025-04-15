@@ -14,7 +14,7 @@ export const buttonStyles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
-    //width: "100%",
+    width: "100%",
   },
   buttonContent: {
     flexDirection: "row",

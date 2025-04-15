@@ -1,6 +1,6 @@
 // Library Imports
 import React, { useEffect, useState } from "react";
-import { ScrollView, View, ActivityIndicator } from "react-native";
+import { ScrollView, View, ActivityIndicator, Text } from "react-native";
 // Functions, Helpers, Utils, and Hooks
 import fetchDevicesAndParentalControls from "@/functions/page-specific/devices/fetchDevicesAndParentalControls";
 import handleTokenSwap from "@/functions/page-specific/devices/handleTokenSwap";
@@ -20,7 +20,7 @@ import {
 } from "../../shared/types/ParentalControls";
 import OntToken from "../../shared/types/OntToken";
 // CSS
-import { colors } from "../styles/variables";
+import { colors, fontSizes } from "../styles/variables";
 import deviceStyles from "../styles/page-specific/device";
 
 export interface ListOfStateSetters {
@@ -81,6 +81,8 @@ const Devices: React.FC = () => {
   ) : (
     <ScrollView contentContainerStyle={deviceStyles.container}>
       <>
+        <Text style={{ fontSize: fontSizes.header1, color: colors.primary200 }}>{translate("devices")}</Text>
+        
         {renderErrorMsg(errorMsg)}
         {renderButtons(
           {

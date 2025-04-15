@@ -97,6 +97,8 @@ export const LocalizationProvider: React.FC<{ children: React.ReactNode }> = ({
           settings: "Settings",
           serverUrl: "Server URL",
           modemUrl: "Modem URL",
+          settingsSaved: "Settings saved successfully!",
+          settingsError: "Failed to save settings. Please try again.",
         },
         es: {
           welcome: "Bienvenido",
@@ -163,6 +165,8 @@ export const LocalizationProvider: React.FC<{ children: React.ReactNode }> = ({
           settings: "Ajustes",
           serverUrl: "URL del Servidor",
           modemUrl: "URL del Modem",
+          settingsSaved: "Ajustes guardados correctamente!",
+          settingsError: "No se pudieron guardar los ajustes. Por favor, inténtelo de nuevo.",
         },
       };
 

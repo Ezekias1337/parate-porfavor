@@ -16,7 +16,7 @@ const modemStatusCardStyles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 8,
     elevation: 5,
-    width: "85%",
+    //width: "85%",
   },
   text: {
     fontSize: fontSizes.body,

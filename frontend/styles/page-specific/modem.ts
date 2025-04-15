@@ -12,16 +12,22 @@ const modemStyles = StyleSheet.create({
     width: "100%",
   },
   buttonContainer: {
-    marginTop: 20,
     justifyContent: "center",
     alignItems: "center",
-    flexDirection: "column",
+    flexDirection: "row",
+    flexWrap: "wrap",
     gap: 10,
-    width: "85%",
+    padding: 20,
   },
   alertContainer: {
-   width: "100%",
+    width: "100%",
   },
+  loader: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    minHeight: "100%", // Ensures the loader takes up the full height of the screen
+  }
 
 });
 

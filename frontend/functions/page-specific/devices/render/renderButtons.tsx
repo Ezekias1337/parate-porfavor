@@ -1,5 +1,5 @@
 // Library Imports
-import { View } from "react-native";
+import { View, Dimensions } from "react-native";
 // Components
 import Button from "@/components/Button";
 // Functions, Helpers, Utils, and Hooks
@@ -18,8 +18,10 @@ const renderButtons = (
   }: ListOfStateSetters,
   translate: (key: string) => string
 ) => {
+  const { width: screenWidth } = Dimensions.get("window");
+  
   return (
-    <View style={deviceStyles.buttonContainer}>
+    <View style={[deviceStyles.buttonContainer,  { width: screenWidth < 500 ? "85%" : "25%" },]}>
       <Button
         variant="primary"
         buttonSize="small"

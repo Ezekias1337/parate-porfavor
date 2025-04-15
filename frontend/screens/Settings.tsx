@@ -1,6 +1,6 @@
 // Library Imports
 import React, { useEffect, useState } from "react";
-import { View } from "react-native";
+import { View, Text, Dimensions } from "react-native";
 import { saveEncrypted, loadEncrypted } from "@/utils/secureStorage";
 // Functions, Helpers, Utils, and Hooks
 import login from "@/functions/network/auth/login";
@@ -12,12 +12,13 @@ import Button from "../components/Button";
 import Alert from "../components/Alert";
 import { useLocalization } from "../components/localization/LocalizationContext";
 // CSS
-import { colors } from "../styles/variables";
-import loginStyles from "../styles/page-specific/login";
+import { colors, fontSizes } from "../styles/variables";
+import settingsStyles from "../styles/page-specific/settings";
 import { inputFieldStyles } from "../styles/component-specific/input-fields";
 
 const Settings: React.FC = () => {
   const { translate } = useLocalization();
+  const { width: screenWidth } = Dimensions.get("window");
   const { isAuthenticated } = useAuth();
   useRefreshToken(isAuthenticated);
   const [loading, setLoading] = useState(false);
@@ -27,7 +28,7 @@ const Settings: React.FC = () => {
     serverUrl: "",
     modemUrl: "",
   });
-  const { login: authenticate } = useAuth();
+  const [settingsSaved, setSettingsSaved] = useState(false);
 
   const handleInputChange =
     (field: "serverUrl" | "modemUrl") => (text: string) => {
@@ -39,36 +40,6 @@ const Settings: React.FC = () => {
       setUrlSettings(newUrlSettings);
     };
 
- /*  const handleLogin = async () => {
-    try {
-      setLoading(true);
-      const token = await login(
-        loginCredentials.username,
-        loginCredentials.password
-      );
-      if (token === null) {
-        setErrorMsg(translate("authError"));
-        setLoading(false);
-      } else if (token != null) {
-        if (errorMsg !== null) {
-          setErrorMsg(null);
-        }
-        setLoading(false);
-        await authenticate(token);
-      }
-    } catch (error) {
-      setLoading(false);
-      setErrorMsg(translate("authError"));
-      console.error("Login error:", error);
-    }
-  }; */
-
-  useEffect(() => {
-    if (urlSettings.serverUrl !== "") {
-      saveEncrypted("urlSettings", urlSettings);
-    }
-  }, [urlSettings]);
-
   useEffect(() => {
     const loadCreds = async () => {
       const stored = await loadEncrypted("urlSettings");
@@ -79,10 +50,29 @@ const Settings: React.FC = () => {
     loadCreds();
   }, []);
 
+  useEffect(() => {
+    if (!settingsSaved) return;
+
+    const timeout = setTimeout(() => {
+      setSettingsSaved(false);
+    }, 5000);
+
+    return () => clearTimeout(timeout);
+  }, [settingsSaved]);
+
   return (
-    <View style={loginStyles.container}>
+    <View
+      style={[
+        settingsStyles.container,
+        { padding: screenWidth < 500 ? 20 : screenWidth * 0.2 },
+      ]}
+    >
+      <Text style={{ fontSize: fontSizes.header1, color: colors.primary200 }}>
+        {translate("settings")}
+      </Text>
+
       {errorMsg !== null && (
-        <View style={loginStyles.alertContainer}>
+        <View style={settingsStyles.alertContainer}>
           <Alert
             bodyText={translate("authError")}
             variant="error"
@@ -91,36 +81,75 @@ const Settings: React.FC = () => {
         </View>
       )}
 
-      <TextInput
-        placeholder={translate("serverUrl")}
-        value={urlSettings.serverUrl}
-        onChangeText={handleInputChange("serverUrl")}
-        style={inputFieldStyles.textInput}
-        placeholderTextColor={colors.primary300}
-        id="serverUrl"
-      />
-      <TextInput
-        placeholder={translate("modemUrl")}
-        value={urlSettings.modemUrl}
-        onChangeText={handleInputChange("modemUrl")}
-        secureTextEntry
-        style={inputFieldStyles.textInput}
-        placeholderTextColor={colors.primary300}
-        id="modemUrl"
-      />
-      <View style={loginStyles.buttonContainer}>
+      <View style={inputFieldStyles.formRow}>
+        <View style={inputFieldStyles.formLabelContainer}>
+          <Text style={inputFieldStyles.formLabel}>
+            {translate("serverUrl")}
+          </Text>
+        </View>
+
+        <TextInput
+          placeholder={translate("serverUrl")}
+          value={urlSettings.serverUrl}
+          onChangeText={handleInputChange("serverUrl")}
+          style={inputFieldStyles.textInput}
+          placeholderTextColor={colors.primary300}
+          id="serverUrl"
+        />
+      </View>
+
+      <View style={inputFieldStyles.formRow}>
+        <View style={inputFieldStyles.formLabelContainer}>
+          <Text style={inputFieldStyles.formLabel}>
+            {translate("modemUrl")}
+          </Text>
+        </View>
+
+        <TextInput
+          placeholder={translate("modemUrl")}
+          value={urlSettings.modemUrl}
+          onChangeText={handleInputChange("modemUrl")}
+          secureTextEntry
+          style={inputFieldStyles.textInput}
+          placeholderTextColor={colors.primary300}
+          id="modemUrl"
+        />
+      </View>
+
+      <View style={settingsStyles.buttonContainer}>
         <Button
           text={translate("saveChanges")}
           variant="primary"
           buttonSize="medium"
           loading={loading}
           onClickHandler={async () => {
-            //await handleLogin();
+            try {
+              setLoading(true);
+              setErrorMsg(null);
+              if (settingsSaved) {
+                setSettingsSaved(false);
+              }
+              await saveEncrypted("urlSettings", urlSettings);
+              setLoading(false);
+              setSettingsSaved(true);
+            } catch (error) {
+              setErrorMsg(translate("settingsError"));
+            }
           }}
           icon="floppy-o"
           leftIcon
         />
       </View>
+
+      {settingsSaved && (
+        <View style={settingsStyles.alertContainer}>
+          <Alert
+            bodyText={translate("settingsSaved")}
+            variant="success"
+            icon="check-circle"
+          />
+        </View>
+      )}
     </View>
   );
 };

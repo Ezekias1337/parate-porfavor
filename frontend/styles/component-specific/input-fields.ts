@@ -46,6 +46,5 @@ export const inputFieldStyles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 10,
     color: colors.primary500,
-
   },
 });

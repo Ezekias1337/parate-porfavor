@@ -1,6 +1,6 @@
 // Library Imports
 import React, { useEffect, useState, useCallback } from "react";
-import { View, ActivityIndicator } from "react-native";
+import { View, ActivityIndicator, Text, ScrollView } from "react-native";
 // Functions, Helpers, Utils, and Hooks
 import getModemStatus from "../functions/network/modem/getModemStatus";
 import rebootModem from "../functions/network/modem/rebootModem";
@@ -14,7 +14,7 @@ import ModemStatusCard from "../components/page-specific/modem/ModemStatusCard";
 import { ModemStatus } from "../../shared/types/Modem";
 import { useLocalization } from "../components/localization/LocalizationContext";
 // CSS
-import { colors } from "../styles/variables";
+import { colors, fontSizes } from "../styles/variables";
 import modemStyles from "../styles/page-specific/modem";
 
 const Modem: React.FC = () => {
@@ -82,63 +82,72 @@ const Modem: React.FC = () => {
     }
   }, [modemRebooting, logout]);
 
-  return (
-    <View style={modemStyles.container}>
-      {loading && <ActivityIndicator color={colors.primary500} size="large" />}
-      {errorMsg && (
-        <View style={modemStyles.alertContainer}>
-          <Alert
-            bodyText={errorMsg}
-            variant="error"
-            icon="exclamation-triangle"
-          />
-        </View>
-      )}
-      {modemRebooting && (
-        <View style={modemStyles.alertContainer}>
+  return loading && !errorMsg ? (
+    <View style={[modemStyles.loader]}>
+      <ActivityIndicator color={colors.primary500} size="large" />
+    </View>
+  ) : (
+    <ScrollView contentContainerStyle={modemStyles.container}>
+      <>
+        <Text style={{ fontSize: fontSizes.header1, color: colors.primary200 }}>
+          {translate("modem")}
+        </Text>
+
+        {errorMsg && (
           <View style={modemStyles.alertContainer}>
             <Alert
-              bodyText={`${translate(
-                "modemIsRebooting"
-              )} ${secondsBeforeLogout} ${translate("seconds")}`}
-              variant="info"
-              icon="info-circle"
+              bodyText={errorMsg}
+              variant="error"
+              icon="exclamation-triangle"
             />
           </View>
-        </View>
-      )}
+        )}
+        {modemRebooting && (
+          <View style={modemStyles.alertContainer}>
+            <View style={modemStyles.alertContainer}>
+              <Alert
+                bodyText={`${translate(
+                  "modemIsRebooting"
+                )} ${secondsBeforeLogout} ${translate("seconds")}`}
+                variant="info"
+                icon="info-circle"
+              />
+            </View>
+          </View>
+        )}
 
-      {!loading && modemStatus !== null && errorMsg === null && (
-        <ModemStatusCard
-          cpuUsed={modemStatus.cpuUsed}
-          memUsed={modemStatus.memUsed}
-          systemTime={modemStatus.systemTime}
-        />
-      )}
+        {!loading && modemStatus !== null && errorMsg === null && (
+          <ModemStatusCard
+            cpuUsed={modemStatus.cpuUsed}
+            memUsed={modemStatus.memUsed}
+            systemTime={modemStatus.systemTime}
+          />
+        )}
 
-      {displayButtons && (
-        <View style={modemStyles.buttonContainer}>
-          <Button
-            text={translate("rebootModem")}
-            variant="primary"
-            onClickHandler={async () => {
-              await rebootModem();
-              setModemRebooting(true);
-            }}
-            loading={modemRebooting}
-            icon="power-off" 
-            leftIcon
-          />
-          <Button
-            variant="primaryDark"
-            text={translate("refresh")}
-            onClickHandler={fetchModemStatus}
-            icon="refresh" 
-            leftIcon
-          />
-        </View>
-      )}
-    </View>
+        {displayButtons && (
+          <View style={modemStyles.buttonContainer}>
+            <Button
+              text={translate("rebootModem")}
+              variant="primary"
+              onClickHandler={async () => {
+                await rebootModem();
+                setModemRebooting(true);
+              }}
+              loading={modemRebooting}
+              icon="power-off"
+              leftIcon
+            />
+            <Button
+              variant="primaryDark"
+              text={translate("refresh")}
+              onClickHandler={fetchModemStatus}
+              icon="refresh"
+              leftIcon
+            />
+          </View>
+        )}
+      </>
+    </ScrollView>
   );
 };
 

@@ -11,8 +11,8 @@ const deviceStyles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     width: "100%",
-    paddingTop: 20,
-    paddingBottom: 20,
+    paddingTop: 40,
+    paddingBottom: 40,
   },
   buttonContainer: {
     justifyContent: "center",
@@ -21,7 +21,6 @@ const deviceStyles = StyleSheet.create({
     flexWrap: "wrap",
     gap: 10,
     padding: 20,
-    //width: "85%",
   },
   alertContainer: {
     width: "100%",
@@ -35,7 +34,6 @@ const deviceStyles = StyleSheet.create({
     marginTop: 20,
     padding: 20,
   },
-
   text: {
     color: colors.neutral100,
     fontSize: fontSizes.body,
@@ -47,9 +45,6 @@ const deviceStyles = StyleSheet.create({
     alignItems: "center",
     minHeight: "100%", // Ensures the loader takes up the full height of the screen
   }
-
-
-
 });
 
 export default deviceStyles;
