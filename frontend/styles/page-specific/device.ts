@@ -6,61 +6,49 @@ import { colors, fontSizes } from "../variables";
 
 const deviceStyles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexDirection: "row",
+    flexWrap: "wrap",
     justifyContent: "center",
     alignItems: "center",
     width: "100%",
-    height: 500,
-    overflowY: "scroll",
-    paddingTop: 40,
-    paddingBottom: 20
+    paddingTop: 20,
+    paddingBottom: 20,
   },
   buttonContainer: {
-    marginTop: 20,
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
     flexWrap: "wrap",
     gap: 10,
-    width: "55%",
+    padding: 20,
+    //width: "85%",
   },
   alertContainer: {
     width: "100%",
   },
-  switchWrapper: {
-    paddingTop: 200,  
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "column",
-    gap: 10,
-  },
-  switchContainer: {
-    paddingTop: 20,
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "row",
-    width: "85%",
-    gap: 20
-  },
   devicesContainer: {
-    marginTop: 20,
     justifyContent: "center",
-    alignItems: "center",
     flexDirection: "row",
     flexWrap: "wrap",
+    alignItems: "stretch",
     gap: 10,
-    width: "85%",
-    height: 1000
+    marginTop: 20,
+    padding: 20,
   },
 
-  switch: {
-    transform: [{ scaleX: 1.25 }, { scaleY: 1.25 }], // Adjusts size
-  },
-  
   text: {
     color: colors.neutral100,
     fontSize: fontSizes.body,
+  },
+
+  loader: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    minHeight: "100%", // Ensures the loader takes up the full height of the screen
   }
+
+
 
 });
 

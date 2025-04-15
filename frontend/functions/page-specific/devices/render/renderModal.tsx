@@ -16,7 +16,7 @@ interface RenderModalProps {
   modalDevice: Device | null;
   parentalControls: ParentalControlsData | null;
   setParentalControls: React.Dispatch<
-    ParentalControlsData | null
+    ParentalControlsData
   >;
   setDevices: React.Dispatch<React.SetStateAction<Device[]>>;
   ontToken: OntToken;

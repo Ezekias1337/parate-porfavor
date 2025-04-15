@@ -20,6 +20,7 @@ import { ButtonProps } from "@/components/Button";
 import OntToken from "../../../../../shared/types/OntToken";
 // CSS
 import deviceStyles from "../../../../styles/page-specific/device";
+import { BadgeProps } from "@/components/Badge";
 // Functions, Helpers, Utils, and Hooks
 
 interface ListOfStateSetters {
@@ -95,6 +96,33 @@ const renderDeviceCards = (
         } else {
           headerText = device.macAddr;
         }
+        
+        let arrayOfBadges: BadgeProps[] = [];
+        
+        if(device.onlineStatus === "Online") {
+          arrayOfBadges.push({
+            text: translate("online"),
+            variant: "success",
+            icon: "signal",
+            size: "small",
+          });
+        } else if (device.onlineStatus === "Offline" || device.onlineStatus === "Unknown") {
+          arrayOfBadges.push({
+            text: translate("offline"),
+            variant: "neutral",
+            icon: "signal",
+            size: "small",
+          });
+        }
+        
+        if (device.macFiltered || device.parentalControlRestrictionApplied) {
+          arrayOfBadges.push({
+            text: translate("blocked"),
+            variant: "error",
+            icon: "ban",
+            size: "small",
+          });
+        }
 
         return (
           <Card
@@ -103,6 +131,7 @@ const renderDeviceCards = (
             bodyText={device.macAddr}
             cardIcon={device.connectionType === "WIFI" ? "wifi" : "desktop"}
             buttons={buttons}
+            badges={arrayOfBadges}
             imageSource=""
           />
         );

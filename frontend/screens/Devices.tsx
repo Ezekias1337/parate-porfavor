@@ -1,6 +1,6 @@
 // Library Imports
 import React, { useEffect, useState } from "react";
-import { View, ActivityIndicator } from "react-native";
+import { ScrollView, View, ActivityIndicator } from "react-native";
 // Functions, Helpers, Utils, and Hooks
 import fetchDevicesAndParentalControls from "@/functions/page-specific/devices/fetchDevicesAndParentalControls";
 import handleTokenSwap from "@/functions/page-specific/devices/handleTokenSwap";
@@ -83,53 +83,56 @@ const Devices: React.FC = () => {
     });
   }, [modalVisible]);
 
-  return (
-    <View style={deviceStyles.container}>
-      {loading && !errorMsg ? (
-        <ActivityIndicator color={colors.primary500} size="large" />
-      ) : (
-        <>
-          {renderErrorMsg(errorMsg)}
-          {renderButtons(
-            {
-              setDevices,
-              setParentalControls,
-              setLoading,
-              setErrorMsg,
-            },
-            translate
-          )}
-          {renderDeviceCards(
-            ontToken,
-            devices,
-            {
-              setModalVisible,
-              setDevices,
-              parentalControls,
-              setParentalControls,
-              setLoading,
-              setErrorMsg,
-              setModalDevice,
-              setOntToken,
-            },
-            translate
-          )}
-          {renderModal({
-            modalVisible,
-            setModalVisible,
-            modalDevice,
-            parentalControls,
-            ontToken,
-            setOntToken,
-            translate,
-            selectedTemplate,
-            setSelectedTemplate,
-            setLoading,
-          })}
-        </>
-      )}
+  return loading && !errorMsg ? (
+    <View style={[deviceStyles.loader]}>
+      <ActivityIndicator color={colors.primary500} size="large" />
     </View>
+  ) : (
+    <ScrollView contentContainerStyle={deviceStyles.container}>
+      <>
+        {renderErrorMsg(errorMsg)}
+        {renderButtons(
+          {
+            setDevices,
+            setParentalControls,
+            setLoading,
+            setErrorMsg,
+          },
+          translate
+        )}
+        {renderDeviceCards(
+          ontToken,
+          devices,
+          {
+            setModalVisible,
+            setDevices,
+            parentalControls,
+            setParentalControls,
+            setLoading,
+            setErrorMsg,
+            setModalDevice,
+            setOntToken,
+          },
+          translate
+        )}
+        {renderModal({
+          modalVisible,
+          setModalVisible,
+          modalDevice,
+          parentalControls,
+          ontToken,
+          setOntToken,
+          translate,
+          selectedTemplate,
+          setSelectedTemplate,
+          setLoading,
+          setParentalControls,
+          setDevices,
+        })}
+      </>
+    </ScrollView>
   );
+  
 };
 
 export default Devices;

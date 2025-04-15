@@ -1,11 +1,10 @@
 import React, { FC } from "react";
 import { View, Text } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
-import Button from "./Button";
-import { ButtonVariant } from "./Button";
 import { colors } from "../styles/variables";
 import cardStyles from "../styles/component-specific/card";
-import { ButtonProps } from "./Button";
+import Button, { ButtonProps } from "./Button";
+import Badge, { BadgeProps } from "./Badge";
 import FontAwesomeIconNames from "../types/FontAwesome";
 
 interface CardProps {
@@ -14,6 +13,7 @@ interface CardProps {
   imageSource: any;
   cardIcon: FontAwesomeIconNames;
   buttons?: ButtonProps[];
+  badges?: BadgeProps[];
 }
 
 export const Card: FC<CardProps> = ({
@@ -21,6 +21,7 @@ export const Card: FC<CardProps> = ({
   bodyText,
   cardIcon,
   buttons = [],
+  badges = [],
 }) => {
   return (
     <View style={cardStyles.card}>
@@ -50,6 +51,19 @@ export const Card: FC<CardProps> = ({
             onClickHandler={button.onClickHandler}
             url={button.url}
             buttonSize="small"
+          />
+        ))}
+      </View>
+      <View style={cardStyles.badgeWrapper}>
+        {badges.map((badge, index) => (
+          <Badge
+            key={index}
+            text={badge.text}
+            variant={badge.variant}
+            icon={badge.icon}
+            iconSize={16}
+            size={badge.size}
+            additionalStyle={badge.additionalStyle}
           />
         ))}
       </View>

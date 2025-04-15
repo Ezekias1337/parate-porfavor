@@ -18,7 +18,8 @@ const cardStyles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 5,
     width: 300,
-    height: 400,
+    //height: 400,
+
   },
   imageOnlyCard: {
     height: 200,
@@ -46,6 +47,13 @@ const cardStyles = StyleSheet.create({
   buttonWrapper: {
     flexDirection: "column",
     justifyContent: "space-between",
+    marginTop: 20,
+    gap: 10,
+  },
+  badgeWrapper: {
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    gap: 10,
     marginTop: 10,
   },
   button: {
