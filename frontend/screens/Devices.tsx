@@ -56,7 +56,10 @@ const Devices: React.FC = () => {
     null
   );
   const [parentalControls, setParentalControls] =
-    useState<ParentalControlsData | null>(null);
+    useState<ParentalControlsData>({
+      templates: [],
+      connectionAttempts: 0,
+    });
   const [modalVisible, setModalVisible] = useState(false);
   const [modalDevice, setModalDevice] = useState<Device | null>(null);
 
@@ -79,7 +82,7 @@ const Devices: React.FC = () => {
       setModalDevice,
     });
   }, [modalVisible]);
-  
+
   return (
     <View style={deviceStyles.container}>
       {loading && !errorMsg ? (
@@ -102,6 +105,7 @@ const Devices: React.FC = () => {
             {
               setModalVisible,
               setDevices,
+              parentalControls,
               setParentalControls,
               setLoading,
               setErrorMsg,
@@ -114,7 +118,7 @@ const Devices: React.FC = () => {
             modalVisible,
             setModalVisible,
             modalDevice,
-            parentalControlsData: parentalControls,
+            parentalControls,
             ontToken,
             setOntToken,
             translate,

@@ -5,15 +5,16 @@ import fetchDevicesAndParentalControls from "../fetchDevicesAndParentalControls"
 import { Device } from "../../../../../shared/types/Device";
 import { ButtonProps } from "../../../../components/Button";
 import OntToken from "../../../../../shared/types/OntToken";
-import { Template, ParentalControlsData } from "../../../../../shared/types/ParentalControls";
+import {
+  Template,
+  ParentalControlsData,
+} from "../../../../../shared/types/ParentalControls";
 
 interface renderButtonArguments {
   device: Device;
   devices: Device[];
   setDevices: React.Dispatch<React.SetStateAction<Device[]>>;
-  setParentalControls: React.Dispatch<
-    ParentalControlsData
-  >;
+  setParentalControls: React.Dispatch<ParentalControlsData>;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   setErrorMsg: React.Dispatch<React.SetStateAction<string | null>>;
   index: number;
@@ -54,6 +55,16 @@ const renderDeviceCardButton1 = ({
           devices,
           setDevices,
         });
+
+        await fetchDevicesAndParentalControls(
+          {
+            setDevices,
+            setParentalControls,
+            setLoading,
+            setErrorMsg,
+          },
+          translate
+        );
       },
     };
   } else {

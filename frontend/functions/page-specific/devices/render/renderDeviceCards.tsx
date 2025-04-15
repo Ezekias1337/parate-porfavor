@@ -25,6 +25,7 @@ import deviceStyles from "../../../../styles/page-specific/device";
 interface ListOfStateSetters {
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
   setDevices: React.Dispatch<React.SetStateAction<Device[]>>;
+  parentalControls: ParentalControlsData;
   setParentalControls: React.Dispatch<ParentalControlsData>;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   setErrorMsg: React.Dispatch<React.SetStateAction<string | null>>;
@@ -38,6 +39,7 @@ const renderDeviceCards = (
   {
     setModalVisible,
     setDevices,
+    parentalControls,
     setParentalControls,
     setLoading,
     setErrorMsg,
@@ -69,10 +71,13 @@ const renderDeviceCards = (
 
         const button2 = renderDeviceCardButton2({
           device,
+          devices,
+          setDevices,
           setModalDevice,
           setModalVisible,
           displayParentalControlsModal,
-          setDevices,
+          index,
+          parentalControls,
           setParentalControls,
           setLoading,
           setErrorMsg,

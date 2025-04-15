@@ -33,6 +33,10 @@ const addDeviceToParentalControlsHandler = async ({
         );
         setOntToken(ontTokenToUse);
 
+        if (!device.hostName || !device.ssid) {
+            throw new Error("Device information is not complete");
+        }
+        
         await addDeviceToMacFilter(
             device.macAddr,
             device.hostName,

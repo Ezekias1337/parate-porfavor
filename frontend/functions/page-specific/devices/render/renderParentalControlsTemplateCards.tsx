@@ -10,7 +10,7 @@ import getOntToken from "@/functions/network/mac-filter/getOntToken";
 import addDeviceToMacFilter from "../addDeviceToMacFilterHandler";
 import displayParentalControlsModal from "../displayParentalControlsModal";
 
-import extractParentalControlsDevicesFromTemplates from "../extractParentalControlsDevicesFromTemplates"
+import extractParentalControlsDevicesFromTemplates from "../extractParentalControlsDevicesFromTemplates";
 // Components
 import Card from "@/components/Card";
 import ParentalControlsTemplateCard from "@/components/page-specific/parental-controls/ParentalControlsTemplateCard";
@@ -27,40 +27,52 @@ import deviceStyles from "../../../../styles/page-specific/device";
 // Functions, Helpers, Utils, and Hooks
 
 interface RenderParentalControlsTemplateCardsProps {
-  parentalControlsData: ParentalControlsData;
+  parentalControls: ParentalControlsData;
   modalDevice: Device | null;
+  setDevices: React.Dispatch<React.SetStateAction<Device[]>>;
+  setParentalControls: React.Dispatch<
+    ParentalControlsData
+  >;
   selectedTemplate: Template | null;
   setSelectedTemplate: React.Dispatch<React.SetStateAction<Template | null>>;
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
   ontToken: OntToken;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   translate: (key: string) => string;
 }
 
 const renderParentalControlsTemplateCards = ({
-  parentalControlsData,
+  parentalControls,
   modalDevice,
+  setDevices,
+  setParentalControls,
   selectedTemplate,
   setSelectedTemplate,
   setModalVisible,
   ontToken,
+  setLoading,
   translate,
 }: RenderParentalControlsTemplateCardsProps) => {
-  const parentalControlsDevices = extractParentalControlsDevicesFromTemplates(parentalControlsData);
+  const parentalControlsDevices =
+    extractParentalControlsDevicesFromTemplates(parentalControls);
 
   return (
     <View style={deviceStyles.devicesContainer}>
       {selectedTemplate === null &&
-        parentalControlsData.templates.map((template) => {
+        parentalControls.templates.map((template) => {
           return (
             <ParentalControlsTemplateCard
               key={template.id}
               template={template}
               devices={parentalControlsDevices}
+              setParentalControls={setParentalControls}
+              setDevices={setDevices}
               modalDevice={modalDevice}
               selectedTemplate={selectedTemplate}
               setSelectedTemplate={setSelectedTemplate}
               ontToken={ontToken}
               setModalVisible={setModalVisible}
+              setLoading={setLoading}
             />
           );
         })}
@@ -69,11 +81,14 @@ const renderParentalControlsTemplateCards = ({
         <ParentalControlsTemplateCard
           template={selectedTemplate}
           devices={parentalControlsDevices}
+          setParentalControls={setParentalControls}
+          setDevices={setDevices}
           modalDevice={modalDevice}
           selectedTemplate={selectedTemplate}
           setSelectedTemplate={setSelectedTemplate}
           ontToken={ontToken}
           setModalVisible={setModalVisible}
+          setLoading={setLoading}
         />
       )}
     </View>

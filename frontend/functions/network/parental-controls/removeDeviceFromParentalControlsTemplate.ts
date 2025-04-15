@@ -7,7 +7,12 @@ const removeDeviceFromParentalControlsTemplate = async (
   ontToken: OntToken
 ): Promise<boolean> => {
   try {
-    const response = await fetchData("/api/parental-controls/remove-device-from-parental-controls-template", {
+    const infoOfDeviceToRemove = {
+      macIndex: macIndex,
+      ontToken: ontToken
+    }
+    
+    const response = await fetchData("/api/parental-controls/remove-device-from-parental-controls", {
       method: "DELETE",
       headers: {
         "User-Agent":
@@ -15,7 +20,7 @@ const removeDeviceFromParentalControlsTemplate = async (
         Accept: "*/*",
         "Content-Type": "application/json",
       },
-      //body: JSON.stringify(infoOfDeviceToAdd),
+      body: JSON.stringify(infoOfDeviceToRemove),
     });
 
     if (!response.ok) {

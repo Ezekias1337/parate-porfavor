@@ -14,7 +14,11 @@ interface RenderModalProps {
   modalVisible: boolean;
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
   modalDevice: Device | null;
-  parentalControlsData: ParentalControlsData | null;
+  parentalControls: ParentalControlsData | null;
+  setParentalControls: React.Dispatch<
+    ParentalControlsData | null
+  >;
+  setDevices: React.Dispatch<React.SetStateAction<Device[]>>;
   ontToken: OntToken;
   setOntToken: React.Dispatch<React.SetStateAction<OntToken>>;
   translate: (key: string) => string;
@@ -26,27 +30,33 @@ interface RenderModalProps {
 const renderModal = ({
   modalVisible,
   setModalVisible,
-  parentalControlsData,
+  parentalControls,
+  setParentalControls,
+  setDevices,
   modalDevice,
   ontToken,
   translate,
   selectedTemplate,
   setSelectedTemplate,
+  setLoading,
 }: RenderModalProps) => {
-  if(!parentalControlsData ) {
-    return <></>
+  if (!parentalControls) {
+    return <></>;
   }
 
   return (
     <Modal modalVisible={modalVisible} setModalVisible={setModalVisible}>
       {renderParentalControlsTemplateCards({
-        parentalControlsData,
+        parentalControls,
+        setParentalControls,
+        setDevices,
         modalDevice,
         selectedTemplate,
         setSelectedTemplate,
         setModalVisible,
         ontToken,
         translate,
+        setLoading,
       })}
     </Modal>
   );

@@ -225,12 +225,12 @@ export const createParentalControlsTemplate: RequestHandler = async (req, res, n
 export const removeDeviceFromParentalControls: RequestHandler = async (req, res, next) => {
     try {
         const cookies: string = sessionStore.getAllCookies();
-        const macDeviceIndex: number = req.body.macDeviceIndex;
+        const macIndex: number = req.body.macIndex;
 
         let ontToken: OntToken = req.body.ontToken;
         ontToken = await fetchOntTokenSourceHandler(ontToken, cookies);
 
-        const queryString = `InternetGatewayDevice.X_HW_Security.ParentalCtrl.MAC.${macDeviceIndex}=
+        const queryString = `InternetGatewayDevice.X_HW_Security.ParentalCtrl.MAC.${macIndex}=
             &x.X_HW_Token=${ontToken}`;
 
         const response = await axios.post(`${MODEM_URL_BASE}/html/bbsp/parentalctrl/del.cgi?RequestFile=html/bbsp/parentalctrl/parentalctrlmac.asp`, queryString, {
