@@ -13,8 +13,8 @@ export const modalStyles = StyleSheet.create({
 
   modalContents: {
     paddingHorizontal: 20,
-    height: "50%",
-    width: "80%",
+    //height: "50%",
+    //width: "80%",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",

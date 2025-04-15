@@ -81,6 +81,10 @@ const Devices: React.FC = () => {
       setOntToken,
       setModalDevice,
     });
+    
+    if(!modalVisible) {
+      setSelectedTemplate(null);
+    }
   }, [modalVisible]);
 
   return loading && !errorMsg ? (

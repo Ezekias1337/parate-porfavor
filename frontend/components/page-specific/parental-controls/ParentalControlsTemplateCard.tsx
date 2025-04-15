@@ -188,11 +188,19 @@ const templateCardStyles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 8,
+    display: "flex",
+    flexDirection: "column",
+    maxWidth: "95%",
+    width: "100%", 
   },
+  
   title: {
     fontSize: fontSizes.header2,
     color: colors.primary100,
     fontWeight: "bold",
+    flexShrink: 1,
+    flex: 1,
+    flexWrap: "wrap",
   },
   bold: {
     fontWeight: "bold",
@@ -204,6 +212,9 @@ const templateCardStyles = StyleSheet.create({
   text: {
     fontSize: fontSizes.body,
     color: colors.neutral100,
+    flexShrink: 1,
+    flex: 1,
+    flexWrap: "wrap",
   },
   icon: {
     marginRight: 10,
@@ -211,13 +222,16 @@ const templateCardStyles = StyleSheet.create({
   },
   row: {
     flexDirection: "row",
+    flexWrap: "wrap",
     alignItems: "center",
     justifyContent: "flex-start",
     display: "flex",
     gap: 10,
     marginTop: 5,
     marginBottom: 5,
+    width: "100%",
   },
+  
   buttonRow: {
     flexDirection: "column",
     gap: 10,
