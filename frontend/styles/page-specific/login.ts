@@ -10,18 +10,37 @@ const loginStyles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: colors.neutral800,
+    padding: 40,
+    width: "100%",
   },
-  
+
+  formRow: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 20,
+    width: "100%",
+  },
+  formLabelContainer: {
+    alignSelf: "flex-start",
+    marginBottom: 5,
+  },
+  formLabel: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 10,
+    color: colors.primary500,
+
+  },
   alertContainer: {
     marginBottom: 20
   },
 
   buttonContainer: {
-    width: "75%",
+    width: "100%",
   },
-  button: {
-    width: "75%",
-  },
+
 });
 
 export default loginStyles;

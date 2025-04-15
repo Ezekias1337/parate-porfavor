@@ -1,6 +1,6 @@
 // Library Imports
 import React, { useEffect, useState } from "react";
-import { View } from "react-native";
+import { View, Text, Image, Dimensions } from "react-native";
 import { saveEncrypted, loadEncrypted } from "@/utils/secureStorage";
 // Functions, Helpers, Utils, and Hooks
 import login from "@/functions/network/auth/login";
@@ -14,9 +14,12 @@ import { useLocalization } from "../components/localization/LocalizationContext"
 import { colors } from "../styles/variables";
 import loginStyles from "../styles/page-specific/login";
 import { inputFieldStyles } from "../styles/component-specific/input-fields";
+// Assets
+const appIcon = require("../assets/images/app-icon.png");
 
 const Login: React.FC = () => {
   const { translate } = useLocalization();
+  const { width: screenWidth } = Dimensions.get("window");
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
@@ -77,7 +80,12 @@ const Login: React.FC = () => {
   }, []);
 
   return (
-    <View style={loginStyles.container}>
+    <View
+      style={[
+        loginStyles.container,
+        { padding: screenWidth < 500 ? 20 : screenWidth * 0.2 },
+      ]}
+    >
       {errorMsg !== null && (
         <View style={loginStyles.alertContainer}>
           <Alert
@@ -88,23 +96,45 @@ const Login: React.FC = () => {
         </View>
       )}
 
-      <TextInput
-        placeholder={translate("username")}
-        value={loginCredentials.username}
-        onChangeText={handleInputChange("username")}
-        style={inputFieldStyles.textInput}
-        placeholderTextColor={colors.primary300}
-        id="username"
+      <Image
+        source={appIcon}
+        style={{
+          width: screenWidth < 500 ? screenWidth * 0.75 : screenWidth * 0.2,
+          height: screenWidth < 500 ? screenWidth * 0.75 : screenWidth * 0.2,
+        }}
       />
-      <TextInput
-        placeholder={translate("password")}
-        value={loginCredentials.password}
-        onChangeText={handleInputChange("password")}
-        secureTextEntry
-        style={inputFieldStyles.textInput}
-        placeholderTextColor={colors.primary300}
-        id="password"
-      />
+
+      <View style={loginStyles.formRow}>
+        <View style={loginStyles.formLabelContainer}>
+          <Text style={loginStyles.formLabel}>{translate("username")}</Text>
+        </View>
+
+        <TextInput
+          placeholder={translate("username")}
+          value={loginCredentials.username}
+          onChangeText={handleInputChange("username")}
+          style={inputFieldStyles.textInput}
+          placeholderTextColor={colors.primary300}
+          id="username"
+        />
+      </View>
+
+      <View style={loginStyles.formRow}>
+        <View style={loginStyles.formLabelContainer}>
+          <Text style={loginStyles.formLabel}>{translate("password")}</Text>
+        </View>
+
+        <TextInput
+          placeholder={translate("password")}
+          value={loginCredentials.password}
+          onChangeText={handleInputChange("password")}
+          secureTextEntry
+          style={inputFieldStyles.textInput}
+          placeholderTextColor={colors.primary300}
+          id="password"
+        />
+      </View>
+
       <View style={loginStyles.buttonContainer}>
         <Button
           text={translate("login")}

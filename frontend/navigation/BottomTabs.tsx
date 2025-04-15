@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import ParentalControlsScreen from "../screens/ParentalControls";
 import ModemScreen from "../screens/Modem";
 import DevicesScreen from "../screens/Devices";
+import SettingsScreen from "../screens/Settings";
 // Components
 import TabIcon from "./TabIcon";
 // Functions
@@ -54,6 +55,15 @@ const BottomTabs = () => {
       <Tab.Screen
         name={translate("modem")}
         component={ModemScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <TabIcon name="wifi" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name={translate("settings")}
+        component={SettingsScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
             <TabIcon name="wifi" size={size} color={color} />

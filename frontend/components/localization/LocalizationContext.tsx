@@ -93,6 +93,9 @@ export const LocalizationProvider: React.FC<{ children: React.ReactNode }> = ({
           description: "Description",
           modifyScheduledRestriction: "Modify Schedule",
           noDevices: "No devices",
+          settings: "Settings",
+          serverUrl: "Server URL",
+          modemUrl: "Modem URL",
         },
         es: {
           welcome: "Bienvenido",
@@ -155,6 +158,9 @@ export const LocalizationProvider: React.FC<{ children: React.ReactNode }> = ({
           description: "Descripción",
           modifyScheduledRestriction: "Modificar Horario",
           noDevices: "No hay dispositivos",
+          settings: "Ajustes",
+          serverUrl: "URL del Servidor",
+          modemUrl: "URL del Modem",
         },
       };
 

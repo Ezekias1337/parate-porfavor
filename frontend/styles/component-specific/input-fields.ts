@@ -18,7 +18,7 @@ export const inputFieldStyles = StyleSheet.create({
     borderColor: colors.primary500,
     borderWidth: 1.5,
     color: colors.primary500,
-    width: "75%",
+    width: "100%",
     marginBottom: 10,
 
   },
