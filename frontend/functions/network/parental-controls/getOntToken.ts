@@ -25,7 +25,6 @@ const getOntToken = async (
         `Failed to fetch ontToken, status: ${response.status}`
       );
     }
-    console.log("responseJson for ONT Token", responseJson);
 
     return responseJson;
   } catch (error) {

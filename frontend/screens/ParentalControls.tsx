@@ -2,7 +2,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { View, ActivityIndicator, Text } from "react-native";
 // Functions, Helpers, Utils, and Hooks
-
+import useRefreshToken from "@/hooks/useRefreshToken";
 // Components
 import { useAuth } from "../components/auth/authContext";
 import Button from "../components/Button";
@@ -16,6 +16,8 @@ import parentalControlsStyles from "../styles/page-specific/parentalControls";
 
 const Modem: React.FC = () => {
   const { translate } = useLocalization();
+  const { isAuthenticated } = useAuth();
+  useRefreshToken(isAuthenticated);
 
 
 

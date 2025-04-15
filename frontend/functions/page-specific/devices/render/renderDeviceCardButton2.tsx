@@ -99,8 +99,6 @@ const renderDeviceCardButton2 = ({
       variant: "primaryDark",
       icon: "calendar",
       onClickHandler: () => {
-        console.log("showing modal");
-
         setModalDevice(device);
         displayParentalControlsModal(setModalVisible);
       },

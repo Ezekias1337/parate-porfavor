@@ -2,7 +2,6 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 // Screens
-import HomeScreen from "../screens/Home";
 import ParentalControlsScreen from "../screens/ParentalControls";
 import ModemScreen from "../screens/Modem";
 import DevicesScreen from "../screens/Devices";
@@ -25,7 +24,7 @@ const BottomTabs = () => {
 
   return (
     <Tab.Navigator
-      initialRouteName={translate("home")}
+      initialRouteName={translate("devices")}
       screenOptions={{
         headerShown: false,
         tabBarStyle: bottomTabStyles.tabBar,
@@ -35,8 +34,8 @@ const BottomTabs = () => {
       }}
     >
       <Tab.Screen
-        name={translate("home")}
-        component={HomeScreen} // Home screen is now part of the navigator
+        name={translate("devices")}
+        component={DevicesScreen} // Home screen is now part of the navigator
         options={{
           tabBarIcon: ({ color, size }) => (
             <TabIcon name="home" size={size} color={color} />
@@ -62,17 +61,8 @@ const BottomTabs = () => {
         }}
       />
       <Tab.Screen
-        name={translate("devices")}
-        component={DevicesScreen}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <TabIcon name="cogs" size={size} color={color} />
-          ),
-        }}
-      />
-      <Tab.Screen
         name={translate("logout")}
-        component={HomeScreen}
+        component={DevicesScreen}
         listeners={{
           tabPress: async (e) => {
             e.preventDefault();

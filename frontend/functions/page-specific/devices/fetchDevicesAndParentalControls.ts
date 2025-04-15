@@ -44,7 +44,6 @@ const fetchDevicesAndParentalControls = async (
             ...filteredDevicesToSet,
             ...devicesToSet
         ];
-        console.log("mergedDeviceArray", mergedDeviceArray);
 
         if (mergedDeviceArray.length === 0) {
             setErrorMsg(translate("serverError"));

@@ -23,19 +23,6 @@ import OntToken from "../../shared/types/OntToken";
 import { colors } from "../styles/variables";
 import deviceStyles from "../styles/page-specific/device";
 
-/* 
-  TODO:  
-  - If device is online, show a badge that states so,
-    otherwise show offline/blocked badge inside the card
-  - Add cleanup for page so if page unmounts all device data is cleaned up
-  
-  
-  ? Should be three buttons at top of page, one for refresh, one for creating a parental controls filter
-  ? and one for adjusting the parental controls filter
-  
-  When button is pressed to add device to parental controls, it should display dropdown of available templates
-*/
-
 export interface ListOfStateSetters {
   setDevices: React.Dispatch<React.SetStateAction<Device[]>>;
   setParentalControls: React.Dispatch<ParentalControlsData>;

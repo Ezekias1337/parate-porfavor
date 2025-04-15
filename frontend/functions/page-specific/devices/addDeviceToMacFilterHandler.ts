@@ -28,7 +28,6 @@ const addDeviceToMacFilterHandler = async ({
             ontToken
         );
         setOntToken(ontTokenToUse);
-        console.log("device: ", device);
         
         if(!device.hostName) {
             device.hostName = device.macAddr;
