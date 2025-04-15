@@ -89,10 +89,10 @@ const ParentalControlsTemplateCard: FC<ParentalControlsTemplateCardProps> = ({
         <FontAwesome name="desktop" size={30} color={colors.primary300} />
         <Text style={templateCardStyles.text}>
           {translate("devicesUnderRestriction")}:{" "}
-          {devicesBelongingToTemplate.map((device) => (
+          {devicesBelongingToTemplate.map((device, index) => (
             <Fragment key={device.macAddr}>
               {device.description}
-              {", "}
+              {index !== devicesBelongingToTemplate.length - 1 && ", "}
             </Fragment>
           ))}
           {devicesBelongingToTemplate.length === 0 && translate("noDevices")}
@@ -116,6 +116,7 @@ const ParentalControlsTemplateCard: FC<ParentalControlsTemplateCardProps> = ({
       {selectedTemplate === template && (
         <View>
           <View style={templateCardStyles.row}>
+            <Text style={[templateCardStyles.text, templateCardStyles.bold, {color: colors.primary100, fontSize: fontSizes.general, marginTop: 10}]}>{translate("deviceDescription")}: </Text>
             <TextInput
               placeholder={translate("description")}
               value={deviceDescription}

@@ -22,11 +22,30 @@ export const inputFieldStyles = StyleSheet.create({
     marginBottom: 10,
 
   },
-
   leftIcon: {
     paddingRight: 16,
   },
   rightIcon: {
     paddingLeft: 16,
+  },
+
+  formRow: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 20,
+    width: "100%",
+  },
+  formLabelContainer: {
+    alignSelf: "flex-start",
+    marginBottom: 5,
+  },
+  formLabel: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 10,
+    color: colors.primary500,
+
   },
 });

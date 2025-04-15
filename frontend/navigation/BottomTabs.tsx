@@ -66,7 +66,7 @@ const BottomTabs = () => {
         component={SettingsScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <TabIcon name="wifi" size={size} color={color} />
+            <TabIcon name="gears" size={size} color={color} />
           ),
         }}
       />
@@ -82,7 +82,7 @@ const BottomTabs = () => {
         }}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <TabIcon name="user" size={size} color={color} />
+            <TabIcon name="close" size={size} color={color} />
           ),
         }}
       />

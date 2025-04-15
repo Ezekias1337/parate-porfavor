@@ -104,9 +104,9 @@ const Login: React.FC = () => {
         }}
       />
 
-      <View style={loginStyles.formRow}>
-        <View style={loginStyles.formLabelContainer}>
-          <Text style={loginStyles.formLabel}>{translate("username")}</Text>
+      <View style={inputFieldStyles.formRow}>
+        <View style={inputFieldStyles.formLabelContainer}>
+          <Text style={inputFieldStyles.formLabel}>{translate("username")}</Text>
         </View>
 
         <TextInput
@@ -119,9 +119,9 @@ const Login: React.FC = () => {
         />
       </View>
 
-      <View style={loginStyles.formRow}>
-        <View style={loginStyles.formLabelContainer}>
-          <Text style={loginStyles.formLabel}>{translate("password")}</Text>
+      <View style={inputFieldStyles.formRow}>
+        <View style={inputFieldStyles.formLabelContainer}>
+          <Text style={inputFieldStyles.formLabel}>{translate("password")}</Text>
         </View>
 
         <TextInput
