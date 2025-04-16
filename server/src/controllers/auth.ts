@@ -66,11 +66,12 @@ export const getToken: RequestHandler = async (req, res, next) => {
 
 export const login: RequestHandler = async (req, res, next) => {
     try {
-        const MODEM_URL_BASE = getModemUrl(req);
-        const { UserName, PassWord, x_X_HW_Token } = req.body;
-        const url = `${MODEM_URL_BASE}/login.cgi`;
-        const curlCommand = `
-        curl -s -X POST "${url}" \
+      const MODEM_URL_BASE = getModemUrl(req);
+      const { UserName, PassWord, x_X_HW_Token } = req.body;
+      const url = `${MODEM_URL_BASE}/login.cgi`;
+  
+      const curlCommand = `
+        curl -i -s -X POST "${url}" \
         -H "User-Agent: ${USER_AGENT}" \
         -H "Content-Type: application/x-www-form-urlencoded" \
         -H "Accept: */*" \
@@ -80,33 +81,28 @@ export const login: RequestHandler = async (req, res, next) => {
         --data-urlencode "UserName=${UserName}" \
         --data-urlencode "PassWord=${PassWord}" \
         --data-urlencode "x.X_HW_Token=${x_X_HW_Token}" \
-        -c cookies.txt
-    `;
-
-
-        await runCurlCommand(curlCommand);
-
-        const fs = require("fs");
-        const cookieFile = fs.readFileSync("cookies.txt", "utf8");
-        const sidMatch = cookieFile.match(/sid=([^\s;]+)/);
-        if (!sidMatch) {
-            throw new Error("Failed to retrieve SID from cookies");
-        }
-
-        const rawCookieString = sidMatch[0];
-        const cookieString = `Cookie=${rawCookieString}`;
-
-        /* 
-            ! Now that I successfully have retrieved the cookie string, I just need to store it in the sessionStore
-            ! so that all subsequent requests can use it.
-        */
-        sessionStore.setCookie("loginToken", cookieString);
-
-        res.json({ success: true });
+        -D - 
+      `;
+  
+      const responseOutput = await runCurlCommand(curlCommand);
+  
+      // Extract SID from headers
+      const sidMatch = responseOutput.match(/sid=([^\s;]+)/);
+      if (!sidMatch) {
+        throw new Error("Failed to retrieve SID from headers");
+      }
+  
+      const rawCookieString = sidMatch[0];
+      const cookieString = `Cookie=${rawCookieString}`;
+  
+      sessionStore.setCookie("loginToken", cookieString);
+  
+      res.json({ success: true });
     } catch (error) {
-        next(error);
+      next(error);
     }
-};
+  };
+  
 
 export const logout: RequestHandler = async (req, res, next) => {
     try {

@@ -1,12 +1,9 @@
 import fetchData from "./fetchData";
 import base64EncodeString from "@/utils/strings/base64EncodeString";
-import urlEncodeString from "@/utils/strings/urlEncodeString";
 import getToken from "./getToken";
 
 const login = async (username: string, password: string): Promise<string | null> => {
-
   const hashedPasswordPreEncoding = base64EncodeString(password);
-  const hashedPassword = urlEncodeString(hashedPasswordPreEncoding);
 
   try {
     const token = await getToken();
@@ -22,7 +19,7 @@ const login = async (username: string, password: string): Promise<string | null>
         Accept: "*/*",
         "X-Requested-With": "XMLHttpRequest",
       },
-      body: JSON.stringify({ UserName: username, PassWord: hashedPassword, x_X_HW_Token: token }),
+      body: JSON.stringify({ UserName: username, PassWord: hashedPasswordPreEncoding, x_X_HW_Token: token }),
       credentials: "include",
     });
 
