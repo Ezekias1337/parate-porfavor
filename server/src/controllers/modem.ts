@@ -51,6 +51,11 @@ export const getModemStatus: RequestHandler = async (req, res, next) => {
 };
 
 export const rebootModem: RequestHandler = async (req, res, next) => {
+    /* 
+        ! NEED TO ADD SOME WAY TO HANDLE THE SERVER SHUTTING DOWN WHEN THE INTERNET
+        ! TURNS OFF
+    */
+    
     try {
         const cookies: string = sessionStore.getAllCookies();
         const MODEM_URL_BASE = getModemUrl(req);

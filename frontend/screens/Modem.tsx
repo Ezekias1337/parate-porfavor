@@ -2,14 +2,15 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { View, ActivityIndicator, Text, ScrollView } from "react-native";
 // Functions, Helpers, Utils, and Hooks
-import getModemStatus from "../functions/network/modem/getModemStatus";
-import rebootModem from "../functions/network/modem/rebootModem";
 import useRefreshToken from "@/hooks/useRefreshToken";
+import handleFetchModemStatus from "../functions/page-specific/modem/handleFetchModemStatus";
+import handleNullModemStatus from "../functions/page-specific/modem/handleNullModemStatus";
+import handleCountdownTimer from "../functions/page-specific/modem/handleCountdownTimer";
+import renderRebootingMsg from "../functions/page-specific/modem/render/renderRebootingMsg";
+import renderButtons from "../functions/page-specific/modem/render/renderButtons";
 import renderErrorMsg from "@/functions/general/renderErrorMsg";
 // Components
 import { useAuth } from "../components/auth/authContext";
-import Button from "../components/Button";
-import Alert from "../components/Alert";
 import ModemStatusCard from "../components/page-specific/modem/ModemStatusCard";
 // Types
 import { ModemStatus } from "../../shared/types/Modem";
@@ -24,63 +25,34 @@ const Modem: React.FC = () => {
   useRefreshToken(isAuthenticated);
 
   const [modemStatus, setModemStatus] = useState<ModemStatus | null>(null);
-  const [displayButtons, setDisplayButtons] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [modemRebooting, setModemRebooting] = useState(false);
   const [secondsBeforeLogout, setSecondsBeforeLogout] = useState(0);
 
-  const fetchModemStatus = useCallback(async () => {
-    setLoading(true);
-    const status = await getModemStatus();
-
-    if (status === null) {
-      setErrorMsg(translate("serverError"));
-    }
-    setLoading(false);
-    setModemStatus(status);
-  }, [setLoading, setErrorMsg, setModemStatus]);
+  useEffect(() => {
+    handleFetchModemStatus({
+      setLoading,
+      setModemStatus,
+      setErrorMsg,
+      translate,
+    });
+  }, [setLoading, setModemStatus, setErrorMsg, translate]);
 
   useEffect(() => {
-    fetchModemStatus();
-  }, []);
+    handleNullModemStatus({
+      modemStatus,
+      setErrorMsg,
+      translate,
+    });
+  }, [modemStatus, setErrorMsg, translate]);
 
   useEffect(() => {
-    if (
-      modemStatus?.cpuUsed === null ||
-      modemStatus?.memUsed === null ||
-      modemStatus?.systemTime === null
-    ) {
-      setErrorMsg(translate("errorGettingModemStatus"));
-    }
-  }, [modemStatus]);
-
-  useEffect(() => {
-    if (!loading) {
-      setDisplayButtons(true);
-    } else {
-      setDisplayButtons(false);
-    }
-  }, [loading]);
-
-  // Countdown Timer for Logout
-  useEffect(() => {
-    if (modemRebooting) {
-      setSecondsBeforeLogout(5);
-
-      const interval = setInterval(() => {
-        setSecondsBeforeLogout((prev) => {
-          if (prev <= 1) {
-            clearInterval(interval);
-            logout();
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
-
-      return () => clearInterval(interval);
-    }
+    handleCountdownTimer({
+      modemRebooting,
+      setSecondsBeforeLogout,
+      logout,
+    });
   }, [modemRebooting, logout]);
 
   return loading && !errorMsg ? (
@@ -95,49 +67,26 @@ const Modem: React.FC = () => {
         </Text>
 
         {renderErrorMsg(errorMsg)}
-
-        {modemRebooting && (
-          <View style={modemStyles.alertContainer}>
-            <Alert
-              bodyText={`${translate(
-                "modemIsRebooting"
-              )} ${secondsBeforeLogout} ${translate("seconds")}`}
-              variant="info"
-              icon="info-circle"
-            />
-          </View>
-        )}
-
-        {!loading && modemStatus !== null && errorMsg === null && (
+        {renderRebootingMsg({
+          secondsBeforeLogout,
+          modemRebooting,
+          translate,
+        })}
+        {modemStatus !== null && (
           <ModemStatusCard
             cpuUsed={modemStatus.cpuUsed}
             memUsed={modemStatus.memUsed}
             systemTime={modemStatus.systemTime}
           />
         )}
-
-        {displayButtons && (
-          <View style={modemStyles.buttonContainer}>
-            <Button
-              text={translate("rebootModem")}
-              variant="primary"
-              onClickHandler={async () => {
-                await rebootModem();
-                setModemRebooting(true);
-              }}
-              loading={modemRebooting}
-              icon="power-off"
-              leftIcon
-            />
-            <Button
-              variant="primaryDark"
-              text={translate("refresh")}
-              onClickHandler={fetchModemStatus}
-              icon="refresh"
-              leftIcon
-            />
-          </View>
-        )}
+        {renderButtons({
+          setLoading,
+          setModemStatus,
+          setErrorMsg,
+          translate,
+          modemRebooting,
+          setModemRebooting,
+        })}
       </>
     </ScrollView>
   );

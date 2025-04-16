@@ -11,6 +11,10 @@ import modemStatusCardStyles from "../../../styles/component-specific/modem-stat
 const ModemStatusCard: FC<ModemStatus> = ({ cpuUsed, memUsed, systemTime }) => {
   const { translate } = useLocalization();
 
+  if (!cpuUsed || !memUsed || !systemTime) {
+    return <></>;
+  }
+
   return (
     <View style={modemStatusCardStyles.card}>
       <View style={modemStatusCardStyles.row}>

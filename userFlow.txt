@@ -1,3 +1,0 @@
-1.) User Logs In
-2.) User is on home page where they can see any parental control templates currently applied
-    or any devices currently blocked
