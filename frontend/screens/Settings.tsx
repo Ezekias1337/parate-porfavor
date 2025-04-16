@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react";
 import { View, Text, Dimensions } from "react-native";
 import { saveEncrypted, loadEncrypted } from "@/utils/secureStorage";
 // Functions, Helpers, Utils, and Hooks
-import login from "@/functions/network/auth/login";
 import useRefreshToken from "@/hooks/useRefreshToken";
+import renderErrorMsg from "@/functions/general/renderErrorMsg";
 // Components
 import { useAuth } from "../components/auth/authContext";
 import { TextInput } from "react-native";
@@ -21,7 +21,10 @@ interface SettingsProps {
   setUrlIsSet?: (urlIsSet: boolean) => void;
 }
 
-const Settings: React.FC<SettingsProps> = ({isFirstLoad = false, setUrlIsSet}) => {
+const Settings: React.FC<SettingsProps> = ({
+  isFirstLoad = false,
+  setUrlIsSet,
+}) => {
   const { translate } = useLocalization();
   const { width: screenWidth } = Dimensions.get("window");
   const { isAuthenticated } = useAuth();
@@ -86,15 +89,7 @@ const Settings: React.FC<SettingsProps> = ({isFirstLoad = false, setUrlIsSet}) =
         </View>
       )}
 
-      {errorMsg !== null && (
-        <View style={settingsStyles.alertContainer}>
-          <Alert
-            bodyText={translate("authError")}
-            variant="error"
-            icon="exclamation-triangle"
-          />
-        </View>
-      )}
+      {renderErrorMsg(errorMsg)}
 
       <View style={inputFieldStyles.formRow}>
         <View style={inputFieldStyles.formLabelContainer}>
@@ -112,7 +107,7 @@ const Settings: React.FC<SettingsProps> = ({isFirstLoad = false, setUrlIsSet}) =
           id="serverUrl"
         />
       </View>
-      
+
       <View style={inputFieldStyles.formRow}>
         <View style={inputFieldStyles.formLabelContainer}>
           <Text style={inputFieldStyles.formLabel}>
@@ -143,12 +138,12 @@ const Settings: React.FC<SettingsProps> = ({isFirstLoad = false, setUrlIsSet}) =
               if (settingsSaved) {
                 setSettingsSaved(false);
               }
-              
+
               await saveEncrypted("urlSettings", urlSettings);
               setLoading(false);
               setSettingsSaved(true);
-              
-              if(isFirstLoad && setUrlIsSet) {
+
+              if (isFirstLoad && setUrlIsSet) {
                 setUrlIsSet(true);
               }
             } catch (error) {

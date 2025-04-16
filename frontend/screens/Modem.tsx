@@ -5,6 +5,7 @@ import { View, ActivityIndicator, Text, ScrollView } from "react-native";
 import getModemStatus from "../functions/network/modem/getModemStatus";
 import rebootModem from "../functions/network/modem/rebootModem";
 import useRefreshToken from "@/hooks/useRefreshToken";
+import renderErrorMsg from "@/functions/general/renderErrorMsg";
 // Components
 import { useAuth } from "../components/auth/authContext";
 import Button from "../components/Button";
@@ -93,26 +94,17 @@ const Modem: React.FC = () => {
           {translate("modem")}
         </Text>
 
-        {errorMsg && (
-          <View style={modemStyles.alertContainer}>
-            <Alert
-              bodyText={errorMsg}
-              variant="error"
-              icon="exclamation-triangle"
-            />
-          </View>
-        )}
+        {renderErrorMsg(errorMsg)}
+
         {modemRebooting && (
           <View style={modemStyles.alertContainer}>
-            <View style={modemStyles.alertContainer}>
-              <Alert
-                bodyText={`${translate(
-                  "modemIsRebooting"
-                )} ${secondsBeforeLogout} ${translate("seconds")}`}
-                variant="info"
-                icon="info-circle"
-              />
-            </View>
+            <Alert
+              bodyText={`${translate(
+                "modemIsRebooting"
+              )} ${secondsBeforeLogout} ${translate("seconds")}`}
+              variant="info"
+              icon="info-circle"
+            />
           </View>
         )}
 
