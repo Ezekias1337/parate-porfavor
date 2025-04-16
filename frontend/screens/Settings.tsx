@@ -26,12 +26,11 @@ const Settings: React.FC = () => {
 
   const [urlSettings, setUrlSettings] = useState({
     serverUrl: "",
-    modemUrl: "",
   });
   const [settingsSaved, setSettingsSaved] = useState(false);
 
   const handleInputChange =
-    (field: "serverUrl" | "modemUrl") => (text: string) => {
+    (field: "serverUrl") => (text: string) => {
       const newUrlSettings = {
         ...urlSettings,
         [field]: text,
@@ -95,24 +94,6 @@ const Settings: React.FC = () => {
           style={inputFieldStyles.textInput}
           placeholderTextColor={colors.primary300}
           id="serverUrl"
-        />
-      </View>
-
-      <View style={inputFieldStyles.formRow}>
-        <View style={inputFieldStyles.formLabelContainer}>
-          <Text style={inputFieldStyles.formLabel}>
-            {translate("modemUrl")}
-          </Text>
-        </View>
-
-        <TextInput
-          placeholder={translate("modemUrl")}
-          value={urlSettings.modemUrl}
-          onChangeText={handleInputChange("modemUrl")}
-          secureTextEntry
-          style={inputFieldStyles.textInput}
-          placeholderTextColor={colors.primary300}
-          id="modemUrl"
         />
       </View>
 

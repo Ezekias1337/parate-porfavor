@@ -16,10 +16,15 @@ import parentalControlsRoutes from "./routes/parentalControls";
 const app = express();
 
 const BACKEND_PORT = env.BACKEND_PORT;
-const ORIGIN_URL = env.ORIGIN_URL_BASE;
-
+const allowedOrigins = env.ORIGIN_URL_BASE.split(",");
 const corsOptions = {
-    origin: ORIGIN_URL,
+    origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error("Not allowed by CORS"));
+        }
+    },
     credentials: true,
 };
 
@@ -44,9 +49,6 @@ app.use("/api/auth", authRoutes);
 app.use("/api/modem", modemRoutes);
 app.use("/api/mac-filter", macFilterRoutes);
 app.use("/api/parental-controls", parentalControlsRoutes);
-app.use("/test-forwarding", (req, res) => {
-    res.json("ALOHA WEY");
-});
 /*app.use("/api/wake-on-lan", wakeOnLanRoutes); */
 
 // Allow credentials in CORS configuration
