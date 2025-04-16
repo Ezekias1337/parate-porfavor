@@ -1,24 +1,31 @@
 // Library Imports
 import React, { useEffect, useState } from "react";
 import { View, Text, Dimensions } from "react-native";
-import { saveEncrypted, loadEncrypted } from "@/utils/secureStorage";
 // Functions, Helpers, Utils, and Hooks
 import useRefreshToken from "@/hooks/useRefreshToken";
+import loadCreds from "@/functions/page-specific/settings/loadCreds";
+import hideSuccessAlert from "@/functions/page-specific/settings/hideSuccessAlert";
 import renderErrorMsg from "@/functions/general/renderErrorMsg";
+import renderFirstLoadMsg from "@/functions/page-specific/settings/render/renderFirstLoadMsg";
+import renderSettingsSavedMsg from "@/functions/page-specific/settings/render/renderSettingsSavedMsg";
+import renderInputFields from "@/functions/page-specific/settings/render/renderInputFields";
+import renderSubmitButton from "@/functions/page-specific/settings/render/renderSubmitButton";
 // Components
 import { useAuth } from "../components/auth/authContext";
-import { TextInput } from "react-native";
-import Button from "../components/Button";
-import Alert from "../components/Alert";
 import { useLocalization } from "../components/localization/LocalizationContext";
 // CSS
 import { colors, fontSizes } from "../styles/variables";
 import settingsStyles from "../styles/page-specific/settings";
-import { inputFieldStyles } from "../styles/component-specific/input-fields";
+
 
 interface SettingsProps {
   isFirstLoad?: boolean;
   setUrlIsSet?: (urlIsSet: boolean) => void;
+}
+
+export interface UrlSettings {
+  serverUrl: string;
+  modemUrl: string;
 }
 
 const Settings: React.FC<SettingsProps> = ({
@@ -32,40 +39,18 @@ const Settings: React.FC<SettingsProps> = ({
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  const [urlSettings, setUrlSettings] = useState({
+  const [urlSettings, setUrlSettings] = useState<UrlSettings>({
     serverUrl: "",
     modemUrl: "",
   });
   const [settingsSaved, setSettingsSaved] = useState(false);
 
-  const handleInputChange =
-    (field: "serverUrl" | "modemUrl") => (text: string) => {
-      const newUrlSettings = {
-        ...urlSettings,
-        [field]: text,
-      };
-
-      setUrlSettings(newUrlSettings);
-    };
-
   useEffect(() => {
-    const loadCreds = async () => {
-      const stored = await loadEncrypted("urlSettings");
-      if (stored) {
-        setUrlSettings(stored);
-      }
-    };
-    loadCreds();
+    loadCreds({ setUrlSettings });
   }, []);
 
   useEffect(() => {
-    if (!settingsSaved) return;
-
-    const timeout = setTimeout(() => {
-      setSettingsSaved(false);
-    }, 5000);
-
-    return () => clearTimeout(timeout);
+    hideSuccessAlert({ settingsSaved, setSettingsSaved });
   }, [settingsSaved]);
 
   return (
@@ -79,91 +64,33 @@ const Settings: React.FC<SettingsProps> = ({
         {translate("settings")}
       </Text>
 
-      {isFirstLoad && (
-        <View style={settingsStyles.alertContainer}>
-          <Alert
-            bodyText={translate("serverUrlNeeded")}
-            variant="info"
-            icon="info-circle"
-          />
-        </View>
-      )}
-
+      {renderFirstLoadMsg({
+        isFirstLoad,
+        translate,
+      })}
       {renderErrorMsg(errorMsg)}
-
-      <View style={inputFieldStyles.formRow}>
-        <View style={inputFieldStyles.formLabelContainer}>
-          <Text style={inputFieldStyles.formLabel}>
-            {translate("serverUrl")}
-          </Text>
-        </View>
-
-        <TextInput
-          placeholder={translate("serverUrl")}
-          value={urlSettings.serverUrl}
-          onChangeText={handleInputChange("serverUrl")}
-          style={inputFieldStyles.textInput}
-          placeholderTextColor={colors.primary300}
-          id="serverUrl"
-        />
-      </View>
-
-      <View style={inputFieldStyles.formRow}>
-        <View style={inputFieldStyles.formLabelContainer}>
-          <Text style={inputFieldStyles.formLabel}>
-            {translate("modemUrl")}
-          </Text>
-        </View>
-
-        <TextInput
-          placeholder={translate("modemUrl")}
-          value={urlSettings.modemUrl}
-          onChangeText={handleInputChange("modemUrl")}
-          style={inputFieldStyles.textInput}
-          placeholderTextColor={colors.primary300}
-          id="modemUrl"
-        />
-      </View>
-
-      <View style={settingsStyles.buttonContainer}>
-        <Button
-          text={translate("saveChanges")}
-          variant="primary"
-          buttonSize="medium"
-          loading={loading}
-          onClickHandler={async () => {
-            try {
-              setLoading(true);
-              setErrorMsg(null);
-              if (settingsSaved) {
-                setSettingsSaved(false);
-              }
-
-              await saveEncrypted("urlSettings", urlSettings);
-              setLoading(false);
-              setSettingsSaved(true);
-
-              if (isFirstLoad && setUrlIsSet) {
-                setUrlIsSet(true);
-              }
-            } catch (error) {
-              setErrorMsg(translate("settingsError"));
-            }
-          }}
-          icon="floppy-o"
-          leftIcon
-        />
-      </View>
-
-      {settingsSaved && (
-        <View style={settingsStyles.alertContainer}>
-          <Alert
-            bodyText={translate("settingsSaved")}
-            variant="success"
-            icon="check-circle"
-          />
-        </View>
+      {renderInputFields({
+        urlSettings,
+        setUrlSettings,
+        translate,
+      })}
+      {renderSubmitButton(
+        {
+          loading,
+          setLoading,
+          setErrorMsg,
+          urlSettings,
+          settingsSaved,
+          setSettingsSaved,
+          isFirstLoad,
+          setUrlIsSet,
+        },
+        translate
       )}
+      {renderSettingsSavedMsg({
+        settingsSaved,
+        translate,
+      })}
     </View>
   );
 };

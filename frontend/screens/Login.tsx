@@ -42,7 +42,7 @@ const Login: React.FC = () => {
         { padding: screenWidth < 500 ? 20 : screenWidth * 0.2 },
       ]}
     >
-      {renderErrorMsg(errorMsg)}
+      
       <Image
         source={appIcon}
         style={{
@@ -51,6 +51,7 @@ const Login: React.FC = () => {
         }}
       />
       
+      {renderErrorMsg(errorMsg)}
       {renderInputFields({ loginCredentials, setLoginCredentials }, translate)}
       {renderSubmitButton(
         {
