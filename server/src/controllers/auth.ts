@@ -6,11 +6,12 @@ import env from "../util/validateEnv";
 import sessionStore from "../session/sessionStore";
 // Functions, Helpers, and Utils
 import runCurlCommand from "../util/runCurlCommand";
+import getModemUrl from "../util/getModemUrl";
 // Types
 import OntToken from "@shared/types/OntToken";
 // Environment Variables
 const USER_AGENT = env.USER_AGENT;
-const MODEM_URL_BASE = env.MODEM_URL_BASE;
+//const MODEM_URL_BASE = env.MODEM_URL_BASE;
 
 
 /* 
@@ -25,8 +26,9 @@ const MODEM_URL_BASE = env.MODEM_URL_BASE;
     ? <input type="hidden" name="onttoken" id="hwonttoken" value="f02a7a5399d7e2521c8cf1117524f99d43b50792149af218">
 */
 
-const handleGetToken = async (): Promise<String | null> => {
+const handleGetToken = async (MODEM_URL_BASE: string): Promise<String | null> => {
     try {
+
         const response = await axios.post(`${MODEM_URL_BASE}/asp/GetRandCount.asp`, null, {
             headers: {
                 "User-Agent": USER_AGENT,
@@ -43,7 +45,9 @@ const handleGetToken = async (): Promise<String | null> => {
 
 export const getToken: RequestHandler = async (req, res, next) => {
     try {
-        const response = await handleGetToken();
+        const MODEM_URL_BASE = getModemUrl(req);
+        const response = await handleGetToken(MODEM_URL_BASE);
+        
         res.json(response);
     } catch (error) {
         next(error);
@@ -62,8 +66,9 @@ export const getToken: RequestHandler = async (req, res, next) => {
 
 export const login: RequestHandler = async (req, res, next) => {
     try {
+        const MODEM_URL_BASE = getModemUrl(req);
         const { UserName, PassWord, x_X_HW_Token } = req.body;
-        const url = `${process.env.MODEM_URL_BASE}/login.cgi`;
+        const url = `${MODEM_URL_BASE}/login.cgi`;
         const curlCommand = `
         curl -s -X POST "${url}" \
         -H "User-Agent: ${USER_AGENT}" \
@@ -104,14 +109,14 @@ export const login: RequestHandler = async (req, res, next) => {
 };
 
 export const logout: RequestHandler = async (req, res, next) => {
-    const cookies: string = sessionStore.getAllCookies();
-
     try {
+        const cookies: string = sessionStore.getAllCookies();
         /* 
             ? For some reason in order to hit the logout endpoint, we need to make a request to 
             ? GetRandCount.asp first even though the response data from it is not even used.
         */
-        await handleGetToken();
+        const MODEM_URL_BASE = getModemUrl(req);
+        await handleGetToken(MODEM_URL_BASE);
         const ontTokenSource = await axios.post(`${MODEM_URL_BASE}/html/ssmp/common/GetRandToken.asp`, null, {
             headers: {
                 "User-Agent": USER_AGENT,
@@ -146,6 +151,7 @@ export const logout: RequestHandler = async (req, res, next) => {
 export const refreshToken: RequestHandler = async (req, res, next) => {
     try {
         const cookies: string = sessionStore.getAllCookies();
+        const MODEM_URL_BASE = getModemUrl(req);
         await axios.get(`${MODEM_URL_BASE}/html/ssmp/common/refreshTime.asp`, {
             headers: {
                 Host: MODEM_URL_BASE,

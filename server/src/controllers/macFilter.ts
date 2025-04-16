@@ -6,6 +6,7 @@ import env from "../util/validateEnv";
 import sessionStore from "../session/sessionStore";
 // Functions, Helpers, and Utils
 import fetchOntToken from "../util/fetchOntToken";
+import getModemUrl from "../util/getModemUrl";
 import extractDeviceList from "../util/extractDeviceList";
 import extractMacFilterList from "../util/extractMacFilterList";
 // Types
@@ -14,8 +15,6 @@ import { WirelessOrEthernet, BlacklistOrWhitelist, MacFilterEnabledOrDisabled, S
 import OntToken from "@shared/types/OntToken";
 // Environment Variables
 const USER_AGENT = env.USER_AGENT;
-const MODEM_URL_BASE = env.MODEM_URL_BASE;
-
 /* 
     ? It seems like there are different api requests for WLAN vs LAN (wireless vs ethernet)
     ? After getting one working inspect the differences
@@ -26,7 +25,7 @@ const MODEM_URL_BASE = env.MODEM_URL_BASE;
     ? so that it doesn't need to be constantly refreshed
 */
 
-export const fetchOntTokenSourceHandler = async (ontToken: OntToken, cookies: string, wirelessOrEthernet: OntToken): Promise<string | null> => {
+export const fetchOntTokenSourceHandler = async (ontToken: OntToken, cookies: string, wirelessOrEthernet: OntToken, MODEM_URL_BASE: string): Promise<string | null> => {
     try {
         if (ontToken === null) {
             let queryString;
@@ -63,9 +62,11 @@ export const fetchOntTokenSourceHandler = async (ontToken: OntToken, cookies: st
 export const fetchOntTokenSource: RequestHandler = async (req, res, next) => {
     try {
         const cookies: string = sessionStore.getAllCookies();
+        const MODEM_URL_BASE = getModemUrl(req);
+        
         const wirelessOrEthernet: WirelessOrEthernet = req.body.wirelessOrEthernet;
         let ontToken: OntToken = req.body.ontToken;
-        const tokenToReturn: OntToken = await fetchOntTokenSourceHandler(ontToken, cookies, wirelessOrEthernet);
+        const tokenToReturn: OntToken = await fetchOntTokenSourceHandler(ontToken, cookies, wirelessOrEthernet, MODEM_URL_BASE);
         res.json(tokenToReturn);
     } catch (error) {
         next(error);
@@ -75,6 +76,7 @@ export const fetchOntTokenSource: RequestHandler = async (req, res, next) => {
 export const getDeviceList: RequestHandler = async (req, res, next) => {
     try {
         const cookies: string = sessionStore.getAllCookies();
+        const MODEM_URL_BASE = getModemUrl(req);
         const response = await axios.get(`${MODEM_URL_BASE}/html/bbsp/common/GetLanUserDevInfo.asp`, {
             headers: {
                 "User-Agent": USER_AGENT,
@@ -100,12 +102,13 @@ export const getDeviceList: RequestHandler = async (req, res, next) => {
 export const editMacFilter: RequestHandler = async (req, res, next) => {
     try {
         const cookies: string = sessionStore.getAllCookies();
+        const MODEM_URL_BASE = getModemUrl(req);
         const blacklistOrWhitelist: BlacklistOrWhitelist = req.body.blacklistOrWhitelist;
         const macFilterEnabledOrDisabled: MacFilterEnabledOrDisabled = req.body.macFilterEnabledOrDisabled;
         const wirelessOrEthernet: WirelessOrEthernet = req.body.wirelessOrEthernet;
         let ontToken: OntToken = req.body.ontToken;
 
-        ontToken = await fetchOntTokenSourceHandler(ontToken, cookies, wirelessOrEthernet);
+        ontToken = await fetchOntTokenSourceHandler(ontToken, cookies, wirelessOrEthernet, MODEM_URL_BASE);
 
         let queryString: string;
         let params: string;
@@ -144,6 +147,7 @@ export const editMacFilter: RequestHandler = async (req, res, next) => {
 export const addDeviceToMacFilter: RequestHandler = async (req, res, next) => {
     try {
         const cookies: string = sessionStore.getAllCookies();
+        const MODEM_URL_BASE = getModemUrl(req);
         const { deviceMac, deviceName } = req.body.deviceToAdd;
         const wirelessOrEthernet: WirelessOrEthernet = req.body.wirelessOrEthernet;
         const ssidName: SSIDName = req.body.ssidName;
@@ -156,7 +160,7 @@ export const addDeviceToMacFilter: RequestHandler = async (req, res, next) => {
         let queryString: string;
         let params: string;
         const deviceMacEncoded: string = deviceMac.replace(/:/g, "%3A");
-        ontToken = await fetchOntTokenSourceHandler(ontToken, cookies, wirelessOrEthernet);
+        ontToken = await fetchOntTokenSourceHandler(ontToken, cookies, wirelessOrEthernet, MODEM_URL_BASE);
 
         if (wirelessOrEthernet === "ETH") {
             queryString = `${MODEM_URL_BASE}/html/bbsp/macfilter/add.cgi?x=InternetGatewayDevice.X_HW_Security.MacFilter&RequestFile=html/bbsp/macfilter/macfilter.asp`;
@@ -190,10 +194,11 @@ export const addDeviceToMacFilter: RequestHandler = async (req, res, next) => {
 export const removeDeviceFromMacFilter: RequestHandler = async (req, res, next) => {
     try {
         const cookies: string = sessionStore.getAllCookies();
+        const MODEM_URL_BASE = getModemUrl(req);
         const deviceIndicesToRemove: number[] = req.body.deviceIndecesToRemove;
         const wirelessOrEthernet: WirelessOrEthernet = req.body.wirelessOrEthernet;
         let ontToken: OntToken = req.body.ontToken;
-        ontToken = await fetchOntTokenSourceHandler(ontToken, cookies, wirelessOrEthernet);
+        ontToken = await fetchOntTokenSourceHandler(ontToken, cookies, wirelessOrEthernet, MODEM_URL_BASE);
 
         let queryString;
         let deviceIndicesString: string = "";
@@ -234,7 +239,7 @@ export const removeDeviceFromMacFilter: RequestHandler = async (req, res, next) 
 export const getListOfFilteredDevices: RequestHandler = async (req, res, next) => {
     try {
         const cookies: string = sessionStore.getAllCookies();
-
+        const MODEM_URL_BASE = getModemUrl(req);
         const responseHtmlEth = await axios.get(`${MODEM_URL_BASE}/html/bbsp/macfilter/macfilter.asp`, {
             headers: {
                 "User-Agent": USER_AGENT,

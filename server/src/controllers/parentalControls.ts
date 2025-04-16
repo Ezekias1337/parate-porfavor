@@ -7,13 +7,13 @@ import sessionStore from "../session/sessionStore";
 // Functions, Helpers, and Utils
 import fetchOntToken from "../util/fetchOntToken";
 import extractParentalControlsData from "../util/extractParentalControlsData";
-import runCurlCommand from "../util/runCurlCommand";
+import getModemUrl from "../util/getModemUrl";
 // Types
 import { ParentalControlsData, startTime, endTime, repeatDays } from "../../../shared/types/ParentalControls";
 import OntToken from "@shared/types/OntToken";
 // Environment Variables
 const USER_AGENT = env.USER_AGENT;
-const MODEM_URL_BASE = env.MODEM_URL_BASE;
+
 
 /*        
         Parental Control Help
@@ -32,7 +32,7 @@ const MODEM_URL_BASE = env.MODEM_URL_BASE;
             2.To change the template with which a device is associated, delete the device from the template, and click Add to bind a new template to this device.
 */
 
-export const fetchOntTokenSourceHandler = async (ontToken: OntToken, cookies: string): Promise<string | null> => {
+export const fetchOntTokenSourceHandler = async (ontToken: OntToken, cookies: string, MODEM_URL_BASE: string): Promise<string | null> => {
     try {
         if (ontToken === null) {
             const ontTokenSource = await axios.get(`${MODEM_URL_BASE}/html/bbsp/parentalctrl/parentalctrlmac.asp`, {
@@ -61,8 +61,10 @@ export const fetchOntTokenSourceHandler = async (ontToken: OntToken, cookies: st
 export const fetchOntTokenSource: RequestHandler = async (req, res, next) => {
     try {
         const cookies: string = sessionStore.getAllCookies();
+        const MODEM_URL_BASE = getModemUrl(req);
+        
         let ontToken: OntToken = req.body.ontToken;
-        const tokenToReturn: OntToken = await fetchOntTokenSourceHandler(ontToken, cookies);
+        const tokenToReturn: OntToken = await fetchOntTokenSourceHandler(ontToken, cookies, MODEM_URL_BASE);
         res.json(tokenToReturn);
     } catch (error) {
         next(error);
@@ -72,7 +74,7 @@ export const fetchOntTokenSource: RequestHandler = async (req, res, next) => {
 export const getParentalControlsData: RequestHandler = async (req, res, next) => {
     try {
         const cookies: string = sessionStore.getAllCookies();
-
+        const MODEM_URL_BASE = getModemUrl(req);
         const responseHtml = await axios.get(`${MODEM_URL_BASE}/html/bbsp/common/parentalctrlinfo.asp`, {
             headers: {
                 "User-Agent": USER_AGENT,
@@ -99,12 +101,15 @@ export const getParentalControlsData: RequestHandler = async (req, res, next) =>
 
 export const addDeviceToParentalControls: RequestHandler = async (req, res, next) => {
     try {
+        const cookies: string = sessionStore.getAllCookies();
+        const MODEM_URL_BASE = getModemUrl(req);
+        
         const { deviceMac, deviceDescription, templateInst } = req.body.deviceToAdd;
         let ontToken: OntToken = req.body.ontToken;
-        const cookies: string = sessionStore.getAllCookies();
+        
 
         // Refresh the ontToken if needed
-        ontToken = await fetchOntTokenSourceHandler(ontToken, cookies);
+        ontToken = await fetchOntTokenSourceHandler(ontToken, cookies, MODEM_URL_BASE);
 
         const url = `${process.env.MODEM_URL_BASE}/html/bbsp/parentalctrl/add.cgi?x=InternetGatewayDevice.X_HW_Security.ParentalCtrl.MAC&RequestFile=html/bbsp/parentalctrl/parentalctrlmac.asp`;
         const queryString = `x.MACAddress=${deviceMac}&x.Description=${deviceDescription}&x.TemplateInst=${templateInst}&x.X_HW_Token=${ontToken}`;
@@ -134,13 +139,15 @@ export const addDeviceToParentalControls: RequestHandler = async (req, res, next
 export const addTimePeriodToParentalControls: RequestHandler = async (req, res, next) => {
     try {
         const cookies: string = sessionStore.getAllCookies();
+        const MODEM_URL_BASE = getModemUrl(req);
+        
         const startTime: startTime = req.body.startTime;
         const endTime: endTime = req.body.endTime;
         const repeatDays: repeatDays = req.body.repeatDays;
         const templateNumber: number = req.body.templateNumber;
 
         let ontToken: OntToken = req.body.ontToken;
-        ontToken = await fetchOntTokenSourceHandler(ontToken, cookies);
+        ontToken = await fetchOntTokenSourceHandler(ontToken, cookies, MODEM_URL_BASE);
 
         const queryString = `x.StartTime=${startTime}
             &x.EndTime=${endTime}
@@ -179,12 +186,14 @@ export const addTimePeriodToParentalControls: RequestHandler = async (req, res, 
 export const createParentalControlsTemplate: RequestHandler = async (req, res, next) => {
     try {
         const cookies: string = sessionStore.getAllCookies();
+        const MODEM_URL_BASE = getModemUrl(req);
+        
         const templateName: string = req.body.templateName;
         const templateStartDate: startTime = req.body.templateStartDate; // 2025-03-21 from modem's frontend gui should be sent as 20250321
         const templateEndDate: endTime = req.body.templateEndDate;
 
         let ontToken: OntToken = req.body.ontToken;
-        ontToken = await fetchOntTokenSourceHandler(ontToken, cookies);
+        ontToken = await fetchOntTokenSourceHandler(ontToken, cookies, MODEM_URL_BASE);
 
         const queryString = `x_SAVE_A.Name=${templateName}
         &x_SAVE_A.StartDate=${templateStartDate}
@@ -225,10 +234,12 @@ export const createParentalControlsTemplate: RequestHandler = async (req, res, n
 export const removeDeviceFromParentalControls: RequestHandler = async (req, res, next) => {
     try {
         const cookies: string = sessionStore.getAllCookies();
+        const MODEM_URL_BASE = getModemUrl(req);
+        
         const macIndex: number = req.body.macIndex;
 
         let ontToken: OntToken = req.body.ontToken;
-        ontToken = await fetchOntTokenSourceHandler(ontToken, cookies);
+        ontToken = await fetchOntTokenSourceHandler(ontToken, cookies, MODEM_URL_BASE);
 
         const queryString = `InternetGatewayDevice.X_HW_Security.ParentalCtrl.MAC.${macIndex}=
             &x.X_HW_Token=${ontToken}`;
