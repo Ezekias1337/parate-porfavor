@@ -1,6 +1,6 @@
 {
   "name": "parate-porfavor",
-  "main": "expo-router/entry",
+  "main": "index.js",
   "version": "1.0.0",
   "scripts": {
     "start": "npx expo start",

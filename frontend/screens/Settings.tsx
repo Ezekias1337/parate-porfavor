@@ -16,7 +16,12 @@ import { colors, fontSizes } from "../styles/variables";
 import settingsStyles from "../styles/page-specific/settings";
 import { inputFieldStyles } from "../styles/component-specific/input-fields";
 
-const Settings: React.FC = () => {
+interface SettingsProps {
+  isFirstLoad?: boolean;
+  setUrlIsSet?: (urlIsSet: boolean) => void;
+}
+
+const Settings: React.FC<SettingsProps> = ({isFirstLoad = false, setUrlIsSet}) => {
   const { translate } = useLocalization();
   const { width: screenWidth } = Dimensions.get("window");
   const { isAuthenticated } = useAuth();
@@ -70,6 +75,16 @@ const Settings: React.FC = () => {
         {translate("settings")}
       </Text>
 
+      {isFirstLoad && (
+        <View style={settingsStyles.alertContainer}>
+          <Alert
+            bodyText={translate("serverUrlNeeded")}
+            variant="info"
+            icon="info-circle"
+          />
+        </View>
+      )}
+
       {errorMsg !== null && (
         <View style={settingsStyles.alertContainer}>
           <Alert
@@ -110,9 +125,14 @@ const Settings: React.FC = () => {
               if (settingsSaved) {
                 setSettingsSaved(false);
               }
+              
               await saveEncrypted("urlSettings", urlSettings);
               setLoading(false);
               setSettingsSaved(true);
+              
+              if(isFirstLoad && setUrlIsSet) {
+                setUrlIsSet(true);
+              }
             } catch (error) {
               setErrorMsg(translate("settingsError"));
             }

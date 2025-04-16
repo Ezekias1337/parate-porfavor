@@ -99,6 +99,7 @@ export const LocalizationProvider: React.FC<{ children: React.ReactNode }> = ({
           modemUrl: "Modem URL",
           settingsSaved: "Settings saved successfully!",
           settingsError: "Failed to save settings. Please try again.",
+          serverUrlNeeded: "Below please enter the URL of the server you want to connect to.\n This URL must be accessible from the modem.",
         },
         es: {
           welcome: "Bienvenido",
@@ -167,6 +168,7 @@ export const LocalizationProvider: React.FC<{ children: React.ReactNode }> = ({
           modemUrl: "URL del Modem",
           settingsSaved: "Ajustes guardados correctamente!",
           settingsError: "No se pudieron guardar los ajustes. Por favor, inténtelo de nuevo.",
+          serverUrlNeeded: "A continuación ingrese la URL del servidor al que desea conectarse.\n Esta URL debe ser accesible desde el modem.",
         },
       };
 
