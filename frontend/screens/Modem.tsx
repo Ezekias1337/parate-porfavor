@@ -1,6 +1,12 @@
 // Library Imports
-import React, { useEffect, useState, useCallback } from "react";
-import { View, ActivityIndicator, Text, ScrollView } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  ActivityIndicator,
+  Text,
+  ScrollView,
+  Dimensions,
+} from "react-native";
 // Functions, Helpers, Utils, and Hooks
 import useRefreshToken from "@/hooks/useRefreshToken";
 import handleFetchModemStatus from "../functions/page-specific/modem/handleFetchModemStatus";
@@ -20,6 +26,7 @@ import { colors, fontSizes } from "../styles/variables";
 import modemStyles from "../styles/page-specific/modem";
 
 const Modem: React.FC = () => {
+  const { width: screenWidth } = Dimensions.get("window");
   const { translate } = useLocalization();
   const { logout, isAuthenticated } = useAuth();
   useRefreshToken(isAuthenticated);
@@ -60,12 +67,18 @@ const Modem: React.FC = () => {
       <ActivityIndicator color={colors.primary500} size="large" />
     </View>
   ) : (
-    <ScrollView contentContainerStyle={modemStyles.container}>
-      <>
-        <Text style={{ fontSize: fontSizes.header1, color: colors.primary200 }}>
-          {translate("modem")}
-        </Text>
+    <>
+      <Text style={modemStyles.title}>{translate("modem")}</Text>
 
+      <ScrollView
+        contentContainerStyle={[
+          modemStyles.container,
+          {
+            paddingLeft: screenWidth < 500 ? 10 : screenWidth * 0.1,
+            paddingRight: screenWidth < 500 ? 10 : screenWidth * 0.1,
+          },
+        ]}
+      >
         {renderErrorMsg(errorMsg)}
         {renderRebootingMsg({
           secondsBeforeLogout,
@@ -87,9 +100,8 @@ const Modem: React.FC = () => {
             systemTime={modemStatus.systemTime}
           />
         )}
-        
-      </>
-    </ScrollView>
+      </ScrollView>
+    </>
   );
 };
 

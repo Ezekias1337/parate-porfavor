@@ -81,31 +81,36 @@ const ParentalControls: React.FC = () => {
       <ActivityIndicator color={colors.primary500} size="large" />
     </View>
   ) : (
-    <ScrollView
-      contentContainerStyle={[
-        parentalControlsStyles.container,
-        { padding: screenWidth < 500 ? 20 : screenWidth * 0.2 },
-      ]}
-    >
-      <>
-        <Text style={{ fontSize: fontSizes.header1, color: colors.primary200 }}>
-          {translate("parentalControls")}
-        </Text>
+    <>
+      <Text style={parentalControlsStyles.title}>
+        {translate("parentalControls")}
+      </Text>
 
-        {renderErrorMsg(errorMsg)}
-        {renderControlButtons({
-          setLoading,
-          setParentalControls,
-          setErrorMsg,
-          translate,
-        })}
+      <ScrollView
+        contentContainerStyle={[
+          parentalControlsStyles.container,
+          {
+            paddingLeft: screenWidth < 500 ? 10 : screenWidth * 0.1,
+            paddingRight: screenWidth < 500 ? 10 : screenWidth * 0.1,
+          },
+        ]}
+      >
+        <>
+          {renderErrorMsg(errorMsg)}
+          {renderControlButtons({
+            setLoading,
+            setParentalControls,
+            setErrorMsg,
+            translate,
+          })}
 
-        {renderTemplateCards({
-          templates: parentalControls.templates,
-          translate,
-        })}
-      </>
-    </ScrollView>
+          {renderTemplateCards({
+            templates: parentalControls.templates,
+            translate,
+          })}
+        </>
+      </ScrollView>
+    </>
   );
 };
 

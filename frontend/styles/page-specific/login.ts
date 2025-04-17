@@ -1,6 +1,5 @@
 // Library Imports
 import { StyleSheet } from "react-native";
-
 // CSS
 import { colors } from "../variables";
 

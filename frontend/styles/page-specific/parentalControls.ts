@@ -1,8 +1,7 @@
 // Library Imports
 import { StyleSheet } from "react-native";
-
 // CSS
-import { colors } from "../variables";
+import { colors, fontSizes } from "../variables";
 
 const parentalControlsStyles = StyleSheet.create({
   container: {
@@ -14,6 +13,14 @@ const parentalControlsStyles = StyleSheet.create({
     paddingTop: 40,
     paddingBottom: 40,
   },
+  title: {
+    fontSize: fontSizes.header1, color: colors.primary200,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 80,
+  },
+  
   buttonContainer: {
     marginTop: 20,
     justifyContent: "center",

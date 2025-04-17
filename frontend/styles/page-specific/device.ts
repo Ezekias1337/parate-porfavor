@@ -1,6 +1,5 @@
 // Library Imports
 import { StyleSheet } from "react-native";
-
 // CSS
 import { colors, fontSizes } from "../variables";
 
@@ -13,6 +12,13 @@ const deviceStyles = StyleSheet.create({
     width: "100%",
     paddingTop: 40,
     paddingBottom: 40,
+  },
+  title: {
+    fontSize: fontSizes.header1, color: colors.primary200,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 80,
   },
   buttonContainer: {
     justifyContent: "center",

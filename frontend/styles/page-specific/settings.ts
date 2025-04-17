@@ -1,22 +1,29 @@
 // Library Imports
 import { StyleSheet } from "react-native";
-
 // CSS
-import { colors } from "../variables";
+import { colors, fontSizes } from "../variables";
 
 const loginStyles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexDirection: "column",
+    flexWrap: "wrap",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: colors.neutral800,
     width: "100%",
+    paddingTop: 40,
+    paddingBottom: 40,
+  },
+  title: {
+    fontSize: fontSizes.header1, color: colors.primary200,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 80,
   },
   alertContainer: {
     marginBottom: 20,
     marginTop: 20,
   },
-
   buttonContainer: {
     width: "100%",
   },

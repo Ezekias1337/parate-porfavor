@@ -1,6 +1,12 @@
 // Library Imports
 import React, { useEffect, useState } from "react";
-import { ScrollView, View, ActivityIndicator, Text } from "react-native";
+import {
+  ScrollView,
+  View,
+  ActivityIndicator,
+  Text,
+  Dimensions,
+} from "react-native";
 // Functions, Helpers, Utils, and Hooks
 import fetchDevicesAndParentalControls from "@/functions/page-specific/devices/fetchDevicesAndParentalControls";
 import handleTokenSwap from "@/functions/page-specific/devices/handleTokenSwap";
@@ -31,6 +37,7 @@ export interface ListOfStateSetters {
 }
 
 const Devices: React.FC = () => {
+  const { width: screenWidth } = Dimensions.get("window");
   const { translate } = useLocalization();
   const { isAuthenticated } = useAuth();
   useRefreshToken(isAuthenticated);
@@ -68,8 +75,8 @@ const Devices: React.FC = () => {
       setOntToken,
       setModalDevice,
     });
-    
-    if(!modalVisible) {
+
+    if (!modalVisible) {
       setSelectedTemplate(null);
     }
   }, [modalVisible]);
@@ -79,10 +86,18 @@ const Devices: React.FC = () => {
       <ActivityIndicator color={colors.primary500} size="large" />
     </View>
   ) : (
-    <ScrollView contentContainerStyle={deviceStyles.container}>
-      <>
-        <Text style={{ fontSize: fontSizes.header1, color: colors.primary200 }}>{translate("devices")}</Text>
-        
+    <>
+      <Text style={deviceStyles.title}>{translate("devices")}</Text>
+      
+      <ScrollView
+        contentContainerStyle={[
+          deviceStyles.container,
+          {
+            paddingLeft: screenWidth < 500 ? 10 : screenWidth * 0.1,
+            paddingRight: screenWidth < 500 ? 10 : screenWidth * 0.1,
+          },
+        ]}
+      >
         {renderErrorMsg(errorMsg)}
         {renderButtons(
           {
@@ -122,10 +137,9 @@ const Devices: React.FC = () => {
           setParentalControls,
           setDevices,
         })}
-      </>
-    </ScrollView>
+      </ScrollView>
+    </>
   );
-  
 };
 
 export default Devices;
