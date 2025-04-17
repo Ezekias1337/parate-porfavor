@@ -7,6 +7,9 @@ const loadCreds = async (setLoginCredentials: React.Dispatch<React.SetStateActio
     const stored = await loadEncrypted("loginCreds");
     if (stored) {
         setLoginCredentials(stored);
+        console.log("Credentials loaded successfully.");
+    } else {
+        console.log("No stored credentials found.");
     }
 };
 

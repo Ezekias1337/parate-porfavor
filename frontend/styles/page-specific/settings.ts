@@ -3,13 +3,18 @@ import { StyleSheet } from "react-native";
 // CSS
 import { colors, fontSizes } from "../variables";
 
-const loginStyles = StyleSheet.create({
+const settingsStyles = StyleSheet.create({
+  wrapper: {
+    backgroundColor: colors.neutral800,
+    height: "100%",
+  },
+  
   container: {
     flexDirection: "column",
     flexWrap: "wrap",
     justifyContent: "center",
     alignItems: "center",
-    width: "100%",
+    //width: "100%",
     paddingTop: 40,
     paddingBottom: 40,
   },
@@ -23,6 +28,7 @@ const loginStyles = StyleSheet.create({
   alertContainer: {
     marginBottom: 20,
     marginTop: 20,
+    width: "100%",
   },
   buttonContainer: {
     width: "100%",
@@ -35,4 +41,4 @@ const loginStyles = StyleSheet.create({
   }
 });
 
-export default loginStyles;
+export default settingsStyles;

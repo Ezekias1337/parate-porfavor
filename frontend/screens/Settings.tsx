@@ -63,8 +63,20 @@ const Settings: React.FC<SettingsProps> = ({
       <ActivityIndicator color={colors.primary500} size="large" />
     </View>
   ) : (
-    <>
-      <Text style={settingsStyles.title}>{translate("settings")}</Text>
+    <View style={settingsStyles.wrapper}>
+      <Text
+        style={[
+          settingsStyles.title,
+          {
+            paddingLeft: screenWidth < 500 ? 10 : screenWidth * 0.1,
+            paddingRight: screenWidth < 500 ? 10 : screenWidth * 0.1,
+            justifyContent: "center",
+            alignSelf: "center",
+          },
+        ]}
+      >
+        {translate("settings")}
+      </Text>
 
       <ScrollView
         contentContainerStyle={[
@@ -103,7 +115,7 @@ const Settings: React.FC<SettingsProps> = ({
           translate,
         })}
       </ScrollView>
-    </>
+    </View>
   );
 };
 
