@@ -36,7 +36,6 @@ export const saveEncrypted = async (key: string, data: any) => {
     const { ciphertext, iv } = encrypt(data);
     const encryptedData = { ciphertext, iv }; // Save both ciphertext and IV
     await AsyncStorage.setItem(key, JSON.stringify(encryptedData));
-    console.log(`✅ Saved encrypted data under key: ${key}`);
   } catch (err) {
     console.error("❌ saveEncrypted failed:", err);
   }
@@ -58,7 +57,6 @@ export const loadEncrypted = async (key: string) => {
 export const removeStored = async (key: string) => {
   try {
     await AsyncStorage.removeItem(key);
-    console.log(`🗑️ Removed encrypted data under key: ${key}`);
   } catch (err) {
     console.error("❌ removeStored failed:", err);
   }
