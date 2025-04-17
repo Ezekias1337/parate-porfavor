@@ -64,6 +64,10 @@ const renderDeviceCardButton2 = ({
           let macIndex = 0;
 
           for (const template of parentalControls.templates) {
+            if (!template.devices) {
+              continue;
+            }
+
             for (const [index, tempDevice] of template.devices.entries()) {
               if (tempDevice.macAddr === device.macAddr) {
                 macIndex = index + 1;
