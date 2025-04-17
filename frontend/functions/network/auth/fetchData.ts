@@ -1,6 +1,6 @@
 import { loadEncrypted } from "@/utils/secureStorage";
 
-const fetchData = async (input: RequestInfo, init?: RequestInit) => {
+const fetchData = async (input: RequestInfo, init?: RequestInit, logUrl?: boolean) => {
   const urlSettings = await loadEncrypted("urlSettings");
 
   if (!urlSettings || !urlSettings.serverUrl || urlSettings.serverUrl.trim() === "") {
@@ -9,7 +9,9 @@ const fetchData = async (input: RequestInfo, init?: RequestInit) => {
 
   const url = `${urlSettings.serverUrl}${input}`;
 
-  console.log("fetchData URL: ", url);
+  if (logUrl) {
+    console.log("fetchData URL: ", url);
+  }
 
   const response = await fetch(url, {
     ...init,

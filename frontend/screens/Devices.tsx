@@ -74,7 +74,7 @@ const Devices: React.FC = () => {
     }
   }, [modalVisible]);
 
-  return loading && !errorMsg ? (
+  return loading ? (
     <View style={[deviceStyles.loader]}>
       <ActivityIndicator color={colors.primary500} size="large" />
     </View>

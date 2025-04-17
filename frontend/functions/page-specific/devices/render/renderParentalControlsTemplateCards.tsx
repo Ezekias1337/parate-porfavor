@@ -1,22 +1,11 @@
 // Library Imports
 import { View } from "react-native";
 // Functions, Helpers, Utils, and Hooks
-import getDeviceList from "@/functions/network/mac-filter/getDeviceList";
-import getDeviceListFiltered from "@/functions/network/mac-filter/getFilteredDeviceList";
-import addDevicetoMacFilter from "@/functions/network/mac-filter/addDeviceToMacFilter";
-import removeDeviceFromMacFilter from "@/functions/network/mac-filter/removeDeviceFromMacFilter";
-import getOntToken from "@/functions/network/mac-filter/getOntToken";
-
-import addDeviceToMacFilter from "../addDeviceToMacFilterHandler";
-import displayParentalControlsModal from "../displayParentalControlsModal";
-
 import extractParentalControlsDevicesFromTemplates from "../extractParentalControlsDevicesFromTemplates";
 // Components
-import Card from "@/components/Card";
-import ParentalControlsTemplateCard from "@/components/page-specific/parental-controls/ParentalControlsTemplateCard";
+import ParentalControlsTemplateCard from "@/components/page-specific/devices/ParentalControlsTemplateCard";
 // Types
 import { Device } from "../../../../../shared/types/Device";
-import { ButtonProps } from "@/components/Button";
 import OntToken from "../../../../../shared/types/OntToken";
 import {
   ParentalControlsData,

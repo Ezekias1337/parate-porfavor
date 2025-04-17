@@ -1,21 +1,17 @@
 // Library Imports
-import React, { FC, Fragment, useState, useEffect } from "react";
+import React, { FC, useState } from "react";
 import { View, Text, StyleSheet, TextInput } from "react-native";
-import { FontAwesome } from "@expo/vector-icons";
 import { useLocalization } from "../../localization/LocalizationContext";
 // Constants
 import daysMap from "../../../constants/Days";
 // Functions, Helpers, Utils, and Hooks
-import convertTo12HourFormat from "@/helpers/convertTo12HourFormat";
+import fetchDevicesAndParentalControls from "@/functions/page-specific/devices/fetchDevicesAndParentalControls";
+import parseParentalControlsDataForDisplay from "@/functions/general/parseParentalControlsDataForDisplay";
 import addDeviceToParentalControlsTemplate from "@/functions/network/parental-controls/addDeviceToParentalControlsTemplate";
 import renderErrorMsg from "@/functions/general/renderErrorMsg";
-import fetchDevicesAndParentalControls from "@/functions/page-specific/devices/fetchDevicesAndParentalControls";
+import renderBadges from "@/functions/component-specific/template-card/renderBadges";
 // Interfaces and Types
-import {
-  /*   ParentalControlsData,
-  ParentalControlsDevice, */
-  Template,
-} from "../../../../shared/types/ParentalControls";
+import { Template } from "../../../../shared/types/ParentalControls";
 import { Device } from "../../../../shared/types/Device";
 import OntToken from "../../../../shared/types/OntToken";
 // Components
@@ -54,69 +50,50 @@ const ParentalControlsTemplateCard: FC<ParentalControlsTemplateCardProps> = ({
   const [loadingButton, setLoadingButton] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  const devicesBelongingToTemplate: Device[] = devices.filter(
-    (device) => device.templateId === template.id
-  );
-  let arrayOfDays: string[] = [];
-
-  for (const day in template.repeatDays) {
-    let dayName = daysMap.get(parseInt(day));
-    if (dayName) {
-      arrayOfDays.push(translate(dayName));
-    }
+  if (!template.startTime || !template.endTime || !template.repeatDays) {
+    return <></>;
   }
 
   return (
     <View style={templateCardStyles.card}>
-      <View style={templateCardStyles.row}>
-        <Text style={templateCardStyles.title}>{template.name}</Text>
-      </View>
-
-      <View style={templateCardStyles.row}>
-        <FontAwesome name="clock-o" size={40} color={colors.primary300} />
-        <Text style={templateCardStyles.text}>
-          {`${convertTo12HourFormat(
-            template.startTime
-          )} - ${convertTo12HourFormat(template.endTime)} `}
-        </Text>
-      </View>
-
-      <View style={templateCardStyles.row}>
-        <FontAwesome name="calendar" size={35} color={colors.primary300} />
-        <Text style={templateCardStyles.text}>{arrayOfDays.join(", ")}</Text>
-      </View>
-      <View style={templateCardStyles.row}>
-        <FontAwesome name="desktop" size={30} color={colors.primary300} />
-        <Text style={templateCardStyles.text}>
-          {translate("devicesUnderRestriction")}:{" "}
-          {devicesBelongingToTemplate.map((device, index) => (
-            <Fragment key={device.macAddr}>
-              {device.description}
-              {index !== devicesBelongingToTemplate.length - 1 && ", "}
-            </Fragment>
-          ))}
-          {devicesBelongingToTemplate.length === 0 && translate("noDevices")}
-        </Text>
-      </View>
+      {parseParentalControlsDataForDisplay({
+        template,
+        translate,
+      })}
 
       {selectedTemplate !== template && (
-        <View style={templateCardStyles.row}>
-          <Button
-            text={translate("applyRestriction")}
-            onClickHandler={() => {
-              setSelectedTemplate(template);
-            }}
-            variant="primary"
-            leftIcon
-            icon="lock"
-          />
-        </View>
+        <>
+          {renderBadges(template, translate)}
+          <View style={templateCardStyles.row}>
+            <Button
+              text={translate("applyRestriction")}
+              onClickHandler={() => {
+                setSelectedTemplate(template);
+              }}
+              variant="primary"
+              leftIcon
+              icon="lock"
+            />
+          </View>
+        </>
       )}
 
       {selectedTemplate === template && (
         <View>
           <View style={templateCardStyles.row}>
-            <Text style={[templateCardStyles.text, templateCardStyles.bold, {color: colors.primary100, fontSize: fontSizes.general, marginTop: 10}]}>{translate("deviceDescription")}: </Text>
+            <Text
+              style={[
+                templateCardStyles.text,
+                templateCardStyles.bold,
+                {
+                  color: colors.primary100,
+                  fontSize: fontSizes.general,
+                  marginTop: 10,
+                },
+              ]}
+            >
+              {translate("deviceDescription")}:{" "}
+            </Text>
             <TextInput
               placeholder={translate("description")}
               value={deviceDescription}
@@ -192,9 +169,9 @@ const templateCardStyles = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
     maxWidth: "95%",
-    width: "100%", 
+    width: "100%",
   },
-  
+
   title: {
     fontSize: fontSizes.header2,
     color: colors.primary100,
@@ -232,7 +209,7 @@ const templateCardStyles = StyleSheet.create({
     marginBottom: 5,
     width: "100%",
   },
-  
+
   buttonRow: {
     flexDirection: "column",
     gap: 10,

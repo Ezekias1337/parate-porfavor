@@ -1,6 +1,6 @@
 // Library Imports
 import React, { useEffect, useState } from "react";
-import { View, Text, Dimensions } from "react-native";
+import { View, Text, Dimensions, ScrollView, ActivityIndicator } from "react-native";
 // Functions, Helpers, Utils, and Hooks
 import useRefreshToken from "@/hooks/useRefreshToken";
 import loadCreds from "@/functions/page-specific/settings/loadCreds";
@@ -16,7 +16,6 @@ import { useLocalization } from "../components/localization/LocalizationContext"
 // CSS
 import { colors, fontSizes } from "../styles/variables";
 import settingsStyles from "../styles/page-specific/settings";
-
 
 interface SettingsProps {
   isFirstLoad?: boolean;
@@ -53,13 +52,15 @@ const Settings: React.FC<SettingsProps> = ({
     hideSuccessAlert({ settingsSaved, setSettingsSaved });
   }, [settingsSaved]);
 
-  return (
-    <View
-      style={[
-        settingsStyles.container,
-        { padding: screenWidth < 500 ? 20 : screenWidth * 0.2 },
-      ]}
-    >
+  return loading ? (
+    <View style={[settingsStyles.loader]}>
+      <ActivityIndicator color={colors.primary500} size="large" />
+    </View>
+  ) : (
+    <ScrollView contentContainerStyle={[
+      settingsStyles.container,
+      { padding: screenWidth < 500 ? 20 : screenWidth * 0.2 },
+    ]}>
       <Text style={{ fontSize: fontSizes.header1, color: colors.primary200 }}>
         {translate("settings")}
       </Text>
@@ -91,7 +92,7 @@ const Settings: React.FC<SettingsProps> = ({
         settingsSaved,
         translate,
       })}
-    </View>
+    </ScrollView>
   );
 };
 

@@ -10,7 +10,6 @@ const indexStyles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  
 });
 
 export default indexStyles;

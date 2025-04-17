@@ -55,7 +55,7 @@ const Modem: React.FC = () => {
     });
   }, [modemRebooting, logout]);
 
-  return loading && !errorMsg ? (
+  return loading ? (
     <View style={[modemStyles.loader]}>
       <ActivityIndicator color={colors.primary500} size="large" />
     </View>
@@ -72,13 +72,6 @@ const Modem: React.FC = () => {
           modemRebooting,
           translate,
         })}
-        {modemStatus !== null && (
-          <ModemStatusCard
-            cpuUsed={modemStatus.cpuUsed}
-            memUsed={modemStatus.memUsed}
-            systemTime={modemStatus.systemTime}
-          />
-        )}
         {renderButtons({
           setLoading,
           setModemStatus,
@@ -87,6 +80,14 @@ const Modem: React.FC = () => {
           modemRebooting,
           setModemRebooting,
         })}
+        {modemStatus !== null && (
+          <ModemStatusCard
+            cpuUsed={modemStatus.cpuUsed}
+            memUsed={modemStatus.memUsed}
+            systemTime={modemStatus.systemTime}
+          />
+        )}
+        
       </>
     </ScrollView>
   );

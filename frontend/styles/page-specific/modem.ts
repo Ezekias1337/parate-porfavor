@@ -28,7 +28,6 @@ const modemStyles = StyleSheet.create({
     alignItems: "center",
     minHeight: "100%", // Ensures the loader takes up the full height of the screen
   }
-
 });
 
 export default modemStyles;

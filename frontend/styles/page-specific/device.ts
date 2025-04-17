@@ -38,7 +38,6 @@ const deviceStyles = StyleSheet.create({
     color: colors.neutral100,
     fontSize: fontSizes.body,
   },
-
   loader: {
     flex: 1,
     justifyContent: "center",

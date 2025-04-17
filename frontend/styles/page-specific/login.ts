@@ -19,7 +19,6 @@ const loginStyles = StyleSheet.create({
   buttonContainer: {
     width: "100%",
   },
-
 });
 
 export default loginStyles;
