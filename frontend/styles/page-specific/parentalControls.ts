@@ -27,11 +27,10 @@ const parentalControlsStyles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
     gap: 10,
-    //width: "85%",
   },
   templatesContainer: {
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "stretch",
     flexDirection: "row",
     flexWrap: "wrap",
     gap: 10,
