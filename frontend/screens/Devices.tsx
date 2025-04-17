@@ -26,7 +26,7 @@ import {
 } from "../../shared/types/ParentalControls";
 import OntToken from "../../shared/types/OntToken";
 // CSS
-import { colors, fontSizes } from "../styles/variables";
+import { colors } from "../styles/variables";
 import deviceStyles from "../styles/page-specific/device";
 
 export interface ListOfStateSetters {
@@ -86,59 +86,56 @@ const Devices: React.FC = () => {
       <ActivityIndicator color={colors.primary500} size="large" />
     </View>
   ) : (
-    <>
+    <ScrollView
+      contentContainerStyle={[
+        deviceStyles.container,
+        {
+          paddingLeft: screenWidth < 500 ? 10 : screenWidth * 0.1,
+          paddingRight: screenWidth < 500 ? 10 : screenWidth * 0.1,
+        },
+      ]}
+    >
       <Text style={deviceStyles.title}>{translate("devices")}</Text>
-      
-      <ScrollView
-        contentContainerStyle={[
-          deviceStyles.container,
-          {
-            paddingLeft: screenWidth < 500 ? 10 : screenWidth * 0.1,
-            paddingRight: screenWidth < 500 ? 10 : screenWidth * 0.1,
-          },
-        ]}
-      >
-        {renderErrorMsg(errorMsg)}
-        {renderButtons(
-          {
-            setDevices,
-            setParentalControls,
-            setLoading,
-            setErrorMsg,
-          },
-          translate
-        )}
-        {renderDeviceCards(
-          ontToken,
-          devices,
-          {
-            setModalVisible,
-            setDevices,
-            parentalControls,
-            setParentalControls,
-            setLoading,
-            setErrorMsg,
-            setModalDevice,
-            setOntToken,
-          },
-          translate
-        )}
-        {renderModal({
-          modalVisible,
-          setModalVisible,
-          modalDevice,
-          parentalControls,
-          ontToken,
-          setOntToken,
-          translate,
-          selectedTemplate,
-          setSelectedTemplate,
-          setLoading,
-          setParentalControls,
+      {renderErrorMsg(errorMsg)}
+      {renderButtons(
+        {
           setDevices,
-        })}
-      </ScrollView>
-    </>
+          setParentalControls,
+          setLoading,
+          setErrorMsg,
+        },
+        translate
+      )}
+      {renderDeviceCards(
+        ontToken,
+        devices,
+        {
+          setModalVisible,
+          setDevices,
+          parentalControls,
+          setParentalControls,
+          setLoading,
+          setErrorMsg,
+          setModalDevice,
+          setOntToken,
+        },
+        translate
+      )}
+      {renderModal({
+        modalVisible,
+        setModalVisible,
+        modalDevice,
+        parentalControls,
+        ontToken,
+        setOntToken,
+        translate,
+        selectedTemplate,
+        setSelectedTemplate,
+        setLoading,
+        setParentalControls,
+        setDevices,
+      })}
+    </ScrollView>
   );
 };
 

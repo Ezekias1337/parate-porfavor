@@ -58,6 +58,8 @@ export const templateCardStyles = StyleSheet.create({
     shadowRadius: 8,
     display: "flex",
     flexDirection: "column",
+    alignContent: "stretch",
+    width: "100%"
   },
 
   title: {

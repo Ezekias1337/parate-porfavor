@@ -6,7 +6,10 @@ import { colors, borderRadius, fontSizes } from "../variables";
 const modemStatusCardStyles = StyleSheet.create({
   card: {
     borderRadius: borderRadius.borderRadius,
-    padding: 20,
+    paddingRight: 30,
+    paddingLeft: 30,
+    paddingTop: 15,
+    paddingBottom: 15,
     margin: 10,
     backgroundColor: colors.neutral700,
     borderColor: colors.neutral100,
@@ -16,7 +19,6 @@ const modemStatusCardStyles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 8,
     elevation: 5,
-    //width: "85%",
   },
   text: {
     fontSize: fontSizes.body,

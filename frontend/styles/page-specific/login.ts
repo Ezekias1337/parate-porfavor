@@ -12,7 +12,7 @@ const loginStyles = StyleSheet.create({
     width: "100%",
   },
   alertContainer: {
-    marginBottom: 20
+    marginBottom: 40,
   },
 
   buttonContainer: {

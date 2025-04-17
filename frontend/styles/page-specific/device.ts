@@ -30,6 +30,7 @@ const deviceStyles = StyleSheet.create({
   },
   alertContainer: {
     width: "100%",
+    marginBottom: 40,
   },
   devicesContainer: {
     justifyContent: "center",

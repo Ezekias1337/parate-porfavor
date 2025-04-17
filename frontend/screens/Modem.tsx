@@ -22,7 +22,7 @@ import ModemStatusCard from "../components/page-specific/modem/ModemStatusCard";
 import { ModemStatus } from "../../shared/types/Modem";
 import { useLocalization } from "../components/localization/LocalizationContext";
 // CSS
-import { colors, fontSizes } from "../styles/variables";
+import { colors } from "../styles/variables";
 import modemStyles from "../styles/page-specific/modem";
 
 const Modem: React.FC = () => {
@@ -67,41 +67,38 @@ const Modem: React.FC = () => {
       <ActivityIndicator color={colors.primary500} size="large" />
     </View>
   ) : (
-    <>
+    <ScrollView
+      contentContainerStyle={[
+        modemStyles.container,
+        {
+          paddingLeft: screenWidth < 500 ? 10 : screenWidth * 0.1,
+          paddingRight: screenWidth < 500 ? 10 : screenWidth * 0.1,
+        },
+      ]}
+    >
       <Text style={modemStyles.title}>{translate("modem")}</Text>
-
-      <ScrollView
-        contentContainerStyle={[
-          modemStyles.container,
-          {
-            paddingLeft: screenWidth < 500 ? 10 : screenWidth * 0.1,
-            paddingRight: screenWidth < 500 ? 10 : screenWidth * 0.1,
-          },
-        ]}
-      >
-        {renderErrorMsg(errorMsg)}
-        {renderRebootingMsg({
-          secondsBeforeLogout,
-          modemRebooting,
-          translate,
-        })}
-        {renderButtons({
-          setLoading,
-          setModemStatus,
-          setErrorMsg,
-          translate,
-          modemRebooting,
-          setModemRebooting,
-        })}
-        {modemStatus !== null && (
-          <ModemStatusCard
-            cpuUsed={modemStatus.cpuUsed}
-            memUsed={modemStatus.memUsed}
-            systemTime={modemStatus.systemTime}
-          />
-        )}
-      </ScrollView>
-    </>
+      {renderErrorMsg(errorMsg)}
+      {renderRebootingMsg({
+        secondsBeforeLogout,
+        modemRebooting,
+        translate,
+      })}
+      {renderButtons({
+        setLoading,
+        setModemStatus,
+        setErrorMsg,
+        translate,
+        modemRebooting,
+        setModemRebooting,
+      })}
+      {modemStatus !== null && (
+        <ModemStatusCard
+          cpuUsed={modemStatus.cpuUsed}
+          memUsed={modemStatus.memUsed}
+          systemTime={modemStatus.systemTime}
+        />
+      )}
+    </ScrollView>
   );
 };
 

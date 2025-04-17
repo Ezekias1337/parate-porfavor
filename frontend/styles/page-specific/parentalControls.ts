@@ -22,11 +22,12 @@ const parentalControlsStyles = StyleSheet.create({
   },
   
   buttonContainer: {
-    marginTop: 20,
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
+    flexWrap: "wrap",
     gap: 10,
+    padding: 20,
   },
   templatesContainer: {
     justifyContent: "center",
