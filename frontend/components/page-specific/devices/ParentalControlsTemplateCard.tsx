@@ -50,7 +50,7 @@ const ParentalControlsTemplateCard: FC<ParentalControlsTemplateCardProps> = ({
   const [loadingButton, setLoadingButton] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  if (!template.startTime || !template.endTime || !template.repeatDays) {
+  if (!template.restrictions.length) {
     return <></>;
   }
 
@@ -159,7 +159,7 @@ const templateCardStyles = StyleSheet.create({
     borderRadius: borderRadius.borderRadius,
     padding: 20,
     margin: 10,
-    backgroundColor: colors.neutral700,
+    backgroundColor: colors.neutral800,
     borderColor: colors.neutral100,
     borderWidth: 1,
     shadowColor: colors.neutral100,

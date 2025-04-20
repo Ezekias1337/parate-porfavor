@@ -1,30 +1,32 @@
 import fetchData from "../auth/fetchData";
+import getOntToken from "./getOntToken";
 // Types
 import OntToken from "../../../../shared/types/OntToken";
 
-const createParentalControlsTemplate = async (
-  name: string,
-  startDate: number,
-  endDate: number,
+const deleteParentalControlsTemplate = async (
+  templateIndex: number,
   ontToken: OntToken
 ): Promise<boolean> => {
   try {
-    const infoOfTemplateToCreate = {
-      templateName: name,
-      templateStartDate: startDate,
-      templateEndDate: endDate,
+    if (!ontToken) {
+      throw new Error("ontToken is null");
+    }
+
+    const templateToDelete = {
+      templateIndex: templateIndex,
       ontToken: ontToken
     }
-    
-    const response = await fetchData("/api/parental-controls/create-parental-controls-template", {
-      method: "POST",
+
+
+    const response = await fetchData("/api/parental-controls/delete-parental-controls-template", {
+      method: "DELETE",
       headers: {
         "User-Agent":
           "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:132.0) Gecko/20100101 Firefox/132.0",
         Accept: "*/*",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(infoOfTemplateToCreate),
+      body: JSON.stringify(templateToDelete),
     });
 
     if (!response.ok) {
@@ -39,4 +41,4 @@ const createParentalControlsTemplate = async (
   }
 };
 
-export default createParentalControlsTemplate;
+export default deleteParentalControlsTemplate;

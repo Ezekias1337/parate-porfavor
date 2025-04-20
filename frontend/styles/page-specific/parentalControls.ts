@@ -47,6 +47,13 @@ const parentalControlsStyles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     minHeight: "100%",
+  },
+  daySelector: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "stretch",
+    flexDirection: "column",
+    flexWrap: "wrap",
   }
 });
 

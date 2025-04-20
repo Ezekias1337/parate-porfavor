@@ -1,4 +1,4 @@
-import {  ParentalControlsData, Template } from "../../../shared/types/ParentalControls";
+import { ParentalControlsData, Template, Restriction } from "../../../shared/types/ParentalControls";
 
 import { Device } from "../../../shared/types/Device";
 
@@ -8,35 +8,33 @@ const extractParentalControlsData = (htmlContent: string, logList?: boolean): Pa
     const statsListRegex = /new StatsListClass\("InternetGatewayDevice[^"]*","\d+","(\d+)"/;
     const durationListRegex = /new DurationListClass\("InternetGatewayDevice\.X_HW_Security\.ParentalCtrl\.Templates\.(\d+)\.Duration\.(\d+)","([\d\\x3a]+)","([\d\\x3a]+)","([\d\\x2c]+)"\)/g;
 
-    let match;
+    const decodeString = (str: string): string => decodeURIComponent(str.replace(/\\x/g, "%"));
+
     const deviceList: Device[] = [];
     const templates: Template[] = [];
-    let connectionAttempts = 0;
     const tempTemplateNames: string[] = [];
-    const timeRestrictionsMap: Record<number, Omit<Template, "id" | "name">> = {};
-
-    // Function to decode encoded strings like "Test\\x202" → "Test 2"
-    const decodeString = (str: string): string => {
-        return decodeURIComponent(str.replace(/\\x/g, "%"));
-    };
+    const timeRestrictionsMap: Record<number, Restriction[]> = {};
+    let connectionAttempts = 0;
 
     // Extract template names
     let templateMatch;
     while ((templateMatch = templatesListRegex.exec(htmlContent)) !== null) {
-        tempTemplateNames.push(decodeString(templateMatch[1])); // Decode template names
+        tempTemplateNames.push(decodeString(templateMatch[1]));
     }
 
-    // Extract connection attempts (single value)
+    // Extract connection attempts
     const statsMatch = statsListRegex.exec(htmlContent);
     if (statsMatch) {
         connectionAttempts = parseInt(statsMatch[1], 10);
     }
 
     try {
+        // Extract devices
+        let match;
         while ((match = childListRegex.exec(htmlContent)) !== null) {
             const macAddress = match[1].replace(/\\x3a/g, ":");
-            const description = decodeString(match[2]); // Decode device descriptions
-            const templateId = parseInt(match[3], 10); // 1-based template ID
+            const description = decodeString(match[2]);
+            const templateId = parseInt(match[3], 10);
 
             deviceList.push({
                 domain: "",
@@ -46,43 +44,47 @@ const extractParentalControlsData = (htmlContent: string, logList?: boolean): Pa
                 onlineStatus: "Unknown",
                 connectionType: "Unknown",
                 ssid: "Unknown",
-                description: description,
-                templateId: templateId,
+                description,
+                templateId,
                 parentalControlRestrictionApplied: true
             });
         }
 
-        // Extract time restrictions from DurationListArray
+        // Extract restrictions
         while ((match = durationListRegex.exec(htmlContent)) !== null) {
-            const templateIndex = parseInt(match[1], 10) - 1; // Convert 1-based index to 0-based
-            const startTimeStr = match[3].replace(/\\x3a/g, "");
-            const endTimeStr = match[4].replace(/\\x3a/g, "");
-            const repeatDays = match[5].replace(/\\x2c/g, ",").split(",").map(day => parseInt(day, 10));
+            const templateIndex = parseInt(match[1], 10) - 1;
+            const startTime = parseInt(match[3].replace(/\\x3a/g, ""), 10);
+            const endTime = parseInt(match[4].replace(/\\x3a/g, ""), 10);
+            const repeatDays = match[5].replace(/\\x2c/g, ",").split(",").map(Number);
 
-            timeRestrictionsMap[templateIndex] = {
-                startTime: parseInt(startTimeStr, 10),
-                endTime: parseInt(endTimeStr, 10),
-                repeatDays,
-                devices: []
-            };
+            if (!timeRestrictionsMap[templateIndex]) {
+                timeRestrictionsMap[templateIndex] = [];
+            }
+
+            timeRestrictionsMap[templateIndex].push({
+                startTime,
+                endTime,
+                repeatDays
+            });
         }
 
-        // Combine template names with their respective time restrictions
+        // Combine templates
         tempTemplateNames.forEach((name, index) => {
             templates.push({
-                id: index + 1, // Keep it 1-based
+                id: index + 1,
                 name,
-                ...timeRestrictionsMap[index], // Merge the time restriction data
+                restrictions: timeRestrictionsMap[index] || [],
+                devices: []
             });
         });
 
-        // Combine template names with their respective associated devices
+        // Assign devices to templates
         deviceList.forEach(device => {
             const templateId = device.templateId;
-            if (templateId) {
+            if (templateId && templates[templateId - 1]) {
                 templates[templateId - 1].devices.push(device);
             }
-        })
+        });
 
         if (logList) {
             console.log(`Extracted Data: ${JSON.stringify({ templates, connectionAttempts, devices: deviceList })}`);

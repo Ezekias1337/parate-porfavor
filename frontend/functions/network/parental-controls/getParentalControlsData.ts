@@ -20,10 +20,12 @@ const getParentalControlsData = async (): Promise<ParentalControlsData> => {
     return response.json();
   } catch (error) {
     console.error("Error fetching modem status:", error);
-    return {
+
+    const emptyObj: ParentalControlsData = {
       templates: [],
       connectionAttempts: 0,
-    };
+    }
+    return emptyObj;
   }
 };
 

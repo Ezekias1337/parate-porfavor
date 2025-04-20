@@ -45,6 +45,7 @@ export const LocalizationProvider: React.FC<{ children: React.ReactNode }> = ({
           modem: "Modem",
           parentalControls: "Parental Controls",
           createScheduledRestriction: "Create Scheduled Restriction",
+          createScheduledRestrictionAlert: "Enter the desired name of the scheduled restriction. \n \n When you want to apply this restriction to devices in the future this will be the name you reference.",
           devices: "Devices",
           deviceDescription: "Device Description",
           cpuUsed: "CPU Used",
@@ -105,6 +106,7 @@ export const LocalizationProvider: React.FC<{ children: React.ReactNode }> = ({
           delete: "Delete",
           missingDays: "Missing Days",
           missingTimePeriods: "Missing Time Periods",
+          restrictionName: "Restriction Name",
         },
         es: {
           welcome: "Bienvenido",
@@ -119,6 +121,7 @@ export const LocalizationProvider: React.FC<{ children: React.ReactNode }> = ({
           modem: "Modem",
           parentalControls: "Controles Parentales",
           createScheduledRestriction: "Crear Restricción Programada",
+          createScheduledRestrictionAlert: "Ingrese el nombre deseado de la restricción programada. \n \n Cuando quiera aplicar esta restricción a dispositivos en el futuro, esto será el nombre que referencia.",
           devices: "Dispositivos",
           deviceDescription: "Descripción del Dispositivo",
           cpuUsed: "CPU Usado",
@@ -179,6 +182,7 @@ export const LocalizationProvider: React.FC<{ children: React.ReactNode }> = ({
           delete: "Eliminar",
           missingDays: "Faltan Días",
           missingTimePeriods: "Faltan Períodos de Tiempo",
+          restrictionName: "Nombre de la Restricción",
         },
       };
 

@@ -62,7 +62,7 @@ export const fetchOntTokenSource: RequestHandler = async (req, res, next) => {
     try {
         const cookies: string = sessionStore.getAllCookies();
         const MODEM_URL_BASE = getModemUrl(req);
-        
+
         let ontToken: OntToken = req.body.ontToken;
         const tokenToReturn: OntToken = await fetchOntTokenSourceHandler(ontToken, cookies, MODEM_URL_BASE);
         res.json(tokenToReturn);
@@ -103,10 +103,10 @@ export const addDeviceToParentalControls: RequestHandler = async (req, res, next
     try {
         const cookies: string = sessionStore.getAllCookies();
         const MODEM_URL_BASE = getModemUrl(req);
-        
+
         const { deviceMac, deviceDescription, templateInst } = req.body.deviceToAdd;
         let ontToken: OntToken = req.body.ontToken;
-        
+
 
         // Refresh the ontToken if needed
         ontToken = await fetchOntTokenSourceHandler(ontToken, cookies, MODEM_URL_BASE);
@@ -140,7 +140,7 @@ export const addTimePeriodToParentalControls: RequestHandler = async (req, res, 
     try {
         const cookies: string = sessionStore.getAllCookies();
         const MODEM_URL_BASE = getModemUrl(req);
-        
+
         const startTime: startTime = req.body.startTime;
         const endTime: endTime = req.body.endTime;
         const repeatDays: repeatDays = req.body.repeatDays;
@@ -187,7 +187,7 @@ export const createParentalControlsTemplate: RequestHandler = async (req, res, n
     try {
         const cookies: string = sessionStore.getAllCookies();
         const MODEM_URL_BASE = getModemUrl(req);
-        
+
         const templateName: string = req.body.templateName;
         const templateStartDate: startTime = req.body.templateStartDate; // 2025-03-21 from modem's frontend gui should be sent as 20250321
         const templateEndDate: endTime = req.body.templateEndDate;
@@ -195,10 +195,7 @@ export const createParentalControlsTemplate: RequestHandler = async (req, res, n
         let ontToken: OntToken = req.body.ontToken;
         ontToken = await fetchOntTokenSourceHandler(ontToken, cookies, MODEM_URL_BASE);
 
-        const queryString = `x_SAVE_A.Name=${templateName}
-        &x_SAVE_A.StartDate=${templateStartDate}
-        &x_SAVE_A.EndDate=${templateEndDate}
-        &x.X_HW_Token=${ontToken}`;
+        const queryString = `x_SAVE_A.Name=${templateName}&x_SAVE_A.StartDate=${templateStartDate === 0 ? "" : templateStartDate}&x_SAVE_A.EndDate=${templateEndDate === 0 ? "" : templateEndDate}&x.X_HW_Token=${ontToken}`;
 
         const response = await axios.post(`${MODEM_URL_BASE}/html/bbsp/parentalctrl/add.cgi?x_SAVE_A=InternetGatewayDevice.X_HW_Security.ParentalCtrl.Templates&RequestFile=html/bbsp/parentalctrl/parentalctrltime.asp`, queryString, {
             headers: {
@@ -235,7 +232,7 @@ export const removeDeviceFromParentalControls: RequestHandler = async (req, res,
     try {
         const cookies: string = sessionStore.getAllCookies();
         const MODEM_URL_BASE = getModemUrl(req);
-        
+
         const macIndex: number = req.body.macIndex;
 
         let ontToken: OntToken = req.body.ontToken;
@@ -272,6 +269,52 @@ export const removeDeviceFromParentalControls: RequestHandler = async (req, res,
         next(error);
     }
 };
+
+export const deleteParentalControlsTemplate: RequestHandler = async (req, res, next) => {
+    try {
+        const cookies: string = sessionStore.getAllCookies();
+        const MODEM_URL_BASE = getModemUrl(req);
+
+        const templateIndex: number = req.body.templateIndex;
+        let ontToken: OntToken = req.body.ontToken;
+        ontToken = await fetchOntTokenSourceHandler(ontToken, cookies, MODEM_URL_BASE);
+
+        const queryString = `InternetGatewayDevice.X_HW_Security.ParentalCtrl.Templates.${templateIndex}=&x.X_HW_Token=${ontToken}`;
+
+
+        const response = await axios.post(`${MODEM_URL_BASE}/html/bbsp/parentalctrl/del.cgi?&RequestFile=/html/bbsp/parentalctrl/parentalctrlstatus.asp`, queryString, {
+            headers: {
+                "User-Agent": USER_AGENT,
+                "Accept": "*/*",
+                "Accept-Language": "en-US,en;q=0.5",
+                "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+                "X-Requested-With": "XMLHttpRequest",
+                "Priority": "u=0",
+                "Pragma": "no-cache",
+                "Cache-Control": "no-cache",
+                referrer: `${MODEM_URL_BASE}/html/bbsp/parentalctrl/parentalctrltemplate.asp`,
+                mode: "cors",
+                "Cookie": cookies,
+            },
+        });
+
+        /* 
+            For some reason even when making this request directly from the modem control panel
+            the response code is 404 even when it is successful
+        */
+        if (response.status === 404) {
+            res.json(true);
+        } else {
+            console.error("Failed to remove device from parental controls template, status:", response.status);
+            throw new Error(
+                `Failed to remove device from parental controls template, status: ${response.status}`
+            );
+        }
+
+    } catch (error) {
+        next(error);
+    }
+}
 
 
 

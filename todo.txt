@@ -1,0 +1,2 @@
+Refactor render functions to all be components to have local hooks and
+reduce prop drilling

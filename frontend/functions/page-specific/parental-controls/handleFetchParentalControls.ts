@@ -10,19 +10,25 @@ interface handleFetchParentalControlsProps {
     translate: (key: string) => string;
 }
 
-const handleFetchParentalControls = async ({ setLoading, setParentalControls, setErrorMsg, translate }: handleFetchParentalControlsProps) => {
+const handleFetchParentalControls = async ({ setLoading, setParentalControls, setErrorMsg, translate }: handleFetchParentalControlsProps): Promise<ParentalControlsData> => {
+    let parentalControlsData: ParentalControlsData = {
+        templates: [],
+        connectionAttempts: 0,
+    }
+
     try {
         setLoading(true);
-        const parentalControlsData = await getParentalControlsData();
+        parentalControlsData = await getParentalControlsData();
         setParentalControls(parentalControlsData);
         setLoading(false);
+
     } catch (error) {
         console.error("Error fetching parental controls data:", error);
         setErrorMsg(translate("serverError"));
         setLoading(false);
     }
 
-
+    return parentalControlsData
 }
 
 export default handleFetchParentalControls

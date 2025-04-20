@@ -3,12 +3,13 @@ import { Fragment } from "react";
 import { View, Text } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 // Functions, Helpers, Utils, and Hooks
+import createDayString from "../component-specific/template-card/createDaysString";
 import convertTo12HourFormat from "../../helpers/convertTo12HourFormat";
 // Constants
 import daysMap from "../../constants/Days";
 // Types
 import { Device } from "../../../shared/types/Device";
-import { Template } from "../../../shared/types/ParentalControls";
+import { Template, Restriction } from "../../../shared/types/ParentalControls";
 // CSS
 import { colors } from "../../styles/variables";
 import { templateCardStyles } from "../../components/page-specific/parental-controls/TemplateCard";
@@ -22,14 +23,13 @@ const parseParentalControlsDataForDisplay = ({
   template,
   translate,
 }: ParseDataProps) => {
-  let arrayOfDays: string[] = [];
+  const arrayOfRestrictions: Restriction[] = [];
 
-  for (const day in template.repeatDays) {
-    let dayName = daysMap.get(parseInt(day));
-    if (dayName) {
-      arrayOfDays.push(translate(dayName));
-    }
+
+  for (const restriction of template.restrictions) {
+    arrayOfRestrictions.push(restriction);
   }
+
 
   return (
     <>
@@ -37,23 +37,26 @@ const parseParentalControlsDataForDisplay = ({
         <Text style={templateCardStyles.title}>{template.name}</Text>
       </View>
 
-      {template.startTime && template.endTime && (
-        <View style={templateCardStyles.row}>
-          <FontAwesome name="clock-o" size={40} color={colors.primary300} />
-          <Text style={templateCardStyles.text}>
-            {`${convertTo12HourFormat(
-              template.startTime
-            )} - ${convertTo12HourFormat(template.endTime)} `}
-          </Text>
-        </View>
-      )}
+      {arrayOfRestrictions.map((restriction, index) => (
+        <View key={index}>
+          <View style={templateCardStyles.row}>
+            <FontAwesome name="clock-o" size={40} color={colors.primary300} />
 
-      {arrayOfDays.length > 0 && (
-        <View style={templateCardStyles.row}>
-          <FontAwesome name="calendar" size={35} color={colors.primary300} />
-          <Text style={templateCardStyles.text}>{arrayOfDays.join(", ")}</Text>
+            <Text style={templateCardStyles.text}>
+              {`${convertTo12HourFormat(
+                restriction.startTime
+              )} - ${convertTo12HourFormat(restriction.endTime)} `}
+            </Text>
+          </View>
+
+          <View style={templateCardStyles.row}>
+            <FontAwesome name="calendar" size={35} color={colors.primary300} />
+            <Text style={templateCardStyles.text}>
+              {createDayString({ restriction, translate })}
+            </Text>
+          </View>
         </View>
-      )}
+      ))}
 
       {template?.devices?.length > 0 && (
         <View style={templateCardStyles.row}>
