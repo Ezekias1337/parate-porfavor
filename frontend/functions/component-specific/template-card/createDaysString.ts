@@ -11,8 +11,8 @@ interface createDayStringProps {
 const createDayString = ({ restriction, translate }: createDayStringProps) => {
     const arrayOfDays: string[] = [];
 
-    for (const [index, day] of restriction.repeatDays.entries()) {
-        let dayName = daysMap.get(index + 1);
+    for (const day of restriction.repeatDays) {
+        let dayName = daysMap.get(day);
         if (dayName) {
             arrayOfDays.push(translate(dayName));
         }

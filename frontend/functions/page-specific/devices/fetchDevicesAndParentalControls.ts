@@ -36,9 +36,22 @@ const fetchDevicesAndParentalControls = async (
                 parentalControlsDevices.splice(dupeIndex, 1);
             }
         }
+        
+        for (const device of parentalControlsDevices) {
+            let dupeIndex = devicesToSet.findIndex(
+                (dupe) => dupe.macAddr === device.macAddr
+            );
+            let dupe = devicesToSet[dupeIndex];
 
-
-
+            if (dupe) {
+                device.domain = dupe.domain;
+                device.ipAddress = dupe.ipAddress;
+                device.connectionType = dupe.connectionType;
+                device.ssid = dupe.ssid;
+                devicesToSet.splice(dupeIndex, 1);
+            }
+        }
+        
         const mergedDeviceArray: Device[] = [
             ...parentalControlsDevices,
             ...filteredDevicesToSet,

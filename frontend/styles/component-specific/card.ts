@@ -53,6 +53,8 @@ const cardStyles = StyleSheet.create({
   badgeWrapper: {
     flexDirection: "row",
     justifyContent: "flex-start",
+    flexWrap: "wrap",
+    alignItems: "center",
     gap: 10,
     marginTop: 10,
   },

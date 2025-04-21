@@ -96,17 +96,20 @@ const renderDeviceCards = (
         } else {
           headerText = device.macAddr;
         }
-        
+
         let arrayOfBadges: BadgeProps[] = [];
-        
-        if(device.onlineStatus === "Online") {
+
+        if (device.onlineStatus === "Online") {
           arrayOfBadges.push({
             text: translate("online"),
             variant: "success",
             icon: "signal",
             size: "small",
           });
-        } else if (device.onlineStatus === "Offline" || device.onlineStatus === "Unknown") {
+        } else if (
+          device.onlineStatus === "Offline" ||
+          device.onlineStatus === "Unknown"
+        ) {
           arrayOfBadges.push({
             text: translate("offline"),
             variant: "neutral",
@@ -114,12 +117,28 @@ const renderDeviceCards = (
             size: "small",
           });
         }
-        
+
         if (device.macFiltered || device.parentalControlRestrictionApplied) {
           arrayOfBadges.push({
             text: translate("blocked"),
             variant: "error",
             icon: "ban",
+            size: "small",
+          });
+        }
+
+        if (device.parentalControlRestrictionApplied && device.templateId) {
+          const templateName =
+            parentalControls.templates[device.templateId - 1].name;
+
+          const badgeText = `${translate(
+            "scheduledRestriction"
+          )}: ${templateName}`;
+
+          arrayOfBadges.push({
+            text: badgeText,
+            variant: "info",
+            icon: "clock-o",
             size: "small",
           });
         }

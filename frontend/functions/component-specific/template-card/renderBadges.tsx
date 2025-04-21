@@ -13,7 +13,8 @@ const renderBadges = (
 ) => {
   return (
     <View style={[templateCardStyles.row, templateCardStyles.badgeRow]}>
-      {(!template.startTime || !template.endTime) && (
+      {(!template.restrictions[0].startTime ||
+        !template.restrictions[0].endTime) && (
         <Badge
           text={translate("missingTimePeriods")}
           variant="warning"
@@ -21,7 +22,8 @@ const renderBadges = (
           iconSize={16}
         />
       )}
-      {(!template.repeatDays || template.repeatDays.length === 0) && (
+      {(!template.restrictions[0].repeatDays ||
+        template.restrictions[0].repeatDays.length === 0) && (
         <Badge
           text={translate("missingDays")}
           variant="warning"
