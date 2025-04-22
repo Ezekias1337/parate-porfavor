@@ -72,9 +72,9 @@ const ParentalControlsModal: React.FC<RenderModalProps> = ({
   });
 
   return (
-    <Modal modalVisible={modalVisible} setModalVisible={setModalVisible} translate={translate}>
+    <Modal modalVisible={modalVisible} setModalVisible={setModalVisible}>
       {!selectedTemplate && parentalControls && (
-        <View style={parentalControlsStyles.modalContainer}>
+        <View style={[parentalControlsStyles.modalContainer]}>
           <Text style={[parentalControlsStyles.title, { marginBottom: 40 }]}>
             {translate("createScheduledRestriction")}
           </Text>
@@ -85,24 +85,26 @@ const ParentalControlsModal: React.FC<RenderModalProps> = ({
             icon="info-circle"
           />
 
-          <View
-            style={[inputFieldStyles.formLabelContainer, { marginTop: 40 }]}
-          >
-            <Text style={inputFieldStyles.formLabel}>
-              {translate("restrictionName")}
-            </Text>
-          </View>
-          <TextInput
-            placeholder={translate("restrictionName")}
-            value={templateName}
-            onChangeText={setTemplateName}
-            style={inputFieldStyles.textInput}
-            placeholderTextColor={colors.primary300}
-            id="username"
-          />
+          <View style={inputFieldStyles.formRow}>
+            <View
+              style={[inputFieldStyles.formLabelContainer, { marginTop: 40 }]}
+            >
+              <Text style={inputFieldStyles.formLabel}>
+                {translate("restrictionName")}
+              </Text>
+            </View>
 
-          <View style={{width: "100%", paddingBottom: 10}}>
-            <Button
+            <TextInput
+              placeholder={translate("restrictionName")}
+              value={templateName}
+              onChangeText={setTemplateName}
+              style={inputFieldStyles.textInput}
+              placeholderTextColor={colors.primary300}
+              id="username"
+            />
+          </View>
+
+          <Button
               text={translate("saveChanges")}
               variant="primary"
               icon="floppy-o"
@@ -141,7 +143,6 @@ const ParentalControlsModal: React.FC<RenderModalProps> = ({
                 }
               }}
             />
-          </View>
         </View>
       )}
 
@@ -155,7 +156,7 @@ const ParentalControlsModal: React.FC<RenderModalProps> = ({
            
         */
 
-        <View  style={parentalControlsStyles.modalContainer}>
+        <View style={parentalControlsStyles.modalContainer}>
           <Text style={[parentalControlsStyles.title, { marginBottom: 40 }]}>
             {translate("modifyScheduledRestriction")}
           </Text>

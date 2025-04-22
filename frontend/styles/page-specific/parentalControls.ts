@@ -5,7 +5,7 @@ import { colors, fontSizes } from "../variables";
 
 const parentalControlsStyles = StyleSheet.create({
   container: {
-    flexDirection: "column",
+    flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "center",
     alignItems: "center",
@@ -61,7 +61,6 @@ const parentalControlsStyles = StyleSheet.create({
   },
   dayButtonContainer: {
     width: "25%",
-
     justifyContent: "center",
     alignItems: "center",
   },
