@@ -80,6 +80,10 @@ const Devices: React.FC = () => {
       setSelectedTemplate(null);
     }
   }, [modalVisible]);
+  
+  useEffect(() => {
+    console.log("Screen width: ", screenWidth);
+  }, [screenWidth]);
 
   return loading ? (
     <View style={[deviceStyles.loader]}>
@@ -90,7 +94,7 @@ const Devices: React.FC = () => {
       contentContainerStyle={[
         deviceStyles.container,
         {
-          paddingLeft: screenWidth < 500 ? 10 : screenWidth * 0.1,
+          paddingHorizontal: screenWidth < 500 ? 10 : screenWidth * 0.1,
           paddingRight: screenWidth < 500 ? 10 : screenWidth * 0.1,
         },
       ]}

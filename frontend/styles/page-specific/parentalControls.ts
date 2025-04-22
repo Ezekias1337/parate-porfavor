@@ -18,9 +18,10 @@ const parentalControlsStyles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    textAlign: "center",
     marginTop: 80,
   },
-  
+
   buttonContainer: {
     justifyContent: "center",
     alignItems: "center",
@@ -51,9 +52,24 @@ const parentalControlsStyles = StyleSheet.create({
   daySelector: {
     display: "flex",
     justifyContent: "center",
-    alignItems: "stretch",
-    flexDirection: "column",
-    flexWrap: "wrap",
+    alignItems: "center",
+    textAlign: "center",
+    flexDirection: "row",
+    flexWrap: "wrap", 
+    width: "100%",
+    gap: 10, 
+  },
+  dayButtonContainer: {
+    width: "25%",
+
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalContainer: {
+    width: "100%",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   }
 });
 

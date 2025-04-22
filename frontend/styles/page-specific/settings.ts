@@ -7,6 +7,7 @@ const settingsStyles = StyleSheet.create({
   wrapper: {
     backgroundColor: colors.neutral800,
     height: "100%",
+    width: "100%",
   },
   
   container: {
@@ -14,7 +15,8 @@ const settingsStyles = StyleSheet.create({
     flexWrap: "wrap",
     justifyContent: "center",
     alignItems: "center",
-    //width: "100%",
+    width: "100%",
+    height: "100%",
     paddingTop: 40,
     paddingBottom: 40,
   },

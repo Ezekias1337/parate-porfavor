@@ -5,7 +5,8 @@ import { colors, fontSizes } from "../variables";
 
 const deviceStyles = StyleSheet.create({
   container: {
-    flexDirection: "column",
+    display: "flex",
+    flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "center",
     alignItems: "center",

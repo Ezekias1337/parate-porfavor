@@ -10,6 +10,7 @@ import daysMap from "@/constants/Days";
 // Types
 import { SelectedDays } from "../parental-controls/ParentalControlsModal";
 // CSS
+import parentalControlsStyles from "../../../styles/page-specific/parentalControls";
 
 interface DayButtonProps {
   day: number;
@@ -40,7 +41,6 @@ const DayButton: React.FC<DayButtonProps> = ({
   const [isSelected, setIsSelected] = useState<boolean>();
 
   useEffect(() => {
-    console.log("dayStringPreTranslate", dayString);
     let tempLocalizedString: string;
 
     if (dayString !== undefined) {
@@ -56,16 +56,18 @@ const DayButton: React.FC<DayButtonProps> = ({
   }, [day, selectedDays, setIsSelected]);
 
   return (
-    <Button
-      variant={isSelected ? "primary" : "neutral"}
-      buttonSize="small"
-      onClickHandler={() => {
-        const tempSelectedDays = { ...selectedDays };
-        tempSelectedDays[day] = !tempSelectedDays[day];
-        setSelectedDays(tempSelectedDays);
-      }}
-      text={dayStringLocalized}
-    ></Button>
+    <View style={parentalControlsStyles.dayButtonContainer}>
+      <Button
+        variant={isSelected ? "primary" : "neutral"}
+        buttonSize="small"
+        onClickHandler={() => {
+          const tempSelectedDays = { ...selectedDays };
+          tempSelectedDays[day] = !tempSelectedDays[day];
+          setSelectedDays(tempSelectedDays);
+        }}
+        text={dayStringLocalized.slice(0, 3)}
+      ></Button>
+    </View>
   );
 };
 

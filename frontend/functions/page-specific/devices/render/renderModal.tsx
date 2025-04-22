@@ -45,7 +45,7 @@ const renderModal = ({
   }
 
   return (
-    <Modal modalVisible={modalVisible} setModalVisible={setModalVisible}>
+    <Modal modalVisible={modalVisible} setModalVisible={setModalVisible} translate={translate}>
       {renderParentalControlsTemplateCards({
         parentalControls,
         setParentalControls,

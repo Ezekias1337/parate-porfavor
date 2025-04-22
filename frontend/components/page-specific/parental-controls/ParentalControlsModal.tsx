@@ -72,9 +72,9 @@ const ParentalControlsModal: React.FC<RenderModalProps> = ({
   });
 
   return (
-    <Modal modalVisible={modalVisible} setModalVisible={setModalVisible}>
+    <Modal modalVisible={modalVisible} setModalVisible={setModalVisible} translate={translate}>
       {!selectedTemplate && parentalControls && (
-        <View>
+        <View style={parentalControlsStyles.modalContainer}>
           <Text style={[parentalControlsStyles.title, { marginBottom: 40 }]}>
             {translate("createScheduledRestriction")}
           </Text>
@@ -101,7 +101,7 @@ const ParentalControlsModal: React.FC<RenderModalProps> = ({
             id="username"
           />
 
-          <View>
+          <View style={{width: "100%", paddingBottom: 10}}>
             <Button
               text={translate("saveChanges")}
               variant="primary"
@@ -155,7 +155,7 @@ const ParentalControlsModal: React.FC<RenderModalProps> = ({
            
         */
 
-        <View>
+        <View  style={parentalControlsStyles.modalContainer}>
           <Text style={[parentalControlsStyles.title, { marginBottom: 40 }]}>
             {translate("modifyScheduledRestriction")}
           </Text>

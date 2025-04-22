@@ -34,7 +34,6 @@ export const buttonStyles = StyleSheet.create({
     backgroundColor: colors.neutral200,
     borderColor: colors.neutral400,
     opacity: 0.5,
-    cursor: "not-allowed",
   },
   smallButton: {
     fontSize: fontSizes.general,

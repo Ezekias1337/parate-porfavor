@@ -13,13 +13,12 @@ export const modalStyles = StyleSheet.create({
 
   modalContents: {
     paddingHorizontal: 20,
-    //height: "50%",
-    minHeight: "80%",
-    minWidth: "80%",
+    maxWidth: "95%",
+    maxHeight: "95%",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: colors.neutral700,
+    backgroundColor: colors.neutral600,
     borderRadius: borderRadius.borderRadius,
     padding: 20,
     borderColor: colors.primary300,
@@ -32,5 +31,6 @@ export const modalStyles = StyleSheet.create({
     right: 20,
     padding: 10,
     backgroundColor: "transparent",
+    zIndex: 1000,
   },
 });

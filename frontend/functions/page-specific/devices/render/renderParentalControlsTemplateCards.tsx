@@ -1,5 +1,5 @@
 // Library Imports
-import { View } from "react-native";
+import { View, ScrollView } from "react-native";
 // Functions, Helpers, Utils, and Hooks
 import extractParentalControlsDevicesFromTemplates from "../extractParentalControlsDevicesFromTemplates";
 // Components
@@ -46,7 +46,7 @@ const renderParentalControlsTemplateCards = ({
     extractParentalControlsDevicesFromTemplates(parentalControls);
 
   return (
-    <View style={deviceStyles.devicesContainer}>
+    <ScrollView contentContainerStyle={deviceStyles.devicesContainer}>
       {selectedTemplate === null &&
         parentalControls.templates.map((template) => {
           return (
@@ -80,7 +80,7 @@ const renderParentalControlsTemplateCards = ({
           setLoading={setLoading}
         />
       )}
-    </View>
+    </ScrollView>
   );
 };
 
