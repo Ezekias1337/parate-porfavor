@@ -145,18 +145,18 @@ export const addTimePeriodToParentalControls: RequestHandler = async (req, res, 
         const endTime: endTime = req.body.endTime;
         const repeatDays: repeatDays = req.body.repeatDays;
         const templateNumber: number = req.body.templateNumber;
+        const durationNumber: number | null = req.body.durationNumber;
 
         let ontToken: OntToken = req.body.ontToken;
         ontToken = await fetchOntTokenSourceHandler(ontToken, cookies, MODEM_URL_BASE);
 
-        const queryString = `x.StartTime=${startTime}
-            &x.EndTime=${endTime}
-            &x.RepeatDay=${repeatDays.join(",")}
-            &x.TemplateInst=${templateNumber}
-            &y.DurationRight=0&y.DurationPolicy=0
-            &x.X_HW_Token=${ontToken}`;
+        const urlString = `${MODEM_URL_BASE}/html/bbsp/parentalctrl/${durationNumber === null ? "add" : "set"}.cgi?x=InternetGatewayDevice.X_HW_Security.ParentalCtrl.Templates.${templateNumber}.Duration${durationNumber === null ? "" : durationNumber}&y=InternetGatewayDevice.X_HW_Security.ParentalCtrl.Templates.${templateNumber}&RequestFile=html/ipv6/not_find_file.asp`;
+        const queryString = `x.StartTime=${startTime}&x.EndTime=${endTime}&x.RepeatDay=${repeatDays.join(",")}&y.DurationRight=0&y.DurationPolicy=0&x.X_HW_Token=${ontToken}`;
 
-        const response = await axios.post(`${MODEM_URL_BASE}/html/bbsp/parentalctrl/`, queryString, {
+        console.log(urlString);
+        console.log(queryString);
+        
+        const response = await axios.post(urlString, queryString, {
             headers: {
                 "User-Agent": USER_AGENT,
                 "Accept": "*/*",
@@ -164,7 +164,7 @@ export const addTimePeriodToParentalControls: RequestHandler = async (req, res, 
                 "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
                 "X-Requested-With": "XMLHttpRequest",
                 Priority: "u=0",
-                referrer: `${MODEM_URL_BASE}/html/bbsp/parentalctrl/parentalctrltime.asp?TemplateId=2&FlagStatus=EditTemplate`,
+                referrer: `${MODEM_URL_BASE}/html/bbsp/parentalctrl/parentalctrltime.asp?TemplateId=${templateNumber}&FlagStatus=EditTemplate`,
                 mode: "cors",
                 "Cookie": cookies,
             },

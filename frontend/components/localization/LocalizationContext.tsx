@@ -46,14 +46,17 @@ export const LocalizationProvider: React.FC<{ children: React.ReactNode }> = ({
           parentalControls: "Parental Controls",
           scheduledRestriction: "Restriction",
           createScheduledRestriction: "Create Scheduled Restriction",
-          createScheduledRestrictionAlert: "Enter the desired name of the scheduled restriction. \n \n When you want to apply this restriction to devices in the future this will be the name you reference.",
+          createScheduledRestrictionAlert:
+            "Enter the desired name of the scheduled restriction. \n \n When you want to apply this restriction to devices in the future this will be the name you reference.",
           devices: "Devices",
           deviceDescription: "Device Description",
           cpuUsed: "CPU Used",
           ramUsed: "RAM Used",
           systemTime: "System Time",
-          serverError: "Could not communicate with the server. Please try again later.",
-          errorGettingModemStatus: "Could not get modem status. Press button to try again. If it still doesn't work, try logging out and logging back in.",
+          serverError:
+            "Could not communicate with the server. Please try again later.",
+          errorGettingModemStatus:
+            "Could not get modem status. Press button to try again. If it still doesn't work, try logging out and logging back in.",
           rebootModem: "Reboot Modem",
           modemIsRebooting: "Modem is rebooting in... Logging you out in:",
           seconds: "seconds",
@@ -103,12 +106,21 @@ export const LocalizationProvider: React.FC<{ children: React.ReactNode }> = ({
           modemUrl: "Modem URL",
           settingsSaved: "Settings saved successfully!",
           settingsError: "Failed to save settings. Please try again.",
-          serverUrlNeeded: "Below please enter the URL of the server you want to connect to.\n\n This URL must be accessible from the modem.",
+          serverUrlNeeded:
+            "Below please enter the URL of the server you want to connect to.\n\n This URL must be accessible from the modem.",
           edit: "Edit",
           delete: "Delete",
           missingDays: "Missing Days",
           missingTimePeriods: "Missing Time Periods",
           restrictionName: "Restriction Name",
+          allowedDays: "Allowed Days",
+          allowedStartTime: "Allowed Start Time (HH:MM)",
+          allowedEndTime: "Allowed End Time (HH:MM)",
+          addTimePeriodError:
+            "Please enter a valid start and end time. The time must be in the 12 hour format of HH:MM. For example:\n\n 8:00 AM - 9:00 PM",
+          needToSelectDays: "Please select at least one day.",
+          incorrectTimeRange:
+            "Your start time must be before your end time and your end time must be after your start time.",
         },
         es: {
           welcome: "Bienvenido",
@@ -124,16 +136,20 @@ export const LocalizationProvider: React.FC<{ children: React.ReactNode }> = ({
           parentalControls: "Controles Parentales",
           scheduledRestriction: "Restricción",
           createScheduledRestriction: "Crear Restricción Programada",
-          createScheduledRestrictionAlert: "Ingrese el nombre deseado de la restricción programada. \n \n Cuando quiera aplicar esta restricción a dispositivos en el futuro, esto será el nombre que referencia.",
+          createScheduledRestrictionAlert:
+            "Ingrese el nombre deseado de la restricción programada. \n \n Cuando quiera aplicar esta restricción a dispositivos en el futuro, esto será el nombre que referencia.",
           devices: "Dispositivos",
           deviceDescription: "Descripción del Dispositivo",
           cpuUsed: "CPU Usado",
           ramUsed: "RAM Usada",
           systemTime: "Tiempo del Sistema",
-          serverError: "No se pudo comunicar con el servidor. Por favor, inténtelo de nuevo mas tarde.",
-          errorGettingModemStatus: "No se pudo obtener el estado del modem. Presione el botón para intentarlo de nuevo. Si sigue sin funcionar, inténtelo cerrando y vuelvéndose a iniciar sesión.",
+          serverError:
+            "No se pudo comunicar con el servidor. Por favor, inténtelo de nuevo mas tarde.",
+          errorGettingModemStatus:
+            "No se pudo obtener el estado del modem. Presione el botón para intentarlo de nuevo. Si sigue sin funcionar, inténtelo cerrando y vuelvéndose a iniciar sesión.",
           rebootModem: "Reiniciar Modem",
-          modemIsRebooting: "El modem se esta reiniciando... Cerrando sesión en:",
+          modemIsRebooting:
+            "El modem se esta reiniciando... Cerrando sesión en:",
           seconds: "segundos",
           refresh: "Actualizar",
           macFilter: "Filtro MAC",
@@ -180,13 +196,23 @@ export const LocalizationProvider: React.FC<{ children: React.ReactNode }> = ({
           serverUrl: "URL del Servidor",
           modemUrl: "URL del Modem",
           settingsSaved: "Ajustes guardados correctamente!",
-          settingsError: "No se pudieron guardar los ajustes. Por favor, inténtelo de nuevo.",
-          serverUrlNeeded: "A continuación ingrese la URL del servidor al que desea conectarse.\n\n Esta URL debe ser accesible desde el modem.",
+          settingsError:
+            "No se pudieron guardar los ajustes. Por favor, inténtelo de nuevo.",
+          serverUrlNeeded:
+            "A continuación ingrese la URL del servidor al que desea conectarse.\n\n Esta URL debe ser accesible desde el modem.",
           edit: "Editar",
           delete: "Eliminar",
           missingDays: "Faltan Días",
           missingTimePeriods: "Faltan Períodos de Tiempo",
           restrictionName: "Nombre de la Restricción",
+          allowedDays: "Días Permitidos",
+          allowedStartTime: "Hora de Inicio Permitida (HH:MM)",
+          allowedEndTime: "Hora de Fin Permitida (HH:MM)",
+          addTimePeriodError:
+            "Ingrese una hora de inicio y de fin válida. La hora debe estar en formato de 12 horas (HH:MM). Por ejemplo:\n\n 8:00 AM - 9:00 PM",
+          needToSelectDays: "Debe seleccionar al menos un día",
+          incorrectTimeRange:
+            "La hora de inicio debe ser menor que la hora de fin y la hora de fin debe ser mayor que la hora de inicio",
         },
       };
 

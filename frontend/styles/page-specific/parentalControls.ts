@@ -55,9 +55,9 @@ const parentalControlsStyles = StyleSheet.create({
     alignItems: "center",
     textAlign: "center",
     flexDirection: "row",
-    flexWrap: "wrap", 
+    flexWrap: "wrap",
     width: "100%",
-    gap: 10, 
+    gap: 10,
   },
   dayButtonContainer: {
     width: "25%",
@@ -69,7 +69,20 @@ const parentalControlsStyles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-  }
+  },
+  ampmContainer: {
+    display: "flex", 
+    flexDirection: "row", 
+    marginTop: 10, gap: 10, 
+    flexWrap: "wrap", 
+    //width: "100%", 
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  ampmButtonContainer: {
+    width: "25%",
+
+  },
 });
 
 export default parentalControlsStyles;

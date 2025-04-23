@@ -8,11 +8,21 @@ import OntToken from "../../../../shared/types/OntToken";
 const addTimePeriodToParentalControlsTemplate = async (
   startTime: string,
   endTime: string,
-  repeatDays: string, // A string of comma-separated days (e.g., "7,1,2,3,4,5,6")
+  repeatDays: number[],
+  templateNumber: number,
+  durationNumber: number | null,
   ontToken: OntToken,
-  isWholeDay: boolean = false // Optional flag for Whole Day, Every Day
 ): Promise<boolean> => {
   try {
+    const timePeriod = {
+      startTime,
+      endTime,
+      repeatDays,
+      templateNumber,
+      durationNumber,
+      ontToken,
+    }
+
     const response = await fetchData("/api/parental-controls/add-time-period-to-parental-controls-template", {
       method: "POST",
       headers: {
@@ -21,7 +31,7 @@ const addTimePeriodToParentalControlsTemplate = async (
         Accept: "*/*",
         "Content-Type": "application/json",
       },
-      //body: JSON.stringify(infoOfDeviceToAdd),
+      body: JSON.stringify(timePeriod),
     });
 
     if (!response.ok) {

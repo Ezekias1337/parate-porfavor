@@ -8,7 +8,7 @@ router.get("/get-parental-controls-data", ParentalControlsController.getParental
 // POST requests
 router.post("/get-ont-token", ParentalControlsController.fetchOntTokenSource)
 router.post("/add-device-to-parental-controls", ParentalControlsController.addDeviceToParentalControls);
-router.post("/add-time-period-to-parental-controls", ParentalControlsController.addTimePeriodToParentalControls);
+router.post("/add-time-period-to-parental-controls-template", ParentalControlsController.addTimePeriodToParentalControls);
 router.post("/create-parental-controls-template", ParentalControlsController.createParentalControlsTemplate);
 // DELETE requests
 router.delete("/remove-device-from-parental-controls", ParentalControlsController.removeDeviceFromParentalControls);

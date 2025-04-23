@@ -81,10 +81,6 @@ const Devices: React.FC = () => {
     }
   }, [modalVisible]);
   
-  useEffect(() => {
-    console.log("Screen width: ", screenWidth);
-  }, [screenWidth]);
-
   return loading ? (
     <View style={[deviceStyles.loader]}>
       <ActivityIndicator color={colors.primary500} size="large" />
