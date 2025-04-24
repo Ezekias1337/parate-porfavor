@@ -151,7 +151,7 @@ const ParentalControlsModal: React.FC<RenderModalProps> = ({
             translate={translate}
             ontToken={ontToken}
           /> */}
-          <RestrictionList template={selectedTemplate} translate={translate} />
+          <RestrictionList template={selectedTemplate}  setSelectedTemplate={setSelectedTemplate} translate={translate} ontToken={ontToken} setLoading={setLoading} setParentalControls={setParentalControls} setErrorMsg={setErrorMsg} />
         </View>
       )}
     </Modal>

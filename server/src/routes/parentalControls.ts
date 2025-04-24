@@ -11,6 +11,7 @@ router.post("/add-device-to-parental-controls", ParentalControlsController.addDe
 router.post("/add-time-period-to-parental-controls-template", ParentalControlsController.addTimePeriodToParentalControls);
 router.post("/create-parental-controls-template", ParentalControlsController.createParentalControlsTemplate);
 // DELETE requests
+router.delete("/remove-time-period-from-parental-controls-template", ParentalControlsController.removeTimePeriodFromParentalControls);
 router.delete("/remove-device-from-parental-controls", ParentalControlsController.removeDeviceFromParentalControls);
 router.delete("/delete-parental-controls-template", ParentalControlsController.deleteParentalControlsTemplate);
 

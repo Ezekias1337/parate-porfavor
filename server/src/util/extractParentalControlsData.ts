@@ -52,21 +52,24 @@ const extractParentalControlsData = (htmlContent: string, logList?: boolean): Pa
 
         // Extract restrictions
         while ((match = durationListRegex.exec(htmlContent)) !== null) {
-            const templateIndex = parseInt(match[1], 10) - 1;
+            const templateId = parseInt(match[1], 10);
+            const restrictionId = parseInt(match[2], 10);
             const startTime = parseInt(match[3].replace(/\\x3a/g, ""), 10);
             const endTime = parseInt(match[4].replace(/\\x3a/g, ""), 10);
             const repeatDays = match[5].replace(/\\x2c/g, ",").split(",").map(Number);
 
-            if (!timeRestrictionsMap[templateIndex]) {
-                timeRestrictionsMap[templateIndex] = [];
+            if (!timeRestrictionsMap[templateId - 1]) {
+                timeRestrictionsMap[templateId - 1] = [];
             }
 
-            timeRestrictionsMap[templateIndex].push({
+            timeRestrictionsMap[templateId - 1].push({
+                id: restrictionId,
                 startTime,
                 endTime,
                 repeatDays
             });
         }
+
 
         // Combine templates
         tempTemplateNames.forEach((name, index) => {

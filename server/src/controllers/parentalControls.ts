@@ -155,7 +155,7 @@ export const addTimePeriodToParentalControls: RequestHandler = async (req, res, 
 
         console.log(urlString);
         console.log(queryString);
-        
+
         const response = await axios.post(urlString, queryString, {
             headers: {
                 "User-Agent": USER_AGENT,
@@ -238,8 +238,7 @@ export const removeDeviceFromParentalControls: RequestHandler = async (req, res,
         let ontToken: OntToken = req.body.ontToken;
         ontToken = await fetchOntTokenSourceHandler(ontToken, cookies, MODEM_URL_BASE);
 
-        const queryString = `InternetGatewayDevice.X_HW_Security.ParentalCtrl.MAC.${macIndex}=
-            &x.X_HW_Token=${ontToken}`;
+        const queryString = `InternetGatewayDevice.X_HW_Security.ParentalCtrl.MAC.${macIndex}=&x.X_HW_Token=${ontToken}`;
 
         const response = await axios.post(`${MODEM_URL_BASE}/html/bbsp/parentalctrl/del.cgi?RequestFile=html/bbsp/parentalctrl/parentalctrlmac.asp`, queryString, {
             headers: {
@@ -299,8 +298,8 @@ export const deleteParentalControlsTemplate: RequestHandler = async (req, res, n
         });
 
         /* 
-            For some reason even when making this request directly from the modem control panel
-            the response code is 404 even when it is successful
+            ? For some reason even when making this request directly from the modem control panel
+            ? the response code is 404 even when it is successful
         */
         if (response.status === 404) {
             res.json(true);
@@ -316,6 +315,50 @@ export const deleteParentalControlsTemplate: RequestHandler = async (req, res, n
     }
 }
 
+export const removeTimePeriodFromParentalControls: RequestHandler = async (req, res, next) => {
+    try {
+        const cookies: string = sessionStore.getAllCookies();
+        const MODEM_URL_BASE = getModemUrl(req);
 
+        const templateNumber: number = req.body.templateNumber;
+        const durationNumber: number = req.body.durationNumber;
+        let ontToken: OntToken = req.body.ontToken;
+        ontToken = await fetchOntTokenSourceHandler(ontToken, cookies, MODEM_URL_BASE);
+
+        const queryString = `InternetGatewayDevice.X_HW_Security.ParentalCtrl.Templates.${templateNumber}.Duration.${durationNumber}=&x.X_HW_Token=${ontToken}`;
+
+        const response = await axios.post(`${MODEM_URL_BASE}/html/bbsp/parentalctrl/del.cgi?&RequestFile=html/ipv6/not_find_file.asp`, queryString, {
+            headers: {
+                "User-Agent": USER_AGENT,
+                "Accept": "*/*",
+                "Accept-Language": "en-US,en;q=0.5",
+                "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+                "X-Requested-With": "XMLHttpRequest",
+                "Priority": "u=0",
+                "Pragma": "no-cache",
+                "Cache-Control": "no-cache",
+                referrer: `${MODEM_URL_BASE}/html/bbsp/parentalctrl/parentalctrltime.asp?TemplateId=${templateNumber}&FlagStatus=EditTemplate`,
+                mode: "cors",
+                "Cookie": cookies,
+            },
+        });
+
+        /* 
+            ? For some reason even when making this request directly from the modem control panel
+            ? the response code is 404 even when it is successful
+        */
+        if (response.status === 404) {
+            res.json(true);
+        } else {
+            console.error("Failed to remove time period from parental controls template, status:", response.status);
+            throw new Error(
+                `Failed to remove time period from parental controls template, status: ${response.status}`
+            );
+        }
+
+    } catch (error) {
+        next(error);
+    }
+}
 
 
