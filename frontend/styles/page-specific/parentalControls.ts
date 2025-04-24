@@ -29,6 +29,7 @@ const parentalControlsStyles = StyleSheet.create({
     flexWrap: "wrap",
     gap: 10,
     padding: 20,
+    width: "100%"
   },
   templatesContainer: {
     justifyContent: "center",

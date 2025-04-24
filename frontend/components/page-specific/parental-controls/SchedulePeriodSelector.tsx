@@ -13,6 +13,7 @@ import checkForIncorrectTimeRange from "@/helpers/checkForIncorrectTimeRange";
 // Types
 import { SelectedDays } from "../parental-controls/ParentalControlsModal";
 import OntToken from "../../../../shared/types/OntToken";
+import { Template } from "../../../../shared/types/ParentalControls";
 // CSS
 import { inputFieldStyles } from "../../../styles/component-specific/input-fields";
 import parentalControlsStyles from "../../../styles/page-specific/parentalControls";
@@ -20,6 +21,7 @@ import { colors } from "../../../styles/variables";
 
 interface SchedulePeriodSelectorProps {
   translate: (key: string) => string;
+  template: Template;
   existingStartTime?: RestrictionTime;
   existingEndTime?: RestrictionTime;
   existingSelectedDays?: SelectedDays;
@@ -33,6 +35,7 @@ export interface RestrictionTime {
 
 const SchedulePeriodSelector: React.FC<SchedulePeriodSelectorProps> = ({
   translate,
+  template,
   existingStartTime,
   existingEndTime,
   existingSelectedDays,
@@ -252,14 +255,19 @@ const SchedulePeriodSelector: React.FC<SchedulePeriodSelectorProps> = ({
                 return;
               }
 
-              await addTimePeriodToParentalControlsTemplate(
-                parsedStartTime,
-                parsedEndTime,
-                parsedRepeatDays,
-                3,
-                null,
-                ontToken
-              );
+              let durationNumber: number | null = null;
+              if (template?.restrictions?.length > 0) {
+                durationNumber = template.restrictions.length;
+              }
+
+              await addTimePeriodToParentalControlsTemplate({
+                startTime: parsedStartTime,
+                endTime: parsedEndTime,
+                repeatDays: parsedRepeatDays,
+                templateNumber: template.id,
+                durationNumber: durationNumber,
+                ontToken: ontToken,
+              });
             } catch (error) {
               console.error(error);
               setError(translate("addTimePeriodError"));

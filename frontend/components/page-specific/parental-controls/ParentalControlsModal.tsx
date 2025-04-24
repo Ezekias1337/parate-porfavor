@@ -6,12 +6,12 @@ import Modal from "@/components/Modal";
 import Button from "@/components/Button";
 import Alert from "@/components/Alert";
 import SchedulePeriodSelector from "./SchedulePeriodSelector";
+import RestrictionList from "./RestrictionList";
 // Types
 import {
   ParentalControlsData,
   Template,
 } from "../../../../shared/types/ParentalControls";
-import { Device } from "../../../../shared/types/Device";
 import OntToken from "../../../../shared/types/OntToken";
 // Functions, Helpers, Utils, and Hooks
 import createParentalControlsTemplate from "@/functions/network/parental-controls/createParentalControlsTemplate";
@@ -144,7 +144,15 @@ const ParentalControlsModal: React.FC<RenderModalProps> = ({
            interface to edit the time periods/days
            
         */
-        <SchedulePeriodSelector translate={translate} ontToken={ontToken} />
+
+        <View style={{ width: "100%", maxHeight: "100%", display: "flex" }}>
+          {/* <SchedulePeriodSelector
+            template={selectedTemplate}
+            translate={translate}
+            ontToken={ontToken}
+          /> */}
+          <RestrictionList template={selectedTemplate} translate={translate} />
+        </View>
       )}
     </Modal>
   );

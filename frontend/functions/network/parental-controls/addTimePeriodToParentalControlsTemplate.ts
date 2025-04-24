@@ -5,13 +5,24 @@ import OntToken from "../../../../shared/types/OntToken";
   Need to use the types defined in shared folder for props
 */
 
-const addTimePeriodToParentalControlsTemplate = async (
+interface addTimePeriodArgs {
   startTime: string,
   endTime: string,
   repeatDays: number[],
   templateNumber: number,
   durationNumber: number | null,
-  ontToken: OntToken,
+  ontToken: OntToken
+}
+
+const addTimePeriodToParentalControlsTemplate = async (
+  {
+    startTime,
+    endTime,
+    repeatDays,
+    templateNumber,
+    durationNumber,
+    ontToken
+  }: addTimePeriodArgs
 ): Promise<boolean> => {
   try {
     const timePeriod = {
