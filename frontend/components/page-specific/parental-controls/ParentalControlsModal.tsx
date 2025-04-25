@@ -114,7 +114,9 @@ const ParentalControlsModal: React.FC<RenderModalProps> = ({
             <SchedulePeriodSelector
               translate={translate}
               template={selectedTemplate}
+              setSelectedTemplate={setSelectedTemplate}
               setShowSchedulePeriodSelector={setShowSchedulePeriodSelector}
+              setParentalControls={setParentalControls}
               ontToken={ontToken}
               existingStartTime={
                 restrictionToEdit

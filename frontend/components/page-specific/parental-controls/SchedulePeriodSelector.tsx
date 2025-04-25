@@ -9,11 +9,15 @@ import renderErrorMsg from "@/functions/general/renderErrorMsg";
 import convertTo24HourFormat from "@/helpers/convertTo24HourFormat";
 import addTimePeriodToParentalControlsTemplate from "@/functions/network/parental-controls/addTimePeriodToParentalControlsTemplate";
 import checkForIncorrectTimeRange from "@/helpers/checkForIncorrectTimeRange";
+import handleFetchParentalControls from "@/functions/page-specific/parental-controls/handleFetchParentalControls";
 // Constants
 // Types
 import { SelectedDays } from "../parental-controls/ParentalControlsModal";
 import OntToken from "../../../../shared/types/OntToken";
-import { Template } from "../../../../shared/types/ParentalControls";
+import {
+  Template,
+  ParentalControlsData,
+} from "../../../../shared/types/ParentalControls";
 // CSS
 import { inputFieldStyles } from "../../../styles/component-specific/input-fields";
 import parentalControlsStyles from "../../../styles/page-specific/parentalControls";
@@ -22,10 +26,14 @@ import { colors } from "../../../styles/variables";
 interface SchedulePeriodSelectorProps {
   translate: (key: string) => string;
   template: Template;
+  setSelectedTemplate: React.Dispatch<React.SetStateAction<Template | null>>;
   existingStartTime: RestrictionTime | null;
   existingEndTime: RestrictionTime | null;
   existingSelectedDays: SelectedDays | null;
   setShowSchedulePeriodSelector: React.Dispatch<React.SetStateAction<boolean>>;
+  setParentalControls: React.Dispatch<
+    React.SetStateAction<ParentalControlsData>
+  >;
   ontToken: OntToken;
 }
 
@@ -37,10 +45,12 @@ export type RestrictionTime = {
 const SchedulePeriodSelector: React.FC<SchedulePeriodSelectorProps> = ({
   translate,
   template,
+  setSelectedTemplate,
   existingStartTime,
   existingEndTime,
   existingSelectedDays,
   setShowSchedulePeriodSelector,
+  setParentalControls,
   ontToken,
 }) => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -235,8 +245,21 @@ const SchedulePeriodSelector: React.FC<SchedulePeriodSelectorProps> = ({
                 durationNumber: durationNumber,
                 ontToken: ontToken,
               });
-              
+
               setShowSchedulePeriodSelector(false);
+
+              const newParentalControls = await handleFetchParentalControls({
+                setLoading,
+                setParentalControls,
+                setErrorMsg: setError,
+                translate,
+              });
+              const updatedTemplate = newParentalControls.templates.find(
+                (temp) => temp.id === template.id
+              );
+              if (updatedTemplate) {
+                setSelectedTemplate(updatedTemplate);
+              }
             } catch (error) {
               console.error(error);
               setError(translate("addTimePeriodError"));
