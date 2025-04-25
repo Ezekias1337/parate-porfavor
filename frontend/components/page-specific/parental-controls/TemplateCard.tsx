@@ -41,7 +41,7 @@ const TemplateCard = ({
   setLoading,
   setParentalControls,
   setSelectedTemplate,
-  setModalVisible
+  setModalVisible,
 }: TemplateCardProps) => {
   const [deleteLoading, setDeleteLoading] = useState(false);
 

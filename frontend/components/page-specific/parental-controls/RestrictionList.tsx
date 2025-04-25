@@ -28,6 +28,8 @@ interface RestrictionListProps {
   >;
   setErrorMsg: React.Dispatch<React.SetStateAction<string | null>>;
   translate: (key: string) => string;
+  setRestrictionToEdit: React.Dispatch<React.SetStateAction<Restriction | null>>;
+  setShowSchedulePeriodSelector: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const RestrictionList: React.FC<RestrictionListProps> = ({
@@ -38,6 +40,8 @@ const RestrictionList: React.FC<RestrictionListProps> = ({
   setParentalControls,
   setErrorMsg,
   translate,
+  setRestrictionToEdit,
+  setShowSchedulePeriodSelector
 }) => {
   const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
 
@@ -58,6 +62,12 @@ const RestrictionList: React.FC<RestrictionListProps> = ({
               variant="primary"
               leftIcon
               icon="pencil"
+              onClickHandler={() => {
+                console.log("Edit clicked");
+                console.log("Restriction to edit:", restriction);
+                setRestrictionToEdit(restriction);
+                setShowSchedulePeriodSelector(true);
+              }}
             />
 
             <Button

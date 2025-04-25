@@ -150,11 +150,8 @@ export const addTimePeriodToParentalControls: RequestHandler = async (req, res, 
         let ontToken: OntToken = req.body.ontToken;
         ontToken = await fetchOntTokenSourceHandler(ontToken, cookies, MODEM_URL_BASE);
 
-        const urlString = `${MODEM_URL_BASE}/html/bbsp/parentalctrl/${durationNumber === null ? "add" : "set"}.cgi?x=InternetGatewayDevice.X_HW_Security.ParentalCtrl.Templates.${templateNumber}.Duration${durationNumber === null ? "" : durationNumber}&y=InternetGatewayDevice.X_HW_Security.ParentalCtrl.Templates.${templateNumber}&RequestFile=html/ipv6/not_find_file.asp`;
+        const urlString = `${MODEM_URL_BASE}/html/bbsp/parentalctrl/${durationNumber === null ? "add" : "set"}.cgi?x=InternetGatewayDevice.X_HW_Security.ParentalCtrl.Templates.${templateNumber}.Duration.${durationNumber === null ? "" : durationNumber}&y=InternetGatewayDevice.X_HW_Security.ParentalCtrl.Templates.${templateNumber}&RequestFile=html/ipv6/not_find_file.asp`;
         const queryString = `x.StartTime=${startTime}&x.EndTime=${endTime}&x.RepeatDay=${repeatDays.join(",")}&y.DurationRight=0&y.DurationPolicy=0&x.X_HW_Token=${ontToken}`;
-
-        console.log(urlString);
-        console.log(queryString);
 
         const response = await axios.post(urlString, queryString, {
             headers: {

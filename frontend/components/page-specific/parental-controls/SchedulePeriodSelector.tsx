@@ -22,16 +22,17 @@ import { colors } from "../../../styles/variables";
 interface SchedulePeriodSelectorProps {
   translate: (key: string) => string;
   template: Template;
-  existingStartTime?: RestrictionTime;
-  existingEndTime?: RestrictionTime;
-  existingSelectedDays?: SelectedDays;
+  existingStartTime: RestrictionTime | null;
+  existingEndTime: RestrictionTime | null;
+  existingSelectedDays: SelectedDays | null;
+  setShowSchedulePeriodSelector: React.Dispatch<React.SetStateAction<boolean>>;
   ontToken: OntToken;
 }
 
-export interface RestrictionTime {
+export type RestrictionTime = {
   time: string;
   amOrPm: "AM" | "PM";
-}
+};
 
 const SchedulePeriodSelector: React.FC<SchedulePeriodSelectorProps> = ({
   translate,
@@ -39,56 +40,22 @@ const SchedulePeriodSelector: React.FC<SchedulePeriodSelectorProps> = ({
   existingStartTime,
   existingEndTime,
   existingSelectedDays,
+  setShowSchedulePeriodSelector,
   ontToken,
 }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const [startTime, setStartTime] = useState<RestrictionTime>({
-    time: "",
-    amOrPm: "AM",
-  });
-  const [endTime, setEndTime] = useState<RestrictionTime>({
-    time: "",
-    amOrPm: "AM",
-  });
-  const [selectedDays, setSelectedDays] = useState<SelectedDays>({
-    1: false,
-    2: false,
-    3: false,
-    4: false,
-    5: false,
-    6: false,
-    7: false,
-  });
-
-  /* 
-    ! Initialize the form with the existing values if they are provided
-  */
-  useEffect(() => {
-    setStartTime(
-      existingStartTime || {
-        time: "",
-        amOrPm: "AM",
-      }
-    );
-    setEndTime(
-      existingEndTime || {
-        time: "",
-        amOrPm: "AM",
-      }
-    );
-    setSelectedDays(
-      existingSelectedDays || {
-        1: false,
-        2: false,
-        3: false,
-        4: false,
-        5: false,
-        6: false,
-        7: false,
-      }
-    );
-  }, []);
+  const [startTime, setStartTime] = useState<RestrictionTime>(
+    existingStartTime ? existingStartTime : { time: "", amOrPm: "AM" }
+  );
+  const [endTime, setEndTime] = useState<RestrictionTime>(
+    existingEndTime ? existingEndTime : { time: "", amOrPm: "AM" }
+  );
+  const [selectedDays, setSelectedDays] = useState<SelectedDays>(
+    existingSelectedDays
+      ? existingSelectedDays
+      : { 1: false, 2: false, 3: false, 4: false, 5: false, 6: false, 7: false }
+  );
 
   return (
     <ScrollView
@@ -268,6 +235,8 @@ const SchedulePeriodSelector: React.FC<SchedulePeriodSelectorProps> = ({
                 durationNumber: durationNumber,
                 ontToken: ontToken,
               });
+              
+              setShowSchedulePeriodSelector(false);
             } catch (error) {
               console.error(error);
               setError(translate("addTimePeriodError"));

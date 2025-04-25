@@ -31,12 +31,12 @@ const deleteParentalControlsTemplate = async (
 
     if (!response.ok) {
       throw new Error(
-        `Failed to create parental controls template, status: ${response.status}`
+        `Failed to delete parental controls template, status: ${response.status}`
       );
     }
     return true
   } catch (error) {
-    console.error("Failed to create parental controls template, status", error);
+    console.error("Failed to delete parental controls template, status", error);
     return false;
   }
 };

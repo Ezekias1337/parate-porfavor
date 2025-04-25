@@ -5,17 +5,22 @@ import { View, Text, TextInput, ScrollView } from "react-native";
 import Modal from "@/components/Modal";
 import Button from "@/components/Button";
 import Alert from "@/components/Alert";
+import TemplateCreator from "./TemplateCreator";
 import SchedulePeriodSelector from "./SchedulePeriodSelector";
 import RestrictionList from "./RestrictionList";
 // Types
 import {
   ParentalControlsData,
   Template,
+  Restriction,
 } from "../../../../shared/types/ParentalControls";
 import OntToken from "../../../../shared/types/OntToken";
+import { RestrictionTime } from "./SchedulePeriodSelector";
 // Functions, Helpers, Utils, and Hooks
 import createParentalControlsTemplate from "@/functions/network/parental-controls/createParentalControlsTemplate";
 import handleFetchParentalControls from "../../../functions/page-specific/parental-controls/handleFetchParentalControls";
+import convertToRestrictionTimeType from "@/helpers/convertToRestrictionTimeType";
+import convertToRepeatDays from "@/helpers/convertToRepeatDays";
 // CSS
 import parentalControlsStyles from "../../../styles/page-specific/parentalControls";
 import { inputFieldStyles } from "../../../styles/component-specific/input-fields";
@@ -61,97 +66,87 @@ const ParentalControlsModal: React.FC<RenderModalProps> = ({
   setTemplateName,
   setErrorMsg,
 }: RenderModalProps) => {
+  const [showSchedulePeriodSelector, setShowSchedulePeriodSelector] =
+    useState(false);
+  const [restrictionToEdit, setRestrictionToEdit] =
+    useState<Restriction | null>(null);
+
+  useEffect(() => {
+    if (selectedTemplate?.restrictions.length === 0) {
+      setShowSchedulePeriodSelector(true);
+    } else {
+      setShowSchedulePeriodSelector(false);
+    }
+  }, [selectedTemplate]);
+
+  useEffect(() => {
+    if (modalVisible) {
+      return;
+    } else if (!modalVisible) {
+      setShowSchedulePeriodSelector(false);
+      setRestrictionToEdit(null);
+      setSelectedTemplate(null);
+    }
+  }, [modalVisible]);
+
   return (
     <Modal modalVisible={modalVisible} setModalVisible={setModalVisible}>
-      {!selectedTemplate && parentalControls && (
-        <View style={[parentalControlsStyles.modalContainer]}>
-          <Text style={[parentalControlsStyles.title, { marginBottom: 40 }]}>
-            {translate("createScheduledRestriction")}
-          </Text>
-
-          <Alert
-            bodyText={translate("createScheduledRestrictionAlert")}
-            variant="info"
-            icon="info-circle"
-          />
-
-          <View style={inputFieldStyles.formRow}>
-            <View
-              style={[inputFieldStyles.formLabelContainer, { marginTop: 40 }]}
-            >
-              <Text style={inputFieldStyles.formLabel}>
-                {translate("restrictionName")}
-              </Text>
-            </View>
-
-            <TextInput
-              placeholder={translate("restrictionName")}
-              value={templateName}
-              onChangeText={setTemplateName}
-              style={inputFieldStyles.textInput}
-              placeholderTextColor={colors.primary300}
-              id="username"
-            />
-          </View>
-
-          <Button
-            text={translate("saveChanges")}
-            variant="primary"
-            icon="floppy-o"
-            loading={modalLoading}
-            leftIcon
-            onClickHandler={async () => {
-              /* 
-                  ! after saving need to refresh the parental controls data
-                  ! and set the selected template to the one that was created  
-                */
-              try {
-                setModalLoading(true);
-                const templateIndex = parentalControls.templates.length;
-                await createParentalControlsTemplate(
-                  templateName,
-                  0,
-                  0,
-                  ontToken
-                );
-                const tempParentalControls = await handleFetchParentalControls({
-                  setLoading,
-                  setParentalControls,
-                  setErrorMsg,
-                  translate,
-                });
-
-                const newlyCreatedTemplate =
-                  tempParentalControls.templates[templateIndex];
-                console.log("newlyCreatedTemplate", newlyCreatedTemplate);
-                setSelectedTemplate(newlyCreatedTemplate);
-                setModalLoading(false);
-              } catch (error) {
-                setModalLoading(false);
-                setErrorMsg(translate("serverError"));
-              }
-            }}
-          />
-        </View>
+      {!selectedTemplate && (
+        <TemplateCreator
+          parentalControls={parentalControls}
+          setParentalControls={setParentalControls}
+          ontToken={ontToken}
+          translate={translate}
+          selectedTemplate={selectedTemplate}
+          setSelectedTemplate={setSelectedTemplate}
+          setLoading={setLoading}
+          modalLoading={modalLoading}
+          setModalLoading={setModalLoading}
+          templateName={templateName}
+          setTemplateName={setTemplateName}
+          setErrorMsg={setErrorMsg}
+        />
       )}
 
       {selectedTemplate && parentalControls && (
-        /* 
-          Need to look at the selectedTemplate object and determine what to display
-          accordingly.
-                    
-          If there is a name and time periods then show:
-           interface to edit the time periods/days
-           
-        */
-
         <View style={{ width: "100%", maxHeight: "100%", display: "flex" }}>
-          {/* <SchedulePeriodSelector
-            template={selectedTemplate}
-            translate={translate}
-            ontToken={ontToken}
-          /> */}
-          <RestrictionList template={selectedTemplate}  setSelectedTemplate={setSelectedTemplate} translate={translate} ontToken={ontToken} setLoading={setLoading} setParentalControls={setParentalControls} setErrorMsg={setErrorMsg} />
+          {showSchedulePeriodSelector && (
+            <SchedulePeriodSelector
+              translate={translate}
+              template={selectedTemplate}
+              setShowSchedulePeriodSelector={setShowSchedulePeriodSelector}
+              ontToken={ontToken}
+              existingStartTime={
+                restrictionToEdit
+                  ? convertToRestrictionTimeType(restrictionToEdit.startTime)
+                  : null
+              }
+              existingEndTime={
+                restrictionToEdit
+                  ? convertToRestrictionTimeType(restrictionToEdit.endTime)
+                  : null
+              }
+              existingSelectedDays={
+                restrictionToEdit
+                  ? convertToRepeatDays(restrictionToEdit.repeatDays)
+                  : null
+              }
+            />
+          )}
+
+          {!showSchedulePeriodSelector && (
+            <RestrictionList
+              template={selectedTemplate}
+              setSelectedTemplate={setSelectedTemplate}
+              translate={translate}
+              ontToken={ontToken}
+              setLoading={setLoading}
+              setParentalControls={setParentalControls}
+              setErrorMsg={setErrorMsg}
+              setRestrictionToEdit={setRestrictionToEdit}
+              setShowSchedulePeriodSelector={setShowSchedulePeriodSelector}
+            />
+          )}
         </View>
       )}
     </Modal>

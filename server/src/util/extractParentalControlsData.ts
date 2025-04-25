@@ -1,10 +1,9 @@
 import { ParentalControlsData, Template, Restriction } from "../../../shared/types/ParentalControls";
-
 import { Device } from "../../../shared/types/Device";
 
 const extractParentalControlsData = (htmlContent: string, logList?: boolean): ParentalControlsData => {
     const childListRegex = /new ChildListClass\("InternetGatewayDevice[^"]*","(.*?)","(.*?)","(\d+)"\)/g;
-    const templatesListRegex = /new TemplatesListClass\("InternetGatewayDevice[^"]*","(.*?)"/g;
+    const templatesListRegex = /new TemplatesListClass\("InternetGatewayDevice\.X_HW_Security\.ParentalCtrl\.Templates\.(\d+)","(.*?)"/g;
     const statsListRegex = /new StatsListClass\("InternetGatewayDevice[^"]*","\d+","(\d+)"/;
     const durationListRegex = /new DurationListClass\("InternetGatewayDevice\.X_HW_Security\.ParentalCtrl\.Templates\.(\d+)\.Duration\.(\d+)","([\d\\x3a]+)","([\d\\x3a]+)","([\d\\x2c]+)"\)/g;
 
@@ -12,14 +11,16 @@ const extractParentalControlsData = (htmlContent: string, logList?: boolean): Pa
 
     const deviceList: Device[] = [];
     const templates: Template[] = [];
-    const tempTemplateNames: string[] = [];
+    const tempTemplateNames: Record<number, string> = {};
     const timeRestrictionsMap: Record<number, Restriction[]> = {};
     let connectionAttempts = 0;
 
     // Extract template names
     let templateMatch;
     while ((templateMatch = templatesListRegex.exec(htmlContent)) !== null) {
-        tempTemplateNames.push(decodeString(templateMatch[1]));
+        const templateId = parseInt(templateMatch[1], 10);
+        const templateName = decodeString(templateMatch[2]);
+        tempTemplateNames[templateId] = templateName;
     }
 
     // Extract connection attempts
@@ -58,11 +59,11 @@ const extractParentalControlsData = (htmlContent: string, logList?: boolean): Pa
             const endTime = parseInt(match[4].replace(/\\x3a/g, ""), 10);
             const repeatDays = match[5].replace(/\\x2c/g, ",").split(",").map(Number);
 
-            if (!timeRestrictionsMap[templateId - 1]) {
-                timeRestrictionsMap[templateId - 1] = [];
+            if (!timeRestrictionsMap[templateId]) {
+                timeRestrictionsMap[templateId] = [];
             }
 
-            timeRestrictionsMap[templateId - 1].push({
+            timeRestrictionsMap[templateId].push({
                 id: restrictionId,
                 startTime,
                 endTime,
@@ -70,13 +71,13 @@ const extractParentalControlsData = (htmlContent: string, logList?: boolean): Pa
             });
         }
 
-
         // Combine templates
-        tempTemplateNames.forEach((name, index) => {
+        Object.entries(tempTemplateNames).forEach(([idStr, name]) => {
+            const id = parseInt(idStr, 10);
             templates.push({
-                id: index + 1,
+                id,
                 name,
-                restrictions: timeRestrictionsMap[index] || [],
+                restrictions: timeRestrictionsMap[id] || [],
                 devices: []
             });
         });
@@ -84,13 +85,14 @@ const extractParentalControlsData = (htmlContent: string, logList?: boolean): Pa
         // Assign devices to templates
         deviceList.forEach(device => {
             const templateId = device.templateId;
-            if (templateId && templates[templateId - 1]) {
-                templates[templateId - 1].devices.push(device);
+            const template = templates.find(t => t.id === templateId);
+            if (template) {
+                template.devices.push(device);
             }
         });
 
         if (logList) {
-            console.log(`Extracted Data: ${JSON.stringify({ templates, connectionAttempts, devices: deviceList })}`);
+            console.log(`Extracted Data: ${JSON.stringify({ templates, connectionAttempts, devices: deviceList }, null, 2)}`);
         }
 
         return { templates, connectionAttempts };
