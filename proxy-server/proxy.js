@@ -1,6 +1,6 @@
 /* 
   ? The modem's public IP cannot be exposed via port forwarding, this folder alone is to be installed
-  ? and ran on a spare phone if the user is using someone else's server as a proxy to manage their 
+  ? and ran on a spare phone/server/pi if the user is using someone else's server as a proxy to manage their 
   ? modem
 */
 

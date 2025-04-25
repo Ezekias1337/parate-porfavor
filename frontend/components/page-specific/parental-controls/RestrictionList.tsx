@@ -30,6 +30,7 @@ interface RestrictionListProps {
   translate: (key: string) => string;
   setRestrictionToEdit: React.Dispatch<React.SetStateAction<Restriction | null>>;
   setShowSchedulePeriodSelector: React.Dispatch<React.SetStateAction<boolean>>;
+  setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const RestrictionList: React.FC<RestrictionListProps> = ({
@@ -41,7 +42,8 @@ const RestrictionList: React.FC<RestrictionListProps> = ({
   setErrorMsg,
   translate,
   setRestrictionToEdit,
-  setShowSchedulePeriodSelector
+  setShowSchedulePeriodSelector,
+  setModalVisible,
 }) => {
   const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
 
@@ -58,6 +60,16 @@ const RestrictionList: React.FC<RestrictionListProps> = ({
             setRestrictionToEdit(null);
             setShowSchedulePeriodSelector(true);
           }}
+        />
+        <Button 
+          text={translate("cancel")}
+          variant="neutral" 
+          leftIcon
+          icon="ban"
+          onClickHandler={() => {
+            setSelectedTemplate(null);
+            setModalVisible(false);
+          }}  
         />
       </View>
       

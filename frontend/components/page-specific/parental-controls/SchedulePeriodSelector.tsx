@@ -325,6 +325,15 @@ const SchedulePeriodSelector: React.FC<SchedulePeriodSelectorProps> = ({
             }
           }}
         />
+        <Button 
+          text={translate("cancel")}
+          variant="neutral" 
+          leftIcon
+          icon="ban"
+          onClickHandler={() => {
+            setShowSchedulePeriodSelector(false);
+          }}  
+        />
       </View>
 
       {renderErrorMsg(error)}

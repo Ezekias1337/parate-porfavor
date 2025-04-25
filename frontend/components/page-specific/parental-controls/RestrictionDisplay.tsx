@@ -26,7 +26,7 @@ const RestrictionDisplay: React.FC<RestrictionProps> = ({
   translate,
 }) => {
   return (
-    <View>
+    <View style={{borderWidth: 1, borderRadius: 5, borderColor: colors.primary300, padding: 10, marginBottom: 10, marginTop: 10}}>
       <View style={templateCardStyles.row}>
         <FontAwesome name="clock-o" size={40} color={colors.primary300} />
 

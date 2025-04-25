@@ -133,6 +133,7 @@ const ParentalControlsModal: React.FC<RenderModalProps> = ({
               setErrorMsg={setErrorMsg}
               setRestrictionToEdit={setRestrictionToEdit}
               setShowSchedulePeriodSelector={setShowSchedulePeriodSelector}
+              setModalVisible={setModalVisible}
             />
           )}
         </View>
