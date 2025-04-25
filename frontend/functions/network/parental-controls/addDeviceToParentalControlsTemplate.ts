@@ -29,12 +29,13 @@ const addDeviceToParentalControlsTemplate = async (
       body: JSON.stringify(infoOfDeviceToAdd),
     });
 
-    if (!response.ok) {
+    if (response.status === 404) {
+      return true
+    } else {
       throw new Error(
         `Failed to add device to parental controls template, status: ${response.status}`
       );
     }
-    return true
   } catch (error) {
     console.error("Failed to add device to parental controls template, status", error);
     return false;

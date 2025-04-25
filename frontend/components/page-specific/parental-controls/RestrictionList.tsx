@@ -47,6 +47,20 @@ const RestrictionList: React.FC<RestrictionListProps> = ({
 
   return (
     <ScrollView>
+      
+      <View style={parentalControlsStyles.buttonContainer}>
+        <Button
+          text={translate("addNewSchedule")}
+          variant="success"
+          leftIcon
+          icon="plus"
+          onClickHandler={() => {
+            setRestrictionToEdit(null);
+            setShowSchedulePeriodSelector(true);
+          }}
+        />
+      </View>
+      
       {template.restrictions.map((restriction, index) => (
         <View key={index} style={cardStyles.card}>
           <Text
@@ -63,8 +77,6 @@ const RestrictionList: React.FC<RestrictionListProps> = ({
               leftIcon
               icon="pencil"
               onClickHandler={() => {
-                console.log("Edit clicked");
-                console.log("Restriction to edit:", restriction);
                 setRestrictionToEdit(restriction);
                 setShowSchedulePeriodSelector(true);
               }}

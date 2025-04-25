@@ -78,6 +78,7 @@ export const LocalizationProvider: React.FC<{ children: React.ReactNode }> = ({
           deviceRemoved: "Device removed successfully!",
           blockInternetIndefinitely: "Block Indefinitely",
           blockInternetOnSchedule: "Block on Schedule",
+          addNewSchedule: "Add New Schedule",
           removeScheduleRestriction: "Remove Schedule",
           unblockDevice: "Unblock Device",
           connectionStatus: "Connection Status",
@@ -121,6 +122,8 @@ export const LocalizationProvider: React.FC<{ children: React.ReactNode }> = ({
           needToSelectDays: "Please select at least one day.",
           incorrectTimeRange:
             "Your start time must be before your end time and your end time must be after your start time.",
+          tooManySchedules:
+            "There is a maximum of 4 scheduled restrictions that can be added to each template.",
         },
         es: {
           welcome: "Bienvenido",
@@ -169,6 +172,7 @@ export const LocalizationProvider: React.FC<{ children: React.ReactNode }> = ({
           deviceRemoved: "Dispositivo eliminado correctamente!",
           blockInternetIndefinitely: "Bloquear Indefinidamente",
           blockInternetOnSchedule: "Bloquear en Horario",
+          addNewSchedule: "Agregar Nuevo Horario",
           removeScheduleRestriction: "Eliminar Horario",
           unblockDevice: "Desbloquear Dispositivo",
           connectionStatus: "Estado de Conexión",
@@ -213,6 +217,7 @@ export const LocalizationProvider: React.FC<{ children: React.ReactNode }> = ({
           needToSelectDays: "Debe seleccionar al menos un día",
           incorrectTimeRange:
             "La hora de inicio debe ser menor que la hora de fin y la hora de fin debe ser mayor que la hora de inicio",
+          tooManySchedules: "Hay un máximo de 4 horarios permitidos por cada restricción programada",
         },
       };
 

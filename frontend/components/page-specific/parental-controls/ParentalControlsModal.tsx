@@ -118,21 +118,7 @@ const ParentalControlsModal: React.FC<RenderModalProps> = ({
               setShowSchedulePeriodSelector={setShowSchedulePeriodSelector}
               setParentalControls={setParentalControls}
               ontToken={ontToken}
-              existingStartTime={
-                restrictionToEdit
-                  ? convertToRestrictionTimeType(restrictionToEdit.startTime)
-                  : null
-              }
-              existingEndTime={
-                restrictionToEdit
-                  ? convertToRestrictionTimeType(restrictionToEdit.endTime)
-                  : null
-              }
-              existingSelectedDays={
-                restrictionToEdit
-                  ? convertToRepeatDays(restrictionToEdit.repeatDays)
-                  : null
-              }
+              restrictionToEdit={restrictionToEdit}
             />
           )}
 

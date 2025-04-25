@@ -11,6 +11,8 @@ interface addTimePeriodArgs {
   repeatDays: number[],
   templateNumber: number,
   durationNumber: number | null,
+  usedIds: number[],
+  isEditingRestriction: boolean
   ontToken: OntToken
 }
 
@@ -21,16 +23,27 @@ const addTimePeriodToParentalControlsTemplate = async (
     repeatDays,
     templateNumber,
     durationNumber,
+    usedIds,
+    isEditingRestriction,
     ontToken
   }: addTimePeriodArgs
 ): Promise<boolean> => {
   try {
+    if (usedIds.length >= 4) {
+      throw new Error(
+        `Failed to add time period parental controls template`
+      );
+    }
+
+
     const timePeriod = {
       startTime,
       endTime,
       repeatDays,
       templateNumber,
       durationNumber,
+      usedIds,
+      isEditingRestriction,
       ontToken,
     }
 
@@ -45,12 +58,13 @@ const addTimePeriodToParentalControlsTemplate = async (
       body: JSON.stringify(timePeriod),
     });
 
-    if (!response.ok) {
+    if (response.status === 404) {
+      return true
+    } else {
       throw new Error(
-        `Failed to add time period parental controls template, status: ${response.status}`
+        `Failed to add time period parental controls template`
       );
     }
-    return true
   } catch (error) {
     console.error("Failed to add device to parental controls template, status", error);
     return false;

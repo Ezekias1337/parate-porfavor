@@ -10,6 +10,8 @@ import convertTo24HourFormat from "@/helpers/convertTo24HourFormat";
 import addTimePeriodToParentalControlsTemplate from "@/functions/network/parental-controls/addTimePeriodToParentalControlsTemplate";
 import checkForIncorrectTimeRange from "@/helpers/checkForIncorrectTimeRange";
 import handleFetchParentalControls from "@/functions/page-specific/parental-controls/handleFetchParentalControls";
+import convertToRestrictionTimeType from "@/helpers/convertToRestrictionTimeType";
+import convertToRepeatDays from "@/helpers/convertToRepeatDays";
 // Constants
 // Types
 import { SelectedDays } from "../parental-controls/ParentalControlsModal";
@@ -17,6 +19,7 @@ import OntToken from "../../../../shared/types/OntToken";
 import {
   Template,
   ParentalControlsData,
+  Restriction,
 } from "../../../../shared/types/ParentalControls";
 // CSS
 import { inputFieldStyles } from "../../../styles/component-specific/input-fields";
@@ -27,9 +30,7 @@ interface SchedulePeriodSelectorProps {
   translate: (key: string) => string;
   template: Template;
   setSelectedTemplate: React.Dispatch<React.SetStateAction<Template | null>>;
-  existingStartTime: RestrictionTime | null;
-  existingEndTime: RestrictionTime | null;
-  existingSelectedDays: SelectedDays | null;
+  restrictionToEdit: Restriction | null;
   setShowSchedulePeriodSelector: React.Dispatch<React.SetStateAction<boolean>>;
   setParentalControls: React.Dispatch<
     React.SetStateAction<ParentalControlsData>
@@ -46,26 +47,60 @@ const SchedulePeriodSelector: React.FC<SchedulePeriodSelectorProps> = ({
   translate,
   template,
   setSelectedTemplate,
-  existingStartTime,
-  existingEndTime,
-  existingSelectedDays,
+  restrictionToEdit,
   setShowSchedulePeriodSelector,
   setParentalControls,
   ontToken,
 }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const [startTime, setStartTime] = useState<RestrictionTime>(
-    existingStartTime ? existingStartTime : { time: "", amOrPm: "AM" }
-  );
-  const [endTime, setEndTime] = useState<RestrictionTime>(
-    existingEndTime ? existingEndTime : { time: "", amOrPm: "AM" }
-  );
-  const [selectedDays, setSelectedDays] = useState<SelectedDays>(
-    existingSelectedDays
-      ? existingSelectedDays
-      : { 1: false, 2: false, 3: false, 4: false, 5: false, 6: false, 7: false }
-  );
+  const [startTime, setStartTime] = useState<RestrictionTime>({
+    time: "",
+    amOrPm: "AM",
+  });
+  const [endTime, setEndTime] = useState<RestrictionTime>({
+    time: "",
+    amOrPm: "AM",
+  });
+  const [selectedDays, setSelectedDays] = useState<SelectedDays>({
+    1: false,
+    2: false,
+    3: false,
+    4: false,
+    5: false,
+    6: false,
+    7: false,
+  });
+
+  /* 
+    ? Initialize values on mount
+  */
+  useEffect(() => {
+    if (restrictionToEdit?.startTime) {
+      const tempStartTime = convertToRestrictionTimeType(
+        restrictionToEdit.startTime
+      );
+      setStartTime(tempStartTime);
+    }
+
+    if (restrictionToEdit?.endTime) {
+      const tempEndTime = convertToRestrictionTimeType(
+        restrictionToEdit.endTime
+      );
+      setEndTime(tempEndTime);
+    }
+
+    if (restrictionToEdit?.repeatDays) {
+      const tempSelectedDays = convertToRepeatDays(
+        restrictionToEdit.repeatDays
+      );
+      setSelectedDays(tempSelectedDays);
+    }
+  }, [restrictionToEdit]);
+
+  useEffect(() => {
+    console.log(template);
+  }, [template]);
 
   return (
     <ScrollView
@@ -233,8 +268,31 @@ const SchedulePeriodSelector: React.FC<SchedulePeriodSelectorProps> = ({
               }
 
               let durationNumber: number | null = null;
-              if (template?.restrictions?.length > 0) {
-                durationNumber = template.restrictions.length;
+              let usedIds: number[] = [];
+              
+              if (restrictionToEdit) {
+                durationNumber = restrictionToEdit.id;
+              } else if (template?.restrictions?.length > 0) {
+                /* 
+                  ? There is a maximum of 4 time periods per template, but we cannot
+                  ? guarantee that the id of each time period will be sequential,
+                  ? so we have to check for which ids are available and use the lowest
+                  ? available id.
+                */
+                for (const restriction of template.restrictions) {
+                  usedIds.push(restriction.id);
+                }
+                usedIds.sort();
+
+                if (usedIds.length >= 4) {
+                  setError(translate("tooManySchedules"));
+                  throw new Error(translate("tooManySchedules"));
+                }
+                const possibleIds = [1, 2, 3, 4];
+                const availableIds = possibleIds.filter(
+                  (id) => !usedIds.includes(id)
+                );
+                durationNumber = availableIds[0];
               }
 
               await addTimePeriodToParentalControlsTemplate({
@@ -243,11 +301,12 @@ const SchedulePeriodSelector: React.FC<SchedulePeriodSelectorProps> = ({
                 repeatDays: parsedRepeatDays,
                 templateNumber: template.id,
                 durationNumber: durationNumber,
+                usedIds: usedIds,
+                isEditingRestriction: restrictionToEdit ? true : false,
                 ontToken: ontToken,
               });
 
               setShowSchedulePeriodSelector(false);
-
               const newParentalControls = await handleFetchParentalControls({
                 setLoading,
                 setParentalControls,
