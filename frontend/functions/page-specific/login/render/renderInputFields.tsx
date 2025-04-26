@@ -8,6 +8,14 @@ import { LoginCredentials } from "@/screens/Login";
 import { inputFieldStyles } from "@/styles/component-specific/input-fields";
 import { colors } from "@/styles/variables";
 
+/**
+ * Renders the login input fields
+ * @param loginCredentials The login credentials
+ * @param setLoginCredentials The function to set the login credentials
+ * @param translate The function to translate the text
+ * @returns {JSX.Element} The rendered login input fields
+*/
+
 interface RenderInputFieldsProps {
   loginCredentials: LoginCredentials;
   setLoginCredentials: React.Dispatch<React.SetStateAction<LoginCredentials>>;

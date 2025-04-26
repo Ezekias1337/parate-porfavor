@@ -2,6 +2,12 @@
 import { ParentalControlsData } from "../../../../shared/types/ParentalControls";
 import { Device } from "../../../../shared/types/Device";
 
+/**
+ * Extracts the devices from the parental controls data.
+ * @param {ParentalControlsData} parentalControlsData - The parental controls data.
+ * @returns {Device[]} The list of devices.
+*/
+
 const extractParentalControlsDevicesFromTemplates = (
     parentalControlsData: ParentalControlsData | null,
 ): Device[] => {

@@ -8,6 +8,13 @@ import { Template, Restriction } from "../../../shared/types/ParentalControls";
 // CSS
 import { templateCardStyles } from "../../components/page-specific/parental-controls/TemplateCard";
 
+/**
+ * Parses the parental controls data for display.
+ * @param {Template} template - The template object containing the parental controls data.
+ * @param {(key: string) => string} translate - The translation function.
+ * @returns {ReactNode} jsx - The JSX to be rendered.
+*/
+
 interface ParseDataProps {
   template: Template;
   translate: (key: string) => string;
@@ -16,7 +23,7 @@ interface ParseDataProps {
 const parseParentalControlsDataForDisplay = ({
   template,
   translate,
-}: ParseDataProps) => {
+}: ParseDataProps): React.ReactNode => {
   const arrayOfRestrictions: Restriction[] = [];
 
   for (const restriction of template.restrictions) {

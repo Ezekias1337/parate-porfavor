@@ -1,5 +1,10 @@
 import fetchData from "../auth/fetchData";
 
+/**
+ * Reboots the modem.
+ * @returns {Promise<boolean>} - A promise that resolves to true if the reboot was successful, false otherwise.
+*/
+
 const rebootModem = async (): Promise<boolean> => {
   try {
     const response = await fetchData("/api/modem/reboot-modem", {

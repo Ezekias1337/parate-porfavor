@@ -1,7 +1,10 @@
+// Library Imports
 import React, { FC } from "react";
 import { View, Text, StyleProp, ViewStyle } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
+// Interfaces and Types
 import FontAwesomeIconNames from "../types/FontAwesome";
+// CSS
 import {
   badgeStyles,
   badgeVariantToStyle,
@@ -9,7 +12,6 @@ import {
 } from "../styles/component-specific/badge";
 
 type BadgeVariant = keyof typeof badgeVariantToStyle;
-
 type BadgeSize = keyof typeof badgeSizeToStyle;
 
 export type BadgeProps = {

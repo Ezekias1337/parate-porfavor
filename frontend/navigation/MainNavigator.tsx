@@ -1,7 +1,11 @@
+// Library Imports
 import React, { useEffect, useState } from "react";
-import { loadEncrypted } from "../utils/secureStorage"; // adjust if needed
+// Functions, Helpers, Utils, and Hooks
+import { loadEncrypted } from "../utils/secure-storage/secureStorage"; // adjust if needed
 import { useAuth } from "../components/auth/authContext";
+// Components
 import BottomTabs from "./BottomTabs";
+// Screens
 import Login from "../screens/Login";
 import Settings from "../screens/Settings";
 

@@ -7,10 +7,17 @@ import { Template } from "../../../../shared/types/ParentalControls";
 // CSS
 import { templateCardStyles } from "../../../components/page-specific/parental-controls/TemplateCard";
 
+/**
+ * Renders badges for the template card based on the provided template and translation function.
+ * @param {Template} template - The restriction object containing the days of the week.
+ * @param {(key: string) => string} translate - The translation function.
+ * @returns {ReactNode} jsx - The JSX to be rendered.
+ */
+
 const renderBadges = (
   template: Template,
   translate: (key: string) => string
-) => {
+): React.ReactNode => {
   return (
     <View style={[templateCardStyles.row, templateCardStyles.badgeRow]}>
       {(!template?.restrictions[0]?.startTime ||

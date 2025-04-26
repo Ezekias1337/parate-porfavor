@@ -1,3 +1,4 @@
+// Library Imports
 import React, {
   createContext,
   useState,
@@ -5,8 +6,8 @@ import React, {
   useCallback,
   useContext,
 } from "react";
+// Functions, Helpers, Utils, and Hooks
 import { getInitialLanguage } from "./languageDetector";
-import rebootModem from "@/functions/network/modem/rebootModem";
 
 interface LocalizationContextValue {
   translate: (key: string) => string;

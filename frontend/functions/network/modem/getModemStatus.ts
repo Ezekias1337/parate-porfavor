@@ -1,7 +1,11 @@
 import fetchData from "../auth/fetchData";
 import { ModemStatus } from "../../../../shared/types/Modem"
 
-// Fetch modem status function
+/**
+ * Gets the modem status.
+ * @returns {Promise<ModemStatus | null>} - A promise that resolves to the modem status or null if not found.
+*/
+
 const getModemStatus = async (): Promise<ModemStatus | null> => {
   try {
     const response = await fetchData("/api/modem/get-modem-status", {

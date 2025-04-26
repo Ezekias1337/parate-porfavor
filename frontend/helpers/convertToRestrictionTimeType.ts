@@ -1,6 +1,12 @@
 // Types
 import { RestrictionTime } from "../components/page-specific/parental-controls/SchedulePeriodSelector";
 
+/**
+ * Converts a time in 24-hour format to a RestrictionTime object.
+ * @param {number} time - The time in 24-hour format.
+ * @returns {RestrictionTime} - The RestrictionTime object.
+*/
+
 const convertToRestrictionTimeType = (time: number): RestrictionTime => {
     if (time < 0 || time > 2359 || time % 100 >= 60) {
         throw new Error('Invalid time format. Expected HHMM as a number.');

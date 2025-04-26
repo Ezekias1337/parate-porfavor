@@ -2,8 +2,6 @@
 import React, { FC, useState } from "react";
 import { View, Text, StyleSheet, TextInput } from "react-native";
 import { useLocalization } from "../../localization/LocalizationContext";
-// Constants
-import daysMap from "../../../constants/Days";
 // Functions, Helpers, Utils, and Hooks
 import fetchDevicesAndParentalControls from "@/functions/page-specific/devices/fetchDevicesAndParentalControls";
 import parseParentalControlsDataForDisplay from "@/functions/general/parseParentalControlsDataForDisplay";
@@ -22,7 +20,6 @@ import { inputFieldStyles } from "@/styles/component-specific/input-fields";
 
 interface ParentalControlsTemplateCardProps {
   template: Template;
-  devices: Device[];
   setDevices: React.Dispatch<React.SetStateAction<Device[]>>;
   setParentalControls: React.Dispatch<React.SetStateAction<any>>;
   modalDevice: Device | null;
@@ -35,7 +32,6 @@ interface ParentalControlsTemplateCardProps {
 
 const ParentalControlsTemplateCard: FC<ParentalControlsTemplateCardProps> = ({
   template,
-  devices,
   setDevices,
   setParentalControls,
   modalDevice,

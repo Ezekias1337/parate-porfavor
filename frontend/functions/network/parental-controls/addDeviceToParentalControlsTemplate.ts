@@ -1,6 +1,16 @@
+// Functions, Helpers, Utils, and Hooks
 import fetchData from "../auth/fetchData";
 // Types
 import OntToken from "../../../../shared/types/OntToken";
+
+/**
+ * Adds a device to a parental controls template.
+ * @param {string} macAddress - The MAC address of the device to add.
+ * @param {string} description - The description of the device to add.
+ * @param {number} templateInst - The instance number of the parental controls template.
+ * @param {OntToken} ontToken - The token for the ONT.
+ * @returns {Promise<boolean>} - A promise that resolves to true if the device was added successfully, false otherwise.
+*/
 
 const addDeviceToParentalControlsTemplate = async (
   macAddress: string,

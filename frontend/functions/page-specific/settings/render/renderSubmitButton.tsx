@@ -1,13 +1,27 @@
 // Library Imports
 import { View } from "react-native";
 // Functions, Helpers, Utils, and Hooks
-import { saveEncrypted } from "@/utils/secureStorage";
+import { saveEncrypted } from "@/utils/secure-storage/secureStorage";
 // Components
 import Button from "@/components/Button";
 // Types
 import { UrlSettings } from "@/screens/Settings";
 // CSS
 import settingsStyles from "@/styles/page-specific/settings";
+
+/**
+ * Renders the submit button for the settings page.
+ * @param {boolean} loading - The state of the loading.
+ * @param {Function} setLoading - The function to set the loading state.
+ * @param {Function} setErrorMsg - The function to set the error message.
+ * @param {UrlSettings} urlSettings - The url settings.
+ * @param {boolean} settingsSaved - The state of the settings saved.
+ * @param {Function} setSettingsSaved - The function to set the settings saved state.
+ * @param {boolean} isFirstLoad - The state of the first load.
+ * @param {Function} setUrlIsSet - The function to set the url is set state.
+ * @param {Function} translate - The function to translate the text.
+ * @returns {JSX.Element} The rendered submit button.
+*/
 
 interface RenderSubmitButtonProps {
   loading: boolean;

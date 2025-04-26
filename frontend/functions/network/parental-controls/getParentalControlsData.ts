@@ -1,5 +1,12 @@
+// Functions, Helpers, Utils, and Hooks
 import fetchData from "../auth/fetchData";
+// Types
 import { ParentalControlsData } from "../../../../shared/types/ParentalControls"
+
+/**
+ * Fetches the parental controls data.
+ * @returns {Promise<ParentalControlsData>} - A promise that resolves to the parental controls data or null if not found.
+*/
 
 const getParentalControlsData = async (): Promise<ParentalControlsData> => {
   try {

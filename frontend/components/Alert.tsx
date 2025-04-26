@@ -2,10 +2,8 @@
 import React, { FC } from "react";
 import { View, Text } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
-
 // Interfaces and Types
 import FontAwesomeIconNames from "../types/FontAwesome";
-
 // CSS
 import {
   alertStyles,

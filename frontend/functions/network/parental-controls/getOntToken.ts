@@ -1,5 +1,13 @@
+// Functions, Helpers, Utils, and Hooks
 import fetchData from "../auth/fetchData";
+// Types
 import OntToken from "../../../../shared/types/OntToken";
+
+/**
+ * Fetches the ONT token required for parental controls operations.
+ * @param {OntToken} ontToken - The token for the ONT.
+ * @returns {Promise<OntToken>} - A promise that resolves to the ONT token or null if not found.
+*/
 
 const getOntToken = async (
   ontToken: OntToken

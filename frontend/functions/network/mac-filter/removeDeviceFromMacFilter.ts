@@ -1,6 +1,16 @@
+// Functions, Helpers, Utils, and Hooks
 import fetchData from "../auth/fetchData";
+// Types
 import { WirelessOrEthernet } from "../../../../shared/types/MacFilter"
 import OntToken from "../../../../shared/types/OntToken";
+
+/**
+ * Removes a device from the mac filter.
+ * @param {number[]} deviceIndecesToRemove - The index of the device to remove.
+ * @param {WirelessOrEthernet} wirelessOrEthernet - The wireless or ethernet.
+ * @param {OntToken} ontToken - The token for the ONT.
+ * @returns {Promise<Boolean>} - A promise that resolves to true if the device was removed successfully, false otherwise.
+*/
 
 const removeDeviceFromMacFilter = async (
   deviceIndecesToRemove: number[],

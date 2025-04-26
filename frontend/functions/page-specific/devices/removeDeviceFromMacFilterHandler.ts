@@ -1,10 +1,19 @@
 // Functions, Helpers, Utils, and Hooks
 import getOntToken from "@/functions/network/mac-filter/getOntToken";
 import removeDeviceFromMacFilter from "@/functions/network/mac-filter/removeDeviceFromMacFilter";
-import fetchDevicesAndParentalControls from "./fetchDevicesAndParentalControls";
 // Types
 import { Device } from "../../../../shared/types/Device";
 import OntToken from "../../../../shared/types/OntToken";
+
+/**
+ * Removes a device from the mac filter.
+ * @param {OntToken} ontToken - The ONT token.
+ * @param {React.Dispatch<React.SetStateAction<OntToken>>} setOntToken - The function to set the ONT token state.
+ * @param {Device[]} devices - The list of devices.
+ * @param {React.Dispatch<React.SetStateAction<Device[]>>} setDevices - The function to set the devices state.
+ * @param {number} index - The index of the device in the list.
+ * @param {Device} device - The device to remove.
+*/
 
 interface RemoveDeviceArguments {
     ontToken: OntToken;

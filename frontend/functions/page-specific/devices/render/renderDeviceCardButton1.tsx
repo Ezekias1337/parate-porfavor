@@ -1,3 +1,4 @@
+// Functions, Helpers, Utils, and Hooks
 import addDeviceToMacFilterHandler from "../addDeviceToMacFilterHandler";
 import removeDeviceFromMacFilterHandler from "../removeDeviceFromMacFilterHandler";
 import fetchDevicesAndParentalControls from "../fetchDevicesAndParentalControls";
@@ -6,9 +7,23 @@ import { Device } from "../../../../../shared/types/Device";
 import { ButtonProps } from "../../../../components/Button";
 import OntToken from "../../../../../shared/types/OntToken";
 import {
-  Template,
   ParentalControlsData,
 } from "../../../../../shared/types/ParentalControls";
+
+/**
+ * Renders the buttons to block a device's internet access.
+ * @param {Device} device - The device to block internet access for.
+ * @param {Device[]} devices - The list of devices.
+ * @param {React.Dispatch<React.SetStateAction<Device[]>>} setDevices - The function to set the devices state.
+ * @param {React.Dispatch<ParentalControlsData>} setParentalControls - The function to set the parental controls state.
+ * @param {React.Dispatch<React.SetStateAction<boolean>>} setLoading - The function to set the loading state.
+ * @param {React.Dispatch<React.SetStateAction<string | null>>} setErrorMsg - The function to set the error message state.
+ * @param {number} index - The index of the device in the list.
+ * @param {OntToken} ontToken - The ONT token.
+ * @param {React.Dispatch<React.SetStateAction<OntToken>>} setOntToken - The function to set the ONT token state.
+ * @param {Function} translate - The function to translate the text.
+ * @returns {ButtonProps | null} The rendered button or null if the device is already blocked.
+*/
 
 interface renderButtonArguments {
   device: Device;

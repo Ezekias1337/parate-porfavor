@@ -1,5 +1,12 @@
+// Functions, Helpers, Utils, and Hooks
 import fetchData from "../auth/fetchData";
+// Types
 import { Device } from "../../../../shared/types/Device";
+
+/**
+ * Gets the filtered device list.
+ * @returns {Device[]} - The device list.
+*/
 
 const getFilteredDeviceList = async (): Promise<Device[]> => {
     try {

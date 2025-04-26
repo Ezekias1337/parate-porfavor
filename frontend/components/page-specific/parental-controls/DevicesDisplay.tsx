@@ -1,15 +1,9 @@
 // Library Imports
-import { useState, useEffect, Fragment } from "react";
+import { Fragment } from "react";
 import { View, Text } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
-// Components
-
-// Functions, Helpers, Utils, and Hooks
-import createDayString from "../../../functions/component-specific/template-card/createDaysString";
-import convertTo12HourFormat from "../../../helpers/convertTo12HourFormat";
 // Types
 import {
-  Restriction,
   Template,
 } from "../../../../shared/types/ParentalControls";
 // CSS

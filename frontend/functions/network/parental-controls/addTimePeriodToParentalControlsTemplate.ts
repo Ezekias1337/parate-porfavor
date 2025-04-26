@@ -1,8 +1,19 @@
+// Functions, Helpers, Utils, and Hooks
 import fetchData from "../auth/fetchData";
 // Types
 import OntToken from "../../../../shared/types/OntToken";
-/* 
-  Need to use the types defined in shared folder for props
+
+/**
+ * Adds a time period to a parental controls template.
+ * @param {string} startTime - The start time of the time period.
+ * @param {string} endTime - The end time of the time period.
+ * @param {number[]} repeatDays - The repeat days of the time period.
+ * @param {number} templateNumber - The instance number of the parental controls template.
+ * @param {number} durationNumber - The duration number of the time period.
+ * @param {number[]} usedIds - The used ids of the time periods.
+ * @param {boolean} isEditingRestriction - Whether the time period is being edited.
+ * @param {OntToken} ontToken - The token for the ONT.
+ * @returns {Promise<boolean>} - A promise that resolves to true if the time period was added successfully, false otherwise.
 */
 
 interface addTimePeriodArgs {

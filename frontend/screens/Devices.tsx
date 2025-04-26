@@ -128,7 +128,6 @@ const Devices: React.FC = () => {
         parentalControls,
         ontToken,
         setOntToken,
-        translate,
         selectedTemplate,
         setSelectedTemplate,
         setLoading,

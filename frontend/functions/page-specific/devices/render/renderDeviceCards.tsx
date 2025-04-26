@@ -1,27 +1,35 @@
 // Library Imports
 import { View } from "react-native";
 // Functions, Helpers, Utils, and Hooks
-import removeDeviceFromMacFilterHandler from "../removeDeviceFromMacFilterHandler";
-import addDeviceToMacFilter from "../addDeviceToMacFilterHandler";
 import displayParentalControlsModal from "../displayParentalControlsModal";
-
 import renderDeviceCardButton1 from "./renderDeviceCardButton1";
 import renderDeviceCardButton2 from "./renderDeviceCardButton2";
-import extractParentalControlsDevicesFromTemplates from "../extractParentalControlsDevicesFromTemplates";
 // Components
 import Card from "@/components/Card";
 // Types
 import { Device } from "../../../../../shared/types/Device";
 import {
   ParentalControlsData,
-  Template,
 } from "../../../../../shared/types/ParentalControls";
 import { ButtonProps } from "@/components/Button";
 import OntToken from "../../../../../shared/types/OntToken";
 // CSS
 import deviceStyles from "../../../../styles/page-specific/device";
 import { BadgeProps } from "@/components/Badge";
-// Functions, Helpers, Utils, and Hooks
+
+/**
+ * Renders the device cards.
+ * @param {React.Dispatch<React.SetStateAction<boolean>>} setModalVisible - The function to set the modal visible state.
+ * @param {React.Dispatch<React.SetStateAction<Device[]>>} setDevices - The function to set the devices state.
+ * @param {ParentalControlsData} parentalControls - The parental controls data.
+ * @param {React.Dispatch<ParentalControlsData>} setParentalControls - The function to set the parental controls state.
+ * @param {React.Dispatch<React.SetStateAction<boolean>>} setLoading - The function to set the loading state.
+ * @param {React.Dispatch<React.SetStateAction<string | null>>} setErrorMsg - The function to set the error message state.
+ * @param {React.Dispatch<React.SetStateAction<Device | null>>} setModalDevice - The function to set the modal device state.
+ * @param {React.Dispatch<React.SetStateAction<OntToken>>} setOntToken - The function to set the ONT token state.
+ * @param {Function} translate - The function to translate the text.
+ * @returns {JSX.Element} The rendered device cards.
+*/
 
 interface ListOfStateSetters {
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
@@ -72,7 +80,6 @@ const renderDeviceCards = (
 
         const button2 = renderDeviceCardButton2({
           device,
-          devices,
           setDevices,
           setModalDevice,
           setModalVisible,

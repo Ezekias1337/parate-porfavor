@@ -1,7 +1,5 @@
 // Library Imports
-import { View, ScrollView } from "react-native";
-// Functions, Helpers, Utils, and Hooks
-import extractParentalControlsDevicesFromTemplates from "../extractParentalControlsDevicesFromTemplates";
+import { ScrollView } from "react-native";
 // Components
 import ParentalControlsTemplateCard from "@/components/page-specific/devices/ParentalControlsTemplateCard";
 // Types
@@ -13,7 +11,19 @@ import {
 } from "../../../../../shared/types/ParentalControls";
 // CSS
 import deviceStyles from "../../../../styles/page-specific/device";
-// Functions, Helpers, Utils, and Hooks
+
+/**
+ * Renders the Parental Controls Template Cards.
+ * @param {ParentalControlsData} parentalControls - The parental controls data.
+ * @param {Device | null} modalDevice - The device to display in the modal.
+ * @param {React.Dispatch<React.SetStateAction<Device[]>>} setDevices - The function to set the devices state.
+ * @param {React.Dispatch<ParentalControlsData>} setParentalControls - The function to set the parental controls state.
+ * @param {React.Dispatch<React.SetStateAction<Template | null>>} setSelectedTemplate - The function to set the selected template state.
+ * @param {React.Dispatch<React.SetStateAction<boolean>>} setModalVisible - The function to set the modal visible state.
+ * @param {OntToken} ontToken - The ONT token.
+ * @param {React.Dispatch<React.SetStateAction<boolean>>} setLoading - The function to set the loading state.
+ * @returns {JSX.Element} The rendered Parental Controls Template Cards.
+*/
 
 interface RenderParentalControlsTemplateCardsProps {
   parentalControls: ParentalControlsData;
@@ -27,7 +37,6 @@ interface RenderParentalControlsTemplateCardsProps {
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
   ontToken: OntToken;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  translate: (key: string) => string;
 }
 
 const renderParentalControlsTemplateCards = ({
@@ -40,10 +49,7 @@ const renderParentalControlsTemplateCards = ({
   setModalVisible,
   ontToken,
   setLoading,
-  translate,
 }: RenderParentalControlsTemplateCardsProps) => {
-  const parentalControlsDevices =
-    extractParentalControlsDevicesFromTemplates(parentalControls);
 
   return (
     <ScrollView contentContainerStyle={deviceStyles.devicesContainer}>
@@ -53,7 +59,6 @@ const renderParentalControlsTemplateCards = ({
             <ParentalControlsTemplateCard
               key={template.id}
               template={template}
-              devices={parentalControlsDevices}
               setParentalControls={setParentalControls}
               setDevices={setDevices}
               modalDevice={modalDevice}
@@ -69,7 +74,6 @@ const renderParentalControlsTemplateCards = ({
       {selectedTemplate !== null && (
         <ParentalControlsTemplateCard
           template={selectedTemplate}
-          devices={parentalControlsDevices}
           setParentalControls={setParentalControls}
           setDevices={setDevices}
           modalDevice={modalDevice}

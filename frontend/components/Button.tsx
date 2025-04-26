@@ -9,10 +9,8 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { FontAwesome } from "@expo/vector-icons";
-
 // Interfaces and Types
 import FontAwesomeIconNames from "../types/FontAwesome";
-
 // CSS
 import {
   buttonStyles,

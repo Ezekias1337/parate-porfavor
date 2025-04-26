@@ -12,7 +12,6 @@ import checkForIncorrectTimeRange from "@/helpers/checkForIncorrectTimeRange";
 import handleFetchParentalControls from "@/functions/page-specific/parental-controls/handleFetchParentalControls";
 import convertToRestrictionTimeType from "@/helpers/convertToRestrictionTimeType";
 import convertToRepeatDays from "@/helpers/convertToRepeatDays";
-// Constants
 // Types
 import { SelectedDays } from "../parental-controls/ParentalControlsModal";
 import OntToken from "../../../../shared/types/OntToken";

@@ -20,7 +20,7 @@ import renderSubmitButton from "@/functions/page-specific/settings/render/render
 import { useAuth } from "../components/auth/authContext";
 import { useLocalization } from "../components/localization/LocalizationContext";
 // CSS
-import { colors, fontSizes } from "../styles/variables";
+import { colors } from "../styles/variables";
 import settingsStyles from "../styles/page-specific/settings";
 
 interface SettingsProps {

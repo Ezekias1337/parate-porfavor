@@ -1,3 +1,9 @@
+/**
+ * Converts a time in 24-hour format to a time in 12-hour format (0600 => 6:00 AM).
+ * @param {number} time - The time in 24-hour format.
+ * @returns {string} - The time in 12-hour format.
+*/
+
 const convertTo12HourFormat = (time: number): string => {
     if (time < 0 || time > 2359 || time % 100 >= 60) {
         throw new Error('Invalid time format. Expected HHMM as a number.');

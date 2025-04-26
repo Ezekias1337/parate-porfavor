@@ -1,11 +1,15 @@
+// Library Imports
 import React, { FC } from "react";
 import { View, Text } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
-import { colors } from "../styles/variables";
-import cardStyles from "../styles/component-specific/card";
+// Components
 import Button, { ButtonProps } from "./Button";
 import Badge, { BadgeProps } from "./Badge";
+// Types and Interfaces
 import FontAwesomeIconNames from "../types/FontAwesome";
+// CSS
+import { colors } from "../styles/variables";
+import cardStyles from "../styles/component-specific/card";
 
 interface CardProps {
   headerText: string;

@@ -1,8 +1,19 @@
 // Functions, Helpers, Utils, and Hooks
 import login from "@/functions/network/auth/login";
-import { saveEncrypted } from "@/utils/secureStorage";
+import { saveEncrypted } from "@/utils/secure-storage/secureStorage";
 // Types
 import { LoginCredentials } from "../../../screens/Login";
+
+/**
+ * Handles the login process.
+ * @param loginCredentials The login credentials.
+ * @param setLoading The function to set the loading state.
+ * @param errorMsg The error message.
+ * @param setErrorMsg The function to set the error message.
+ * @param authenticate The function to authenticate the user.
+ * @param translate The function to translate the text.
+ * @returns {Promise<void>} A promise that resolves when the login process is complete.
+*/
 
 interface HandleLoginProps {
     loginCredentials: LoginCredentials;

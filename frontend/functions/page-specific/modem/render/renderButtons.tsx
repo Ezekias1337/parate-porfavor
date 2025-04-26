@@ -10,6 +10,17 @@ import { ModemStatus } from "../../../../../shared/types/Modem";
 // CSS
 import modemStyles from "@/styles/page-specific/modem";
 
+/**
+ * Renders the buttons for the Modem page.
+ * @param setLoading The function to set the loading state.
+ * @param setModemStatus The function to set the modem status.
+ * @param setErrorMsg The function to set the error message.
+ * @param modemRebooting The state of the modem rebooting.
+ * @param setModemRebooting The function to set the modem rebooting state.
+ * @param translate The function to translate the text.
+ * @returns {JSX.Element} The rendered buttons.
+*/
+
 interface RenderButtonsTypes {
   setLoading: React.Dispatch<boolean>;
   setModemStatus: React.Dispatch<ModemStatus>;

@@ -1,10 +1,7 @@
 // Library Imports
-import { useState, useEffect } from "react";
-import { View, Text } from "react-native";
+import { View } from "react-native";
 // Components
 import DayButton from "./DayButton";
-// Functions, Helpers, Utils, and Hooks
-// Constants
 // Types
 import { SelectedDays } from "../parental-controls/ParentalControlsModal";
 // CSS

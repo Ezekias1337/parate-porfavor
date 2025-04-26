@@ -1,5 +1,5 @@
 // Library Imports
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { ScrollView, Text, View } from "react-native";
 // Components
 import RestrictionDisplay from "./RestrictionDisplay";

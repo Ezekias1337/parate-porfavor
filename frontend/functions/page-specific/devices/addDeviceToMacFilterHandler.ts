@@ -5,6 +5,17 @@ import addDeviceToMacFilter from "@/functions/network/mac-filter/addDeviceToMacF
 import { Device } from "../../../../shared/types/Device";
 import OntToken from "../../../../shared/types/OntToken";
 
+/**
+ * Adds a device to the mac filter.
+ * @param {Device} device - The device to add.
+ * @param {number} index - The index of the device in the list.
+ * @param {OntToken} ontToken - The ONT token.
+ * @param {React.Dispatch<React.SetStateAction<OntToken>>} setOntToken - The function to set the ONT token state.
+ * @param {Device[]} devices - The list of devices.
+ * @param {React.Dispatch<React.SetStateAction<Device[]>>} setDevices - The function to set the devices state.
+ * @returns {Promise<void>} A promise that resolves when the device is added to the mac filter.
+*/
+
 interface AddDeviceArguments {
     device: Device;
     index: number;

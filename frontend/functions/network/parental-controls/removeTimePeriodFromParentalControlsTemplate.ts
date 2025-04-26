@@ -1,8 +1,14 @@
+// Functions, Helpers, Utils, and Hooks
 import fetchData from "../auth/fetchData";
 // Types
 import OntToken from "../../../../shared/types/OntToken";
-/* 
-  Need to use the types defined in shared folder for props
+
+/**
+ * Removes a time period from a parental controls template.
+ * @param {number} templateNumber - The instance number of the parental controls template.
+ * @param {number} durationNumber - The duration number of the time period.
+ * @param {OntToken} ontToken - The token for the ONT.
+ * @returns {Promise<boolean>} - A promise that resolves to true if the time period was removed successfully, false otherwise.
 */
 
 interface removeTimePeriodArgs {

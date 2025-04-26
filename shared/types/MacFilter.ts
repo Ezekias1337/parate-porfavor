@@ -4,8 +4,6 @@ export type SSIDName = string | null;
 export type BlacklistOrWhitelist = "blacklist" | "whitelist";
 export type MacFilterEnabledOrDisabled = "enabled" | "disabled";
 
-
-
 export interface MacDevice {
     deviceToAdd: {
         deviceMac: string,

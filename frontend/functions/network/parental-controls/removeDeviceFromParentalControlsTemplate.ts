@@ -1,6 +1,14 @@
+// Functions, Helpers, Utils, and Hooks
 import fetchData from "../auth/fetchData";
 // Types
 import OntToken from "../../../../shared/types/OntToken";
+
+/**
+ * Removes a device from a parental controls template.
+ * @param {number} macIndex - The index of the device to remove.
+ * @param {OntToken} ontToken - The token for the ONT.
+ * @returns {Promise<boolean>} - A promise that resolves to true if the device was removed successfully, false otherwise.
+*/
 
 const removeDeviceFromParentalControlsTemplate = async (
   macIndex: number,

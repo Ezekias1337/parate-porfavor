@@ -3,6 +3,15 @@ import getParentalControlsData from "@/functions/network/parental-controls/getPa
 // Types
 import { ParentalControlsData } from "../../../../shared/types/ParentalControls";
 
+/**
+ * Fetches the parental controls data and sets it in the state.
+ * @param {React.Dispatch<React.SetStateAction<boolean>>} setLoading - The function to set the loading state.
+ * @param {React.Dispatch<React.SetStateAction<ParentalControlsData>>} setParentalControls - The function to set the parental controls state.
+ * @param {React.Dispatch<React.SetStateAction<string | null>>} setErrorMsg - The function to set the error message state.
+ * @param {Function} translate - The function to translate the text.
+ * @returns {Promise<ParentalControlsData>} A promise that resolves to the parental controls data.
+*/
+
 interface handleFetchParentalControlsProps {
     setLoading: React.Dispatch<React.SetStateAction<boolean>>;
     setParentalControls: React.Dispatch<React.SetStateAction<ParentalControlsData>>

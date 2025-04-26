@@ -1,6 +1,18 @@
+// Functions, Helpers, Utils, and Hooks
 import fetchData from "../auth/fetchData";
+// Types
 import { WirelessOrEthernet, SSIDName, MacDevice } from "../../../../shared/types/MacFilter";
 import OntToken from "../../../../shared/types/OntToken";
+
+/**
+ * Adds a device to the mac filter.
+ * @param {Restriction} restriction - The restriction object containing the days of the week.
+ * @param {string} deviceName - The name of the device.
+ * @param {SSIDName} ssidName - The name of the SSID.
+ * @param {WirelessOrEthernet} wirelessOrEthernet - The type of connection.
+ * @param {OntToken} ontToken - The token for the ONT.
+ * @returns {Promise<Boolean>} - A promise that resolves to true if the device was added successfully, false otherwise.
+*/
 
 const addDevicetoMacFilter = async (
   sourceMacAddress: string,

@@ -5,6 +5,13 @@ import Alert from "@/components/Alert";
 // CSS
 import settingsStyles from "@/styles/page-specific/settings";
 
+/**
+ * Renders the settings saved message if the settings are saved.
+ * @param {boolean} settingsSaved - The state of the settings saved.
+ * @param {Function} translate - The function to translate the text.
+ * @returns {JSX.Element} The rendered settings saved message.
+*/
+
 interface RenderSettingsSavedMsgProps {
   settingsSaved: boolean;
   translate: (key: string) => string;

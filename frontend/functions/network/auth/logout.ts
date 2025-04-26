@@ -1,4 +1,10 @@
+// Functions, Helpers, Utils, and Hooks
 import fetchData from "./fetchData";
+
+/**
+ * Logs out the user.
+ * @returns {Promise<boolean>} - A promise that resolves to true if the logout was successful, false otherwise.
+*/
 
 const logout = async (): Promise<boolean> => {
   try {

@@ -1,8 +1,7 @@
 // Library Imports
-import { View, Text, StyleSheet } from "react-native";
+import { View } from "react-native";
 // Components
 import TemplateCard from "@/components/page-specific/parental-controls/TemplateCard";
-// Functions, Helpers, Utils, and Hooks
 // Types
 import { Template } from "../../../../../shared/types/ParentalControls";
 import { ParentalControlsData } from "../../../../../shared/types/ParentalControls";

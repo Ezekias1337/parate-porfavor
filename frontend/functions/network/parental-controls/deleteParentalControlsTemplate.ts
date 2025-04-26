@@ -1,7 +1,14 @@
+// Functions, Helpers, Utils, and Hooks
 import fetchData from "../auth/fetchData";
-import getOntToken from "./getOntToken";
 // Types
 import OntToken from "../../../../shared/types/OntToken";
+
+/**
+ * Deletes a parental controls template.
+ * @param {number} templateIndex - The index of the parental controls template to delete.
+ * @param {OntToken} ontToken - The token for the ONT.
+ * @returns {Promise<boolean>} - A promise that resolves to true if the parental controls template was deleted successfully, false otherwise.
+*/
 
 const deleteParentalControlsTemplate = async (
   templateIndex: number,

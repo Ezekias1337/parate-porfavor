@@ -1,6 +1,15 @@
-import { loadEncrypted } from "@/utils/secureStorage";
+// Functions, Helpers, Utils, and Hooks
+import { loadEncrypted } from "@/utils/secure-storage/secureStorage";
 
-const fetchData = async (input: RequestInfo, init?: RequestInit, logUrl?: boolean) => {
+/**
+ * Fetches data from the server.
+ * @param {RequestInfo} input - The input for the fetch request.
+ * @param {RequestInit} init - The initialization options for the fetch request.
+ * @param {boolean} logUrl - Whether to log the URL being fetched.
+ * @returns {Promise<Response>} - The response from the fetch request.
+*/
+
+const fetchData = async (input: RequestInfo, init?: RequestInit, logUrl?: boolean): Promise<Response> => {
   const urlSettings = await loadEncrypted("urlSettings");
 
   if (!urlSettings || !urlSettings.serverUrl || urlSettings.serverUrl.trim() === "") {

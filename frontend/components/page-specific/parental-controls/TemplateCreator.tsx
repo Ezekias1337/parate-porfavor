@@ -24,7 +24,6 @@ interface TemplateCreatorProps {
   >;
   ontToken: OntToken;
   translate: (key: string) => string;
-  selectedTemplate: Template | null;
   setSelectedTemplate: React.Dispatch<React.SetStateAction<Template | null>>;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   modalLoading: boolean;
@@ -39,7 +38,6 @@ const TemplateCreator: React.FC<TemplateCreatorProps> = ({
   setParentalControls,
   ontToken,
   translate,
-  selectedTemplate,
   setSelectedTemplate,
   setLoading,
   modalLoading,

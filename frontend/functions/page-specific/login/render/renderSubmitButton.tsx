@@ -9,6 +9,17 @@ import { LoginCredentials } from "@/screens/Login";
 // CSS
 import loginStyles from "@/styles/page-specific/login";
 
+/**
+ * Renders the login submit button
+ * @param loading The loading state
+ * @param setLoading The function to set the loading state
+ * @param errorMsg The error message
+ * @param setErrorMsg The function to set the error message
+ * @param loginCredentials The login credentials
+ * @param authenticate The function to authenticate the user
+ * @returns {JSX.Element} The rendered login submit button
+*/
+
 interface RenderInputFieldsProps {
   loading: boolean;
   setLoading: (loading: boolean) => void;

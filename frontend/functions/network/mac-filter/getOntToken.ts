@@ -1,6 +1,15 @@
+// Functions, Helpers, Utils, and Hooks
 import fetchData from "../auth/fetchData";
+// Types
 import { WirelessOrEthernet } from "../../../../shared/types/MacFilter"
 import OntToken from "../../../../shared/types/OntToken";
+
+/**
+ * Gets the ont token needed for mac filter operations
+ * @param {WirelessOrEthernet} wirelessOrEthernet - The wireless or ethernet.
+ * @param {OntToken} ontToken - The token for the ONT.
+ * @returns {Promise<OntToken>} - A promise that resolves to the ont token or null if not found.
+*/
 
 const getOntToken = async (
   wirelessOrEthernet: WirelessOrEthernet,

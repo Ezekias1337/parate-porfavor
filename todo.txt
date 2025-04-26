@@ -1,2 +1,6 @@
-Refactor render functions to all be components to have local hooks and
-reduce prop drilling
+Need to ensure that there is validation for the parental controls (4 time restrictions per template, 10 templates max, etc.)
+
+Make a utility classes file 
+
+Reduce inline styling
+

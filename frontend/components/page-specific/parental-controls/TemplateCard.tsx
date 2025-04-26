@@ -1,15 +1,11 @@
 // Library Imports
 import { useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 // Components
 import Button from "@/components/Button";
-import Badge from "@/components/Badge";
 // Functions, Helpers, Utils, and Hooks
 import renderBadges from "@/functions/component-specific/template-card/renderBadges";
 import parseParentalControlsDataForDisplay from "@/functions/general/parseParentalControlsDataForDisplay";
-import deleteParentalControlsTemplate from "@/functions/network/parental-controls/deleteParentalControlsTemplate";
-import getOntToken from "@/functions/network/parental-controls/getOntToken";
-import handleFetchParentalControls from "@/functions/page-specific/parental-controls/handleFetchParentalControls";
 import handleDeleteParentalControls from "@/functions/page-specific/parental-controls/handleDeleteParentalControls";
 // Types
 import { Template } from "../../../../shared/types/ParentalControls";

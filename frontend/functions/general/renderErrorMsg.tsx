@@ -5,6 +5,13 @@ import Alert from "@/components/Alert";
 // CSS
 import deviceStyles from "../../styles/page-specific/device";
 
+
+/**
+ * Renders the error message if it exists.
+ * @param {string | null} errorMsg - The error message to be rendered.
+ * @returns {ReactNode} jsx - The JSX to be rendered.
+*/
+
 const renderErrorMsg = (errorMsg: string | null) => {
   if (errorMsg) {
     return (

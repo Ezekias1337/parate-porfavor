@@ -8,6 +8,13 @@ import { UrlSettings } from "@/screens/Settings";
 import { inputFieldStyles } from "@/styles/component-specific/input-fields";
 import { colors } from "@/styles/variables";
 
+/**
+ * Renders the input fields for the settings page.
+ * @param urlSettings The URL settings.
+ * @param setUrlSettings The function to set the URL settings.
+ * @param translate The function to translate the text.
+ * @returns {JSX.Element} The rendered input fields.
+*/
 
 interface RenderInputFieldsProps {
   urlSettings: UrlSettings;

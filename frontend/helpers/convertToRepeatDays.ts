@@ -1,6 +1,12 @@
 // Types
 import { SelectedDays } from "../components/page-specific/parental-controls/ParentalControlsModal";
 
+/**
+ * Converts an array of repeat days to a SelectedDays object.
+ * @param {number[]} repeatDays - An array of repeat days.
+ * @returns {SelectedDays} - A SelectedDays object.
+*/
+
 const convertToRepeatDays = (repeatDays: number[]): SelectedDays => {
     let selectedDays: SelectedDays = {
         1: false,

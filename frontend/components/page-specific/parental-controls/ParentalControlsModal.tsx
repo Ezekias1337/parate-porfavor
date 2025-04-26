@@ -1,10 +1,8 @@
 // Library Imports
 import { useState, useEffect } from "react";
-import { View, Text, TextInput, ScrollView } from "react-native";
+import { View,  } from "react-native";
 // Components
 import Modal from "@/components/Modal";
-import Button from "@/components/Button";
-import Alert from "@/components/Alert";
 import TemplateCreator from "./TemplateCreator";
 import SchedulePeriodSelector from "./SchedulePeriodSelector";
 import RestrictionList from "./RestrictionList";
@@ -15,16 +13,6 @@ import {
   Restriction,
 } from "../../../../shared/types/ParentalControls";
 import OntToken from "../../../../shared/types/OntToken";
-import { RestrictionTime } from "./SchedulePeriodSelector";
-// Functions, Helpers, Utils, and Hooks
-import createParentalControlsTemplate from "@/functions/network/parental-controls/createParentalControlsTemplate";
-import handleFetchParentalControls from "../../../functions/page-specific/parental-controls/handleFetchParentalControls";
-import convertToRestrictionTimeType from "@/helpers/convertToRestrictionTimeType";
-import convertToRepeatDays from "@/helpers/convertToRepeatDays";
-// CSS
-import parentalControlsStyles from "../../../styles/page-specific/parentalControls";
-import { inputFieldStyles } from "../../../styles/component-specific/input-fields";
-import { colors } from "../../../styles/variables";
 
 interface RenderModalProps {
   modalVisible: boolean;
@@ -97,7 +85,6 @@ const ParentalControlsModal: React.FC<RenderModalProps> = ({
           setParentalControls={setParentalControls}
           ontToken={ontToken}
           translate={translate}
-          selectedTemplate={selectedTemplate}
           setSelectedTemplate={setSelectedTemplate}
           setLoading={setLoading}
           modalLoading={modalLoading}

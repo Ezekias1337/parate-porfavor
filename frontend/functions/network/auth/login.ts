@@ -1,6 +1,14 @@
+// Functions, Helpers, Utils, and Hooks
 import fetchData from "./fetchData";
-import base64EncodeString from "@/utils/strings/base64EncodeString";
 import getToken from "./getToken";
+import base64EncodeString from "@/utils/strings/base64EncodeString";
+
+/**
+ * Logs in the user.
+ * @param {string} username - The username.
+ * @param {string} password - The password.
+ * @returns {Promise<string | null>} - The authentication token or null if not found.
+*/
 
 const login = async (username: string, password: string): Promise<string | null> => {
   const hashedPasswordPreEncoding = base64EncodeString(password);

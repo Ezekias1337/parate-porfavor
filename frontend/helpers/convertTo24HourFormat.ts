@@ -1,6 +1,12 @@
 // Types
 import { RestrictionTime } from "../components/page-specific/parental-controls/SchedulePeriodSelector";
 
+/**
+ * Converts a time in 12-hour format to 24-hour format and verifies that the time is valid.
+ * @param {RestrictionTime} restrictionTime - The time in 12-hour format.
+ * @returns {string} - The time in 24-hour format.
+*/
+
 const convertTo24HourFormat = (restrictionTime: RestrictionTime): string => {
     const { time, amOrPm } = restrictionTime;
     

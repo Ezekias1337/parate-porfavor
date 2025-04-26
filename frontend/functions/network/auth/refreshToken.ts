@@ -1,4 +1,10 @@
+// Functions, Helpers, Utils, and Hooks
 import fetchData from "./fetchData";
+
+/**
+ * Refreshes the authentication token, preventing the session from expiring.
+ * @returns {Promise<boolean>} - A promise that resolves to true if the refresh was successful, false otherwise.
+*/
 
 const refreshToken = async (): Promise<boolean> => {
   try {

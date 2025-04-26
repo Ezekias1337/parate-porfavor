@@ -1,5 +1,12 @@
+// Functions, Helpers, Utils, and Hooks
 import fetchData from "../auth/fetchData";
+// Types
 import { Device } from "../../../../shared/types/Device";
+
+/**
+ * Gets the device list.
+ * @returns {Device[]} - The device list.
+*/
 
 const getDeviceList = async (): Promise<Device[]> => {
   try {

@@ -1,17 +1,32 @@
-// Types
-import { Device } from "../../../../../shared/types/Device";
-import { ButtonProps } from "../../../../components/Button";
-import {
-  Template,
-  ParentalControlsData,
-} from "../../../../../shared/types/ParentalControls";
 // Functions, Helpers, Utils, and Hooks
 import removeDeviceFromParentalControlsTemplate from "@/functions/network/parental-controls/removeDeviceFromParentalControlsTemplate";
 import getOntToken from "@/functions/network/parental-controls/getOntToken";
 import fetchDevicesAndParentalControls from "../fetchDevicesAndParentalControls";
+// Types
+import { Device } from "../../../../../shared/types/Device";
+import { ButtonProps } from "../../../../components/Button";
+import {
+  ParentalControlsData,
+} from "../../../../../shared/types/ParentalControls";
+
+/**
+ * Render the button to add a device to a parental controls template
+ * @param {Device} device - The device to add to the template
+ * @param {React.Dispatch<React.SetStateAction<Device | null>>} setModalDevice - The function to set the modal device state
+ * @param {React.Dispatch<React.SetStateAction<boolean>>} setModalVisible - The function to set the modal visible state
+ * @param {Function} displayParentalControlsModal - The function to display the parental controls modal
+ * @param {Function} translate - The function to translate the text
+ * @param {React.Dispatch<React.SetStateAction<Device[]>>} setDevices - The function to set the devices state
+ * @param {ParentalControlsData} parentalControls - The parental controls data
+ * @param {React.Dispatch<ParentalControlsData>} setParentalControls - The function to set the parental controls state
+ * @param {React.Dispatch<React.SetStateAction<boolean>>} setLoading - The function to set the loading state
+ * @param {React.Dispatch<React.SetStateAction<string | null>>} setErrorMsg - The function to set the error message state
+ * @param {number} index - The index of the device in the list
+ * @returns {ButtonProps | null} The rendered button or null if the device is already blocked
+*/
+
 interface renderButtonArguments {
   device: Device;
-  devices: Device[];
   setModalDevice: React.Dispatch<React.SetStateAction<Device | null>>;
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
   displayParentalControlsModal: (
@@ -28,7 +43,6 @@ interface renderButtonArguments {
 
 const renderDeviceCardButton2 = ({
   device,
-  devices,
   setDevices,
   setModalDevice,
   setModalVisible,

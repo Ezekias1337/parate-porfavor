@@ -10,6 +10,17 @@ import { Template } from "../../../../../shared/types/ParentalControls";
 // CSS
 import parentalControlsStyles from "../../../../styles/page-specific/parentalControls";
 
+/**
+ * Renders the control buttons for the Parental Controls page.
+ * @param setLoading The function to set the loading state.
+ * @param setParentalControls The function to set the parental controls state.
+ * @param setModalVisible The function to set the modal visible state.
+ * @param setSelectedTemplate The function to set the selected template state.
+ * @param setErrorMsg The function to set the error message state.
+ * @param translate The function to translate the text.
+ * @returns {JSX.Element} The rendered control buttons.
+*/
+
 interface RenderControlButtonsProps {
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   setParentalControls: React.Dispatch<

@@ -1,6 +1,16 @@
+// Functions, Helpers, Utils, and Hooks
 import fetchData from "../auth/fetchData";
 // Types
 import OntToken from "../../../../shared/types/OntToken";
+
+/**
+ * Creates a parental controls template.
+ * @param {string} name - The name of the parental controls template.
+ * @param {number} startDate - The start date of the parental controls template.
+ * @param {number} endDate - The end date of the parental controls template.
+ * @param {OntToken} ontToken - The token for the ONT.
+ * @returns {Promise<boolean>} - A promise that resolves to true if the parental controls template was created successfully, false otherwise.
+*/
 
 const createParentalControlsTemplate = async (
   name: string,

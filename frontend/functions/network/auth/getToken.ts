@@ -1,4 +1,10 @@
+// Functions, Helpers, Utils, and Hooks
 import fetchData from "./fetchData";
+
+/**
+ * Gets the authentication token from the server.
+ * @returns {Promise<string | null>} - The authentication token or null if not found.
+*/
 
 const getToken = async (): Promise<string | null> => {
   try {

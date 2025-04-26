@@ -25,37 +25,12 @@ import { useLocalization } from "../components/localization/LocalizationContext"
 import OntToken from "../../shared/types/OntToken";
 import { Template } from "../../shared/types/ParentalControls";
 // CSS
-import { colors, fontSizes } from "../styles/variables";
+import { colors } from "../styles/variables";
 import parentalControlsStyles from "../styles/page-specific/parentalControls";
 
 /* 
   ! THERE ARE VALIDATION RULES WRITTEN IN THE SERVER FILES, MAKE SURE TO ENFORCE THIS
   ! IN THE FRONT END
-
-  This screen should display two buttons at the top,
-  one for refreshing the data, and one for creating NEW templates.
-  
-  Below that, it should display the list of templates in the form of cards
-  
-  Each card should display the name, description, 
-  a button to edit the template, and one to delete the template
-  
-  When creating a template there are several different steps:
-  
-   ? 1. Create a new template (Enter the template name)
-   ? 2. Select the array of time periods: 
-    ?  a. Whole day or specific time periods
-    ?  b. Everday or specific days
-   ? 3. Finish the template
-   
-  If a template is only partially created there should be a badge notifying the user
-  that the template is not complete.
-  
-  When editing a non finished template it should display the sections based off the data the
-  user has already entered.
-  
-  When editing a finished template it should display the current config and place separate edit buttons
-  for each section.
 */
 
 const ParentalControls: React.FC = () => {
