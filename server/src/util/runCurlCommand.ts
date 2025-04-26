@@ -1,4 +1,11 @@
+// Library Imports
 import { exec } from "child_process";
+
+/**
+ * Runs a curl command and returns the output
+ * @param {string} command - The curl command to run
+ * @returns {Promise<string>} - The output of the curl command
+*/
 
 const runCurlCommand = (command: string): Promise<string> => {
     return new Promise((resolve, reject) => {

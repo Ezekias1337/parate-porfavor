@@ -15,15 +15,6 @@ import { WirelessOrEthernet, BlacklistOrWhitelist, MacFilterEnabledOrDisabled, S
 import OntToken from "@shared/types/OntToken";
 // Environment Variables
 const USER_AGENT = env.USER_AGENT;
-/* 
-    ? It seems like there are different api requests for WLAN vs LAN (wireless vs ethernet)
-    ? After getting one working inspect the differences
-    ? On each of the pages in the modem's html the wlan only returns wifi devices and vice versa
-    
-    
-    ? fetchOntTokenSource has an ontToken parameter, need to think about where that token should be stored
-    ? so that it doesn't need to be constantly refreshed
-*/
 
 export const fetchOntTokenSourceHandler = async (ontToken: OntToken, cookies: string, wirelessOrEthernet: OntToken, MODEM_URL_BASE: string): Promise<string | null> => {
     try {

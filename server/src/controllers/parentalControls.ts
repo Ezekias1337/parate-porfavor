@@ -14,24 +14,6 @@ import OntToken from "@shared/types/OntToken";
 // Environment Variables
 const USER_AGENT = env.USER_AGENT;
 
-
-/*        
-        Parental Control Help
-            The parental control function allows parents to set different constraints for the network surfing time and website access on working days and holidays. In this way, their children are allowed to access networks in specified time segments and free from age inappropriate contents. Configure multiple parental control policy templates as required, use MAC addresses to identify children web devices (such as a PC or Pad), and associate different web devices with different templates.
-            Template
-            On the Template tab page, click Add. Enter the template name, for example, kids. Then configure the parental control template step by step based on the configuration wizard.
-            Note:
-            1.A maximum of four time segments during which network surfing is allowed can be configured in each template.
-            2.The whitelist and blacklist are mutually exclusive in a template when you configure the website filtering policy.
-            3.A maximum of 128 websites can be configured for the filtering policy in each template.
-            4.A maximum of eight templates can be configured.
-            Overview
-            On the Overview tab page, bind web devices with the template configured (the kids template is used as an example here). If Apply on all devices is selected, all the web devices will perform network access control based on the kids template. If Apply on specified devices is selected, only the specified web devices will perform network access control based on the kids template.
-            Note:
-            1.A web device can be associated with only one template.
-            2.To change the template with which a device is associated, delete the device from the template, and click Add to bind a new template to this device.
-*/
-
 export const fetchOntTokenSourceHandler = async (ontToken: OntToken, cookies: string, MODEM_URL_BASE: string): Promise<string | null> => {
     try {
         if (ontToken === null) {

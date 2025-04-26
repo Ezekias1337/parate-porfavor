@@ -30,19 +30,6 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.use(express.json());
-/* app.use((req, res, next) => {
-    console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
-    console.log("Headers:", req.headers);
-    next();
-}); */
-
-/* 
-    TODO: use pm2 to run the server
-    npm install -g pm2
-    pm2 start server.js --name wol-backend
-    pm2 startup
-    pm2 save
-*/
 
 // Imported routes
 app.use("/api/auth", authRoutes);

@@ -11,8 +11,6 @@ import getModemUrl from "../util/getModemUrl";
 import OntToken from "@shared/types/OntToken";
 // Environment Variables
 const USER_AGENT = env.USER_AGENT;
-//const MODEM_URL_BASE = env.MODEM_URL_BASE;
-
 
 /* 
     ? x.X_HW_Token is used for logging in, but it also changes for certain requests.

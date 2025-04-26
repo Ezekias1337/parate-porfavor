@@ -1,5 +1,14 @@
+// Types
 import { ParentalControlsData, Template, Restriction } from "../../../shared/types/ParentalControls";
 import { Device } from "../../../shared/types/Device";
+
+/**
+ * Extracts the parental controls data from the HTML or ASP file content.
+ * @param {string} htmlContent - The raw HTML/ASP file content to be parsed.
+ * @param {boolean} logList - Optional flag to log the extracted device list.
+ * @returns {ParentalControlsData} - The extracted parental controls data.
+ *
+*/
 
 const extractParentalControlsData = (htmlContent: string, logList?: boolean): ParentalControlsData => {
     const childListRegex = /new ChildListClass\("InternetGatewayDevice[^"]*","(.*?)","(.*?)","(\d+)"\)/g;
