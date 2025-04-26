@@ -1,6 +1,6 @@
 // Library Imports
 import { useState, useEffect } from "react";
-import { View,  } from "react-native";
+import { View } from "react-native";
 // Components
 import Modal from "@/components/Modal";
 import TemplateCreator from "./TemplateCreator";
@@ -13,6 +13,8 @@ import {
   Restriction,
 } from "../../../../shared/types/ParentalControls";
 import OntToken from "../../../../shared/types/OntToken";
+// CSS
+import utilityStyles from "@/styles/utilities";
 
 interface RenderModalProps {
   modalVisible: boolean;
@@ -96,7 +98,13 @@ const ParentalControlsModal: React.FC<RenderModalProps> = ({
       )}
 
       {selectedTemplate && parentalControls && (
-        <View style={{ width: "100%", maxHeight: "100%", display: "flex" }}>
+        <View
+          style={[
+            utilityStyles.fullWidth,
+            utilityStyles.fullMaxHeight,
+            utilityStyles.displayFlex,
+          ]}
+        >
           {showSchedulePeriodSelector && (
             <SchedulePeriodSelector
               translate={translate}

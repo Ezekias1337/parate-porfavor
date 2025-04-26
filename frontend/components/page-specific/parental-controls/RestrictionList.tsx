@@ -14,6 +14,7 @@ import {
 } from "../../../../shared/types/ParentalControls";
 import OntToken from "../../../../shared/types/OntToken";
 // CSS
+import utilityStyles from "../../../styles/utilities";
 import cardStyles from "../../../styles/component-specific/card";
 import { fontSizes } from "@/styles/variables";
 import parentalControlsStyles from "../../../styles/page-specific/parentalControls";
@@ -78,7 +79,8 @@ const RestrictionList: React.FC<RestrictionListProps> = ({
           <Text
             style={[
               parentalControlsStyles.title,
-              { fontSize: fontSizes.header3, marginTop: 10 },
+              utilityStyles.marginTop10,
+              { fontSize: fontSizes.header3 },
             ]}
           >{`${translate("scheduledRestriction")} ${index + 1}`}</Text>
           <RestrictionDisplay restriction={restriction} translate={translate} />

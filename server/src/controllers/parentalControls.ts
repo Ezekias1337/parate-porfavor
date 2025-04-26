@@ -139,9 +139,6 @@ export const addTimePeriodToParentalControls: RequestHandler = async (req, res, 
         const urlString = `${MODEM_URL_BASE}/html/bbsp/parentalctrl/${isEditingRestriction ? "set" : "add"}.cgi?x=InternetGatewayDevice.X_HW_Security.ParentalCtrl.Templates.${templateNumber}.Duration${isEditingRestriction ? `.${durationNumber}` : ""}&y=InternetGatewayDevice.X_HW_Security.ParentalCtrl.Templates.${templateNumber}&RequestFile=html/ipv6/not_find_file.asp`;
         const queryString = `x.StartTime=${startTime}&x.EndTime=${endTime}&x.RepeatDay=${repeatDays.join(",")}&y.DurationRight=0&y.DurationPolicy=0&x.X_HW_Token=${ontToken}`;
 
-        console.log("urlString: ", urlString);
-        console.log("queryString: ", queryString);
-
         const response = await axios.post(urlString, queryString, {
             headers: {
                 "User-Agent": USER_AGENT,

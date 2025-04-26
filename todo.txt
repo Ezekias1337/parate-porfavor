@@ -1,8 +1,3 @@
-Make a utility classes file 
-
-Reduce inline styling
-
-
 Parental Control Help
             The parental control function allows parents to set different constraints for the network surfing time and website access on working days and holidays. In this way, their children are allowed to access networks in specified time segments and free from age inappropriate contents. Configure multiple parental control policy templates as required, use MAC addresses to identify children web devices (such as a PC or Pad), and associate different web devices with different templates.
             Template

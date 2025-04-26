@@ -5,12 +5,11 @@ import { FontAwesome } from "@expo/vector-icons";
 import createDayString from "../../../functions/component-specific/template-card/createDaysString";
 import convertTo12HourFormat from "../../../helpers/convertTo12HourFormat";
 // Types
-import {
-  Restriction,
-} from "../../../../shared/types/ParentalControls";
+import { Restriction } from "../../../../shared/types/ParentalControls";
 // CSS
-import { colors } from "../../../styles/variables";
-import { templateCardStyles } from "./TemplateCard";
+import utilityStyles from "@/styles/utilities";
+import { colors, borderWidth, borderRadius } from "../../../styles/variables";
+import  templateCardStyles  from "../../../styles/component-specific/template-card";
 
 interface RestrictionProps {
   restriction: Restriction;
@@ -22,7 +21,18 @@ const RestrictionDisplay: React.FC<RestrictionProps> = ({
   translate,
 }) => {
   return (
-    <View style={{borderWidth: 1, borderRadius: 5, borderColor: colors.primary300, padding: 10, marginBottom: 10, marginTop: 10}}>
+    <View
+      style={[
+        utilityStyles.padding10,
+        utilityStyles.marginTop10,
+        utilityStyles.marginBottom10,
+        {
+          borderWidth: borderWidth.borderWidth,
+          borderRadius: borderRadius.borderRadius,
+          borderColor: colors.primary300,
+        },
+      ]}
+    >
       <View style={templateCardStyles.row}>
         <FontAwesome name="clock-o" size={40} color={colors.primary300} />
 

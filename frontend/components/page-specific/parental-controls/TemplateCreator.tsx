@@ -92,7 +92,6 @@ const TemplateCreator: React.FC<TemplateCreatorProps> = ({
           */
           try {
             setModalLoading(true);
-            const templateIndex = parentalControls.templates.length;
             await createParentalControlsTemplate(templateName, 0, 0, ontToken);
             const tempParentalControls = await handleFetchParentalControls({
               setLoading,
@@ -109,8 +108,6 @@ const TemplateCreator: React.FC<TemplateCreatorProps> = ({
               }
             }
             
-            
-            console.log("newlyCreatedTemplate", newlyCreatedTemplate);
             setSelectedTemplate(newlyCreatedTemplate);
             setModalLoading(false);
           } catch (error) {

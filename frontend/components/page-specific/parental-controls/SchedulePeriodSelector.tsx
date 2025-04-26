@@ -19,6 +19,7 @@ import {
   Restriction,
 } from "../../../../shared/types/ParentalControls";
 // CSS
+import utilityStyles from "@/styles/utilities";
 import { inputFieldStyles } from "../../../styles/component-specific/input-fields";
 import parentalControlsStyles from "../../../styles/page-specific/parentalControls";
 import { colors } from "../../../styles/variables";
@@ -111,11 +112,11 @@ const SchedulePeriodSelector: React.FC<SchedulePeriodSelectorProps> = ({
         { flexGrow: 1 },
       ]}
     >
-      <Text style={[parentalControlsStyles.title, { marginBottom: 40 }]}>
+      <Text style={[parentalControlsStyles.title, utilityStyles.marginBottom40]}>
         {translate("modifyScheduledRestriction")}
       </Text>
 
-      <View style={[inputFieldStyles.formLabelContainer, { marginTop: 20 }]}>
+      <View style={[inputFieldStyles.formLabelContainer, utilityStyles.marginTop20]}>
         <Text style={inputFieldStyles.formLabel}>
           {translate("allowedDays")}
         </Text>
@@ -126,7 +127,7 @@ const SchedulePeriodSelector: React.FC<SchedulePeriodSelectorProps> = ({
       />
 
       <View style={inputFieldStyles.formRow}>
-        <View style={[inputFieldStyles.formLabelContainer, { marginTop: 20 }]}>
+        <View style={[inputFieldStyles.formLabelContainer, utilityStyles.marginTop20]}>
           <Text style={inputFieldStyles.formLabel}>
             {translate("allowedStartTime")}
           </Text>
@@ -148,7 +149,7 @@ const SchedulePeriodSelector: React.FC<SchedulePeriodSelectorProps> = ({
         />
         <AmPmSelector restrictionTime={startTime} setTime={setStartTime} />
 
-        <View style={[inputFieldStyles.formLabelContainer, { marginTop: 20 }]}>
+        <View style={[inputFieldStyles.formLabelContainer, utilityStyles.marginTop20]}>
           <Text style={inputFieldStyles.formLabel}>
             {translate("allowedEndTime")}
           </Text>
@@ -176,6 +177,7 @@ const SchedulePeriodSelector: React.FC<SchedulePeriodSelectorProps> = ({
           variant="primary"
           icon="floppy-o"
           leftIcon
+          loading={loading}
           onClickHandler={async () => {
             await handleAddTimePeriod({
               template,
