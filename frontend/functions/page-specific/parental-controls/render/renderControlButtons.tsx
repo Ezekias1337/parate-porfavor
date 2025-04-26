@@ -19,10 +19,11 @@ import parentalControlsStyles from "../../../../styles/page-specific/parentalCon
  * @param setErrorMsg The function to set the error message state.
  * @param translate The function to translate the text.
  * @returns {JSX.Element} The rendered control buttons.
-*/
+ */
 
 interface RenderControlButtonsProps {
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  parentalControls: ParentalControlsData;
   setParentalControls: React.Dispatch<
     React.SetStateAction<ParentalControlsData>
   >;
@@ -34,6 +35,7 @@ interface RenderControlButtonsProps {
 
 const renderControlButtons = ({
   setLoading,
+  parentalControls,
   setParentalControls,
   setModalVisible,
   setSelectedTemplate,
@@ -56,16 +58,18 @@ const renderControlButtons = ({
           });
         }}
       />
-      <Button
-        text={translate("createScheduledRestriction")}
-        variant="success"
-        icon="plus"
-        leftIcon
-        onClickHandler={() => {
-          setSelectedTemplate(null);
-          setModalVisible(true);
-        }}
-      />
+      {parentalControls.templates.length <= 7 && (
+        <Button
+          text={translate("createScheduledRestriction")}
+          variant="success"
+          icon="plus"
+          leftIcon
+          onClickHandler={() => {
+            setSelectedTemplate(null);
+            setModalVisible(true);
+          }}
+        />
+      )}
     </View>
   );
 };

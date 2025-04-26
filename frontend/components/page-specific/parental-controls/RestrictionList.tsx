@@ -1,9 +1,10 @@
 // Library Imports
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ScrollView, Text, View } from "react-native";
 // Components
 import RestrictionDisplay from "./RestrictionDisplay";
 import Button from "@/components/Button";
+import Alert from "@/components/Alert";
 // Functions, Helpers, Utils, and Hooks
 import handleRemoveTimePeriod from "@/functions/page-specific/parental-controls/handleRemoveTimePeriod";
 // Types
@@ -48,20 +49,33 @@ const RestrictionList: React.FC<RestrictionListProps> = ({
   setModalVisible,
 }) => {
   const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
+  const [maxTemplatesReached, setMaxTemplatesReached] =
+    useState<boolean>(false);
+
+  useEffect(() => {
+    if (template.restrictions.length >= 4) {
+      setMaxTemplatesReached(true);
+    } else {
+      setMaxTemplatesReached(false);
+    }
+  }, [template.restrictions]);
 
   return (
     <ScrollView>
       <View style={parentalControlsStyles.buttonContainer}>
-        <Button
-          text={translate("addNewSchedule")}
-          variant="success"
-          leftIcon
-          icon="plus"
-          onClickHandler={() => {
-            setRestrictionToEdit(null);
-            setShowSchedulePeriodSelector(true);
-          }}
-        />
+        {!maxTemplatesReached && (
+          <Button
+            text={translate("addNewSchedule")}
+            variant="success"
+            leftIcon
+            icon="plus"
+            onClickHandler={() => {
+              setRestrictionToEdit(null);
+              setShowSchedulePeriodSelector(true);
+            }}
+          />
+        )}
+
         <Button
           text={translate("cancel")}
           variant="neutral"
@@ -73,6 +87,14 @@ const RestrictionList: React.FC<RestrictionListProps> = ({
           }}
         />
       </View>
+      
+      {maxTemplatesReached && (
+        <Alert
+          variant="warning"
+          bodyText={translate("tooManySchedules")}
+          icon="exclamation-triangle"
+        />
+      )}
 
       {template.restrictions.map((restriction, index) => (
         <View key={index} style={cardStyles.card}>

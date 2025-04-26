@@ -94,6 +94,7 @@ const ParentalControls: React.FC = () => {
       {renderErrorMsg(errorMsg)}
       {renderControlButtons({
         setLoading,
+        parentalControls,
         setParentalControls,
         setModalVisible,
         setSelectedTemplate,

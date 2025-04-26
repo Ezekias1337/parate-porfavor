@@ -49,6 +49,14 @@ const TemplateCreator: React.FC<TemplateCreatorProps> = ({
   if (!parentalControls) {
     return <></>;
   }
+  
+  if (parentalControls.templates.length >= 8) {
+    <Alert
+      bodyText={translate("maxTemplates")}
+      variant="error"
+      icon="info-circle"
+    />
+  }
 
   return (
     <View style={[parentalControlsStyles.modalContainer]}>
