@@ -11,7 +11,7 @@ const settingsStyles = StyleSheet.create({
   },
   
   container: {
-    flexDirection: "column",
+    flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "center",
     alignItems: "center",

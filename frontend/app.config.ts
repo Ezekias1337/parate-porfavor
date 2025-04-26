@@ -22,7 +22,8 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     adaptiveIcon: {
       foregroundImage: "./assets/images/icon.png",
       backgroundColor: "#040A15"
-    }
+    },
+    permissions: ["INTERNET", "STORAGE"]
   },
   web: {
     bundler: "metro",
