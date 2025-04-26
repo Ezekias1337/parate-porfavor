@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "parate-porfavor",
+    "name": "Parate Porfavor",
     "slug": "parate-porfavor",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -8,17 +8,17 @@
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/images/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "image": "./assets/images/icon.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#040A15"
     },
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./assets/images/icon.png",
+        "backgroundColor": "#040A15"
       }
     },
     "web": {
@@ -36,7 +36,7 @@
     },
     "androidStatusBar": {
       "barStyle": "light-content",
-      "backgroundColor": "#292a2c"
+      "backgroundColor": "#4276CF"
     }
   }
 }

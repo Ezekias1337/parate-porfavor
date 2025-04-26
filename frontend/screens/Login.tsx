@@ -12,7 +12,7 @@ import { useLocalization } from "../components/localization/LocalizationContext"
 // CSS
 import loginStyles from "../styles/page-specific/login";
 // Assets
-const appIcon = require("../assets/images/app-icon.png");
+const appIcon = require("../assets/images/icon.png");
 
 export interface LoginCredentials {
   username: string;
