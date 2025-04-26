@@ -13,7 +13,6 @@ interface RenderTemplateCardsProps {
   templates: Template[];
   translate: (key: string) => string;
   ontToken: OntToken;
-  setOntToken: React.Dispatch<React.SetStateAction<OntToken>>;
   setErrorMsg: React.Dispatch<React.SetStateAction<string | null>>;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   setParentalControls: React.Dispatch<React.SetStateAction<ParentalControlsData>>;
@@ -25,7 +24,6 @@ const renderTemplateCards = ({
   templates,
   translate,
   ontToken,
-  setOntToken,
   setErrorMsg,
   setLoading,
   setParentalControls,
@@ -38,7 +36,6 @@ const renderTemplateCards = ({
       template={template}
       translate={translate}
       ontToken={ontToken}
-      setOntToken={setOntToken}
       setErrorMsg={setErrorMsg}
       setLoading={setLoading}
       setParentalControls={setParentalControls}

@@ -18,7 +18,6 @@ interface TemplateCardProps {
   template: Template;
   translate: (key: string) => string;
   ontToken: OntToken;
-  setOntToken: React.Dispatch<React.SetStateAction<OntToken>>;
   setErrorMsg: React.Dispatch<React.SetStateAction<string | null>>;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   setParentalControls: React.Dispatch<
@@ -32,7 +31,6 @@ const TemplateCard = ({
   template,
   translate,
   ontToken,
-  setOntToken,
   setErrorMsg,
   setLoading,
   setParentalControls,

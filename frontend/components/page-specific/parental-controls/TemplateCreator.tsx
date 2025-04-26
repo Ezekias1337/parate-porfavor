@@ -100,9 +100,16 @@ const TemplateCreator: React.FC<TemplateCreatorProps> = ({
               setErrorMsg,
               translate,
             });
-
-            const newlyCreatedTemplate =
-              tempParentalControls.templates[templateIndex];
+            
+            let newlyCreatedTemplate: Template | null = null;
+            for (const template of tempParentalControls.templates) {
+              if(template.name === templateName) {
+                newlyCreatedTemplate = template;
+                break;
+              }
+            }
+            
+            
             console.log("newlyCreatedTemplate", newlyCreatedTemplate);
             setSelectedTemplate(newlyCreatedTemplate);
             setModalLoading(false);

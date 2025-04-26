@@ -87,10 +87,8 @@ export const addDeviceToParentalControls: RequestHandler = async (req, res, next
         const MODEM_URL_BASE = getModemUrl(req);
 
         const { deviceMac, deviceDescription, templateInst } = req.body.deviceToAdd;
+        
         let ontToken: OntToken = req.body.ontToken;
-
-
-        // Refresh the ontToken if needed
         ontToken = await fetchOntTokenSourceHandler(ontToken, cookies, MODEM_URL_BASE);
 
         const url = `${process.env.MODEM_URL_BASE}/html/bbsp/parentalctrl/add.cgi?x=InternetGatewayDevice.X_HW_Security.ParentalCtrl.MAC&RequestFile=html/bbsp/parentalctrl/parentalctrlmac.asp`;
@@ -138,12 +136,7 @@ export const addTimePeriodToParentalControls: RequestHandler = async (req, res, 
         let ontToken: OntToken = req.body.ontToken;
         ontToken = await fetchOntTokenSourceHandler(ontToken, cookies, MODEM_URL_BASE);
 
-        let isFirstTemplate = false;
-        if (durationNumber === null) {
-            isFirstTemplate = true;
-        }
-
-        const urlString = `${MODEM_URL_BASE}/html/bbsp/parentalctrl/${isFirstTemplate || isEditingRestriction ? "set" : "add"}.cgi?x=InternetGatewayDevice.X_HW_Security.ParentalCtrl.Templates.${templateNumber}.Duration${isEditingRestriction ? `.${durationNumber}` : ""}&y=InternetGatewayDevice.X_HW_Security.ParentalCtrl.Templates.${templateNumber}&RequestFile=html/ipv6/not_find_file.asp`;
+        const urlString = `${MODEM_URL_BASE}/html/bbsp/parentalctrl/${isEditingRestriction ? "set" : "add"}.cgi?x=InternetGatewayDevice.X_HW_Security.ParentalCtrl.Templates.${templateNumber}.Duration${isEditingRestriction ? `.${durationNumber}` : ""}&y=InternetGatewayDevice.X_HW_Security.ParentalCtrl.Templates.${templateNumber}&RequestFile=html/ipv6/not_find_file.asp`;
         const queryString = `x.StartTime=${startTime}&x.EndTime=${endTime}&x.RepeatDay=${repeatDays.join(",")}&y.DurationRight=0&y.DurationPolicy=0&x.X_HW_Token=${ontToken}`;
 
         console.log("urlString: ", urlString);

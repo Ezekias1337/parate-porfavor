@@ -15,7 +15,6 @@ import handleFetchParentalControls from "@/functions/page-specific/parental-cont
 import renderErrorMsg from "@/functions/general/renderErrorMsg";
 import renderControlButtons from "@/functions/page-specific/parental-controls/render/renderControlButtons";
 import renderTemplateCards from "@/functions/page-specific/parental-controls/render/renderTemplateCards";
-import renderModal from "@/components/page-specific/parental-controls/ParentalControlsModal";
 // Components
 import { useAuth } from "../components/auth/authContext";
 import ParentalControlsModal from "@/components/page-specific/parental-controls/ParentalControlsModal";
@@ -105,7 +104,6 @@ const ParentalControls: React.FC = () => {
         templates: parentalControls.templates,
         translate,
         ontToken,
-        setOntToken,
         setErrorMsg,
         setLoading,
         setParentalControls,

@@ -4,12 +4,10 @@ import { View, ScrollView, Text, TextInput } from "react-native";
 // Components
 import Button from "@/components/Button";
 import DaySelector from "./DaySelector";
+import AmPmSelector from "./AmPmSelector";
 // Functions, Helpers, Utils, and Hooks
 import renderErrorMsg from "@/functions/general/renderErrorMsg";
-import convertTo24HourFormat from "@/helpers/convertTo24HourFormat";
-import addTimePeriodToParentalControlsTemplate from "@/functions/network/parental-controls/addTimePeriodToParentalControlsTemplate";
-import checkForIncorrectTimeRange from "@/helpers/checkForIncorrectTimeRange";
-import handleFetchParentalControls from "@/functions/page-specific/parental-controls/handleFetchParentalControls";
+import handleAddTimePeriod from "@/functions/page-specific/parental-controls/handleAddTimePeriod";
 import convertToRestrictionTimeType from "@/helpers/convertToRestrictionTimeType";
 import convertToRepeatDays from "@/helpers/convertToRepeatDays";
 // Types
@@ -41,6 +39,11 @@ export type RestrictionTime = {
   time: string;
   amOrPm: "AM" | "PM";
 };
+
+export interface AmPmButtonProps {
+  restrictionTime: RestrictionTime;
+  handleClick: () => void;
+}
 
 const SchedulePeriodSelector: React.FC<SchedulePeriodSelectorProps> = ({
   translate,
@@ -143,46 +146,13 @@ const SchedulePeriodSelector: React.FC<SchedulePeriodSelectorProps> = ({
           placeholderTextColor={colors.primary300}
           id="startTime"
         />
-
-        <View style={parentalControlsStyles.ampmContainer}>
-          <View style={parentalControlsStyles.ampmButtonContainer}>
-            <Button
-              text="AM"
-              variant={startTime.amOrPm === "AM" ? "warning" : "neutral"}
-              icon="sun-o"
-              loading={loading}
-              leftIcon
-              onClickHandler={() => {
-                setStartTime({
-                  ...startTime,
-                  amOrPm: "AM",
-                });
-              }}
-            />
-          </View>
-          <View style={parentalControlsStyles.ampmButtonContainer}>
-            <Button
-              text="PM"
-              variant={startTime.amOrPm === "PM" ? "primaryDark" : "neutral"}
-              icon="moon-o"
-              loading={loading}
-              leftIcon
-              onClickHandler={() => {
-                setStartTime({
-                  ...startTime,
-                  amOrPm: "PM",
-                });
-              }}
-            />
-          </View>
-        </View>
+        <AmPmSelector restrictionTime={startTime} setTime={setStartTime} />
 
         <View style={[inputFieldStyles.formLabelContainer, { marginTop: 20 }]}>
           <Text style={inputFieldStyles.formLabel}>
             {translate("allowedEndTime")}
           </Text>
         </View>
-
         <TextInput
           placeholder="00:00"
           value={endTime.time}
@@ -198,39 +168,7 @@ const SchedulePeriodSelector: React.FC<SchedulePeriodSelectorProps> = ({
           id="endTime"
         />
       </View>
-
-      <View style={parentalControlsStyles.ampmContainer}>
-        <View style={parentalControlsStyles.ampmButtonContainer}>
-          <Button
-            text="AM"
-            variant={endTime.amOrPm === "AM" ? "warning" : "neutral"}
-            icon="sun-o"
-            loading={loading}
-            leftIcon
-            onClickHandler={() => {
-              setEndTime({
-                ...endTime,
-                amOrPm: "AM",
-              });
-            }}
-          />
-        </View>
-        <View style={parentalControlsStyles.ampmButtonContainer}>
-          <Button
-            text="PM"
-            variant={endTime.amOrPm === "PM" ? "primaryDark" : "neutral"}
-            icon="moon-o"
-            loading={loading}
-            leftIcon
-            onClickHandler={() => {
-              setEndTime({
-                ...endTime,
-                amOrPm: "PM",
-              });
-            }}
-          />
-        </View>
-      </View>
+      <AmPmSelector restrictionTime={endTime} setTime={setEndTime} />
 
       <View style={parentalControlsStyles.buttonContainer}>
         <Button
@@ -239,99 +177,30 @@ const SchedulePeriodSelector: React.FC<SchedulePeriodSelectorProps> = ({
           icon="floppy-o"
           leftIcon
           onClickHandler={async () => {
-            try {
-              setError(null);
-              const parsedStartTime = convertTo24HourFormat(startTime);
-              const parsedEndTime = convertTo24HourFormat(endTime);
-              const parsedRepeatDays: number[] = [];
-
-              for (const [key, value] of Object.entries(selectedDays)) {
-                if (value === true) {
-                  parsedRepeatDays.push(parseInt(key));
-                }
-              }
-
-              if (parsedRepeatDays.length === 0) {
-                setError(translate("needToSelectDays"));
-                throw new Error(translate("needToSelectDays"));
-              }
-
-              const isTimeRangeIncorrect = checkForIncorrectTimeRange(
-                parsedStartTime,
-                parsedEndTime
-              );
-
-              if (isTimeRangeIncorrect) {
-                setError(translate("incorrectTimeRange"));
-                return;
-              }
-
-              let durationNumber: number | null = null;
-              let usedIds: number[] = [];
-              
-              if (restrictionToEdit) {
-                durationNumber = restrictionToEdit.id;
-              } else if (template?.restrictions?.length > 0) {
-                /* 
-                  ? There is a maximum of 4 time periods per template, but we cannot
-                  ? guarantee that the id of each time period will be sequential,
-                  ? so we have to check for which ids are available and use the lowest
-                  ? available id.
-                */
-                for (const restriction of template.restrictions) {
-                  usedIds.push(restriction.id);
-                }
-                usedIds.sort();
-
-                if (usedIds.length >= 4) {
-                  setError(translate("tooManySchedules"));
-                  throw new Error(translate("tooManySchedules"));
-                }
-                const possibleIds = [1, 2, 3, 4];
-                const availableIds = possibleIds.filter(
-                  (id) => !usedIds.includes(id)
-                );
-                durationNumber = availableIds[0];
-              }
-
-              await addTimePeriodToParentalControlsTemplate({
-                startTime: parsedStartTime,
-                endTime: parsedEndTime,
-                repeatDays: parsedRepeatDays,
-                templateNumber: template.id,
-                durationNumber: durationNumber,
-                usedIds: usedIds,
-                isEditingRestriction: restrictionToEdit ? true : false,
-                ontToken: ontToken,
-              });
-
-              setShowSchedulePeriodSelector(false);
-              const newParentalControls = await handleFetchParentalControls({
-                setLoading,
-                setParentalControls,
-                setErrorMsg: setError,
-                translate,
-              });
-              const updatedTemplate = newParentalControls.templates.find(
-                (temp) => temp.id === template.id
-              );
-              if (updatedTemplate) {
-                setSelectedTemplate(updatedTemplate);
-              }
-            } catch (error) {
-              console.error(error);
-              setError(translate("addTimePeriodError"));
-            }
+            await handleAddTimePeriod({
+              template,
+              restrictionToEdit,
+              startTime,
+              endTime,
+              selectedDays,
+              setShowSchedulePeriodSelector,
+              setLoading,
+              setParentalControls,
+              setSelectedTemplate,
+              setError,
+              ontToken,
+              translate,
+            });
           }}
         />
-        <Button 
+        <Button
           text={translate("cancel")}
-          variant="neutral" 
+          variant="neutral"
           leftIcon
           icon="ban"
           onClickHandler={() => {
             setShowSchedulePeriodSelector(false);
-          }}  
+          }}
         />
       </View>
 

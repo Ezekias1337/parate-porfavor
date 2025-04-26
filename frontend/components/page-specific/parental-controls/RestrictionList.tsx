@@ -5,8 +5,7 @@ import { ScrollView, Text, View } from "react-native";
 import RestrictionDisplay from "./RestrictionDisplay";
 import Button from "@/components/Button";
 // Functions, Helpers, Utils, and Hooks
-import removeTimePeriodFromParentalControlsTemplate from "@/functions/network/parental-controls/removeTimePeriodFromParentalControlsTemplate";
-import handleFetchParentalControls from "@/functions/page-specific/parental-controls/handleFetchParentalControls";
+import handleRemoveTimePeriod from "@/functions/page-specific/parental-controls/handleRemoveTimePeriod";
 // Types
 import {
   Restriction,
@@ -28,7 +27,9 @@ interface RestrictionListProps {
   >;
   setErrorMsg: React.Dispatch<React.SetStateAction<string | null>>;
   translate: (key: string) => string;
-  setRestrictionToEdit: React.Dispatch<React.SetStateAction<Restriction | null>>;
+  setRestrictionToEdit: React.Dispatch<
+    React.SetStateAction<Restriction | null>
+  >;
   setShowSchedulePeriodSelector: React.Dispatch<React.SetStateAction<boolean>>;
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -49,7 +50,6 @@ const RestrictionList: React.FC<RestrictionListProps> = ({
 
   return (
     <ScrollView>
-      
       <View style={parentalControlsStyles.buttonContainer}>
         <Button
           text={translate("addNewSchedule")}
@@ -61,18 +61,18 @@ const RestrictionList: React.FC<RestrictionListProps> = ({
             setShowSchedulePeriodSelector(true);
           }}
         />
-        <Button 
+        <Button
           text={translate("cancel")}
-          variant="neutral" 
+          variant="neutral"
           leftIcon
           icon="ban"
           onClickHandler={() => {
             setSelectedTemplate(null);
             setModalVisible(false);
-          }}  
+          }}
         />
       </View>
-      
+
       {template.restrictions.map((restriction, index) => (
         <View key={index} style={cardStyles.card}>
           <Text
@@ -101,34 +101,17 @@ const RestrictionList: React.FC<RestrictionListProps> = ({
               icon="trash"
               loading={deleteLoading}
               onClickHandler={async () => {
-                try {
-                  setDeleteLoading(true);
-                  await removeTimePeriodFromParentalControlsTemplate({
-                    templateNumber: template.id,
-                    durationNumber: restriction.id,
-                    ontToken: ontToken,
-                  });
-                  setDeleteLoading(false);
-                  const newParentalControlsData = await handleFetchParentalControls({
-                    setLoading,
-                    setParentalControls,
-                    setErrorMsg,
-                    translate,
-                  });
-                  const newTemplate = newParentalControlsData.templates.find(
-                    (t) => t.id === template.id
-                  )
-                  if (newTemplate) {
-                    setSelectedTemplate(newTemplate);
-                  }
-                  
-                  /* 
-                    ! Need to reset selectedTemplate variable so modal reflects deleted restriction
-                  */
-                } catch (error) {
-                  setErrorMsg(translate("serverError"));
-                  setDeleteLoading(false);
-                }
+                await handleRemoveTimePeriod({
+                  template,
+                  restriction,
+                  setSelectedTemplate,
+                  setLoading,
+                  setParentalControls,
+                  setErrorMsg,
+                  translate,
+                  setDeleteLoading,
+                  ontToken,
+                });
               }}
             />
           </View>
