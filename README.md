@@ -68,7 +68,7 @@ Make sure to replace `"your_super_secret_key"` with your own secret key to ensur
 The backend `.env` file contains several environment variables to configure the server, including the server port, modem URL, and user-agent string for API requests. Here's an example:
 
 BACKEND_PORT="6000"
-ORIGIN_URL_BASE="[http://192.168.1.62:6000,http://192.168.1.82:6000,http://192.168.1.93](http://192.168.1.62,http://192.168.1.82,http://192.168.1.93):6000"
+ORIGIN_URL_BASE="[http://192.168.1.62:6000,http://192.168.1.82:6000](http://192.168.1.62,http://192.168.1.82,http://192.168.1.93)"
 MODEM_URL_BASE="[http://192.168.1.254](http://192.168.1.254)"
 IS_DEV="TRUE"
 USER_AGENT="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:132.0) Gecko/20100101 Firefox/132.0"
@@ -85,8 +85,10 @@ USER_AGENT="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:132.0) Gecko/20100101 Fir
 
 When the app is first launched, it will prompt you to enter two URLs:
 
-1. **Server URL**: This is the URL where the backend is running. For example: http://192.168.1.62:6000 || This URL will be used by the frontend to communicate with the backend server.
-2. **Modem URL**: This is the local IP address of your Huawei modem. For example: http://192.168.1.254 || This URL is used to interact with the modem for tasks like mac blacklist, parental controls, and hardware utilization monitoring.
+1. **Server URL**: This is the URL where the backend is running. For example: http://192.168.1.62:6000
+   This URL will be used by the frontend to communicate with the backend server.
+2. **Modem URL**: This is the local IP address of your Huawei modem. For example: http://192.168.1.254
+   This URL is used to interact with the modem for tasks like mac blacklist, parental controls, and hardware utilization monitoring.
 
 **Important**:
 
@@ -128,31 +130,53 @@ The hardest part of this project was **reverse engineering the API endpoints** o
 
 ## Development
 
+
 ### Code Structure
 
-The project is organized as follows:
+#### `/frontend`
 
-/frontend               # React Native (Expo) app for managing the modem
-     /components          # Reusable UI components
-     /constants           # Constants used throughout the app
-     /functions           # Business logic and helper functions
-     /helpers             # Utility functions to assist with various tasks
-     /hooks               # Custom React hooks
-     /navigation          # Navigation configuration (React Navigation)
-     /screens             # Screens in the app (Login, Dashboard, etc.)
-     /styles              # Global styles
-     /utils               # General utility functions (e.g., API calls)
+*React Native (Expo) app for managing the modem.*
 
-/server                 # Express backend for communicating with the modem
-     /src
-     /controllers     # Functions handling the business logic for the routes
-     /routes          # API routes for modem actions
-     /session         # Session handling and authentication logic
-     /util            # Utility functions for API calls and general server tasks
-     index.ts         # Main entry point for the server
+```
+/frontend
+    /components         # Reusable UI components
+    /constants          # Constants used throughout the app
+    /functions          # Business logic and helper functions
+    /helpers            # Utility functions to assist with various tasks
+    /hooks              # Custom React hooks
+    /navigation         # Navigation configuration (React Navigation)
+    /screens            # Screens in the app (Login, Dashboard, etc.)
+    /styles             # Global styles
+    /utils              # General utility functions (e.g., API calls)
+```
 
-/shared                 # Shared resources across frontend and backend
-     /types               # TypeScript types shared between the frontend and backend
+---
+
+#### `/server`
+
+*Express backend responsible for communicating with the modem.*
+
+```
+/server
+    /src
+        /controllers    # Functions handling business logic for the routes
+        /routes         # API routes for modem actions
+        /session        # Session handling and authentication logic
+        /util           # Utility functions for API calls and general server tasks
+        index.ts        # Main entry point for the server
+```
+
+---
+
+#### `/shared`
+
+*Shared TypeScript types between the frontend and backend.*
+
+```
+/shared
+    /types              # TypeScript types shared across the project
+```
+
 
 ### Explanation:
 
