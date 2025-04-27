@@ -220,7 +220,7 @@ The hardest part of this project was **reverse engineering the API endpoints** o
 
 - **Reverse Engineering**: The lack of official API documentation for the Huawei modem meant that most of the work involved reverse engineering the API. This was the most difficult part of the project as I had to use network analysis tools such as Wireshark to figure out how to interact with the modem’s endpoints.
 - **Parsing Data**: The modem does not return standard JSON responses. Instead, it embeds important data inside JavaScript variables within HTML documents. Parsing this data into structured, usable JSON for the frontend was extremely challenging and required writing complex extraction logic to reliably isolate and interpret the needed information.
-- **Handling Modem Specificities**: The modem's interface was not well-documented, so we had to build custom logic to handle various tasks like managing devices, retrieving utilization stats, and sending reboot commands.
+- **Handling Modem Specificities**: The modem’s behavior was not consistent across different endpoints, and there was no formal documentation on error handling, session management, or data formats. I had to build custom logic to manage devices, retrieve hardware utilization stats, apply parental control templates, and send reboot commands, all while accounting for quirks specific to the modem’s internal system.
 
 ## Contributing
 
