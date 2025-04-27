@@ -13,6 +13,7 @@ import OntToken from "../../../../../shared/types/OntToken";
 import Alert from "@/components/Alert";
 // Functions, Helpers, Utils, and Hooks
 import renderParentalControlsTemplateCards from "./renderParentalControlsTemplateCards";
+import checkForLackOfRestrictions from "../../../../helpers/checkForLackOfRestrictions";
 // CSS
 import utilityStyles from "@/styles/utilities";
 
@@ -67,7 +68,7 @@ const renderModal = ({
 
   return (
     <Modal modalVisible={modalVisible} setModalVisible={setModalVisible}>
-      {parentalControls.templates.length === 0 && (
+      {checkForLackOfRestrictions(parentalControls) && (
         <View style={[utilityStyles.fullFlex, utilityStyles.fullHeight]}>
           <Alert
             variant="warning"

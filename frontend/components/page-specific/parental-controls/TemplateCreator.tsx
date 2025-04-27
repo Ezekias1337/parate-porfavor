@@ -1,5 +1,5 @@
 // Library Imports
-import { View, Text, TextInput } from "react-native";
+import { View, Text, TextInput, ScrollView } from "react-native";
 // Components
 import Alert from "@/components/Alert";
 import Button from "@/components/Button";
@@ -14,6 +14,7 @@ import {
 import OntToken from "../../../../shared/types/OntToken";
 // CSS
 import parentalControlsStyles from "../../../styles/page-specific/parentalControls";
+import utilityStyles from "@/styles/utilities";
 import { inputFieldStyles } from "../../../styles/component-specific/input-fields";
 import { colors } from "../../../styles/variables";
 
@@ -49,29 +50,42 @@ const TemplateCreator: React.FC<TemplateCreatorProps> = ({
   if (!parentalControls) {
     return <></>;
   }
-  
+
   if (parentalControls.templates.length >= 8) {
     <Alert
       bodyText={translate("maxTemplates")}
       variant="error"
       icon="info-circle"
-    />
+    />;
   }
 
   return (
-    <View style={[parentalControlsStyles.modalContainer]}>
-      <Text style={[parentalControlsStyles.title, { marginBottom: 40 }]}>
+    <ScrollView
+      contentContainerStyle={[
+        parentalControlsStyles.modalContainer,
+        
+        { flexGrow: 1 },
+      ]}
+    >
+      <Text style={[parentalControlsStyles.title, utilityStyles.marginBottom40]}>
         {translate("createScheduledRestriction")}
       </Text>
 
-      <Alert
-        bodyText={translate("createScheduledRestrictionAlert")}
-        variant="info"
-        icon="info-circle"
-      />
+      <View style={utilityStyles.marginBottom20}>
+        <Alert
+          bodyText={translate("createScheduledRestrictionAlert")}
+          variant="info"
+          icon="info-circle"
+        />
+      </View>
 
       <View style={inputFieldStyles.formRow}>
-        <View style={[inputFieldStyles.formLabelContainer, { marginTop: 40 }]}>
+        <View
+          style={[
+            inputFieldStyles.formLabelContainer,
+            utilityStyles.marginTop20,
+          ]}
+        >
           <Text style={inputFieldStyles.formLabel}>
             {translate("restrictionName")}
           </Text>
@@ -86,45 +100,51 @@ const TemplateCreator: React.FC<TemplateCreatorProps> = ({
           id="username"
         />
       </View>
-
-      <Button
-        text={translate("saveChanges")}
-        variant="primary"
-        icon="floppy-o"
-        loading={modalLoading}
-        leftIcon
-        onClickHandler={async () => {
-          /* 
+      <View style={parentalControlsStyles.buttonContainer}>
+        <Button
+          text={translate("saveChanges")}
+          variant="primary"
+          icon="floppy-o"
+          loading={modalLoading}
+          leftIcon
+          onClickHandler={async () => {
+            /* 
             ! after saving need to refresh the parental controls data
             ! and set the selected template to the one that was created  
           */
-          try {
-            setModalLoading(true);
-            await createParentalControlsTemplate(templateName, 0, 0, ontToken);
-            const tempParentalControls = await handleFetchParentalControls({
-              setLoading,
-              setParentalControls,
-              setErrorMsg,
-              translate,
-            });
-            
-            let newlyCreatedTemplate: Template | null = null;
-            for (const template of tempParentalControls.templates) {
-              if(template.name === templateName) {
-                newlyCreatedTemplate = template;
-                break;
+            try {
+              setModalLoading(true);
+              await createParentalControlsTemplate(
+                templateName,
+                0,
+                0,
+                ontToken
+              );
+              const tempParentalControls = await handleFetchParentalControls({
+                setLoading,
+                setParentalControls,
+                setErrorMsg,
+                translate,
+              });
+
+              let newlyCreatedTemplate: Template | null = null;
+              for (const template of tempParentalControls.templates) {
+                if (template.name === templateName) {
+                  newlyCreatedTemplate = template;
+                  break;
+                }
               }
+
+              setSelectedTemplate(newlyCreatedTemplate);
+              setModalLoading(false);
+            } catch (error) {
+              setModalLoading(false);
+              setErrorMsg(translate("serverError"));
             }
-            
-            setSelectedTemplate(newlyCreatedTemplate);
-            setModalLoading(false);
-          } catch (error) {
-            setModalLoading(false);
-            setErrorMsg(translate("serverError"));
-          }
-        }}
-      />
-    </View>
+          }}
+        />
+      </View>
+    </ScrollView>
   );
 };
 

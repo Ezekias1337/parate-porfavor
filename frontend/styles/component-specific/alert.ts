@@ -7,7 +7,7 @@ import { colors, borderRadius, fontSizes } from "../variables";
 export const alertStyles = StyleSheet.create({
   alertWrapper: {
     paddingHorizontal: 20,
-    width: "100%",
+    maxWidth: "100%",
     display: "flex",
     justifyContent: "center",
   },

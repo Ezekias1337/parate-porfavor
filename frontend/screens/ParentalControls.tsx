@@ -86,6 +86,7 @@ const ParentalControls: React.FC = () => {
           paddingRight: screenWidth < 500 ? 10 : screenWidth * 0.1,
         },
       ]}
+      automaticallyAdjustKeyboardInsets={true}
     >
       <Text style={parentalControlsStyles.title}>
         {translate("parentalControls")}

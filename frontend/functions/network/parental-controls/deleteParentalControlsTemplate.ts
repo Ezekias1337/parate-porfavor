@@ -36,7 +36,7 @@ const deleteParentalControlsTemplate = async (
       body: JSON.stringify(templateToDelete),
     });
 
-    if (!response.ok) {
+    if (response.status !== 404) {
       throw new Error(
         `Failed to delete parental controls template, status: ${response.status}`
       );

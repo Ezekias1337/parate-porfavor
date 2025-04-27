@@ -95,7 +95,9 @@ const Devices: React.FC = () => {
   
   useEffect(() => {
     setFilteredDevices(devices);
+    setFilter("");
   }, [devices]);
+  
 
   return loading ? (
     <View style={[deviceStyles.loader]}>
@@ -110,6 +112,7 @@ const Devices: React.FC = () => {
           paddingRight: screenWidth < 500 ? 10 : screenWidth * 0.1,
         },
       ]}
+      automaticallyAdjustKeyboardInsets={true}
     >
       <Text style={deviceStyles.title}>{translate("devices")}</Text>
       {renderErrorMsg(errorMsg)}

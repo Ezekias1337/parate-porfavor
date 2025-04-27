@@ -9,6 +9,7 @@ export const modalStyles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "rgba(0,0,0,0.5)", // Dim background
+    height: "50%",
   },
 
   modalContents: {

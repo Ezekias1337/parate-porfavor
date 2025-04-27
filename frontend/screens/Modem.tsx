@@ -75,6 +75,7 @@ const Modem: React.FC = () => {
           paddingRight: screenWidth < 500 ? 10 : screenWidth * 0.1,
         },
       ]}
+      automaticallyAdjustKeyboardInsets={true}
     >
       <Text style={modemStyles.title}>{translate("modem")}</Text>
       {renderErrorMsg(errorMsg)}

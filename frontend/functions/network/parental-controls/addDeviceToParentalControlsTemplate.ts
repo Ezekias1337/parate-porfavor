@@ -39,7 +39,7 @@ const addDeviceToParentalControlsTemplate = async (
       body: JSON.stringify(infoOfDeviceToAdd),
     });
 
-    if (response.status === 404) {
+    if (response.ok) {
       return true
     } else {
       throw new Error(

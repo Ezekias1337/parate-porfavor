@@ -1,0 +1,5 @@
+Need to make modals have keyboard protected scrollview
+
+on template creator need to change keyboard input type to allow cologns
+
+On Create Scheduled restriction page the save button is floating out of the modal

@@ -136,7 +136,6 @@ const SchedulePeriodSelector: React.FC<SchedulePeriodSelectorProps> = ({
         <TextInput
           placeholder="00:00"
           value={startTime.time}
-          keyboardType="number-pad"
           onChangeText={(text) => {
             const newObj = { ...startTime };
             newObj.time = text;
@@ -157,7 +156,6 @@ const SchedulePeriodSelector: React.FC<SchedulePeriodSelectorProps> = ({
         <TextInput
           placeholder="00:00"
           value={endTime.time}
-          keyboardType="number-pad"
           onChangeText={(text) => {
             const newObj = { ...endTime };
             newObj.time = text;

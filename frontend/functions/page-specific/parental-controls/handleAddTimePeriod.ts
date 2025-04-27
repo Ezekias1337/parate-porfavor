@@ -65,7 +65,7 @@ const handleAddTimePeriod = async ({ template, restrictionToEdit, startTime, end
             parsedEndTime
         );
 
-        if (isTimeRangeIncorrect) {
+        if (isTimeRangeIncorrect || parsedStartTime === parsedEndTime) {
             setError(translate("incorrectTimeRange"));
             return;
         }

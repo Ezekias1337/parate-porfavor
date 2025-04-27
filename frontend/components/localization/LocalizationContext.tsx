@@ -73,7 +73,7 @@ export const LocalizationProvider: React.FC<{ children: React.ReactNode }> = ({
           ssid: "SSID",
           macAddress: "MAC Address",
           addDevice: "Add Device to Filter",
-          noParentalControlTemplates: "No parental control templates found.\n\n\nGo to the parental controls page to create one.",
+          noParentalControlTemplates: "No parental control templates found.\n\n\nGo to the parental controls page to create one.\n\n\nIf you have already created a template, close this window and refresh the page.",
           addToParentalControls: "Add Device to Parental Controls",
           failedToAddParentalControls:
             "Failed to add device to parental controls. Please try again.",
@@ -176,7 +176,7 @@ export const LocalizationProvider: React.FC<{ children: React.ReactNode }> = ({
           macAddress: "Dirección MAC",
           addDevice: "Agregar Dispositivo a Filtro",
           noParentalControlTemplates:
-            "No hay plantillas de controles parentales disponibles.\n\n\nVe a la sección de Controles Parentales para crear una.",
+            "No hay plantillas de controles parentales disponibles.\n\n\nVe a la sección de Controles Parentales para crear una.\n\n\nSí ya creaste una cierre esa dialogo y toca el botón para actualizar.", 
           addToParentalControls: "Agregar Dispositivo a Controles Parentales",
           failedToAddParentalControls:
             "No se pudo agregar el dispositivo a los controles parentales. Por favor, inténtelo de nuevo.",

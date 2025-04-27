@@ -1,6 +1,6 @@
 // Library Imports
 import React, { FC } from "react";
-import { Modal as RNModal, View, Text, Pressable } from "react-native";
+import { Modal as RNModal, View, Pressable, ScrollView } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 // CSS
 import { colors } from "../styles/variables";
@@ -26,7 +26,7 @@ const Modal: FC<ModalProps> = ({
       visible={modalVisible}
       onRequestClose={() => setModalVisible(false)}
     >
-      <View style={modalStyles.modalWrapper}>
+      <ScrollView contentContainerStyle={modalStyles.modalWrapper} automaticallyAdjustKeyboardInsets={true}>
         <View
           style={[
             modalStyles.modalContents,
@@ -41,7 +41,7 @@ const Modal: FC<ModalProps> = ({
           </Pressable>
           {children}
         </View>
-      </View>
+      </ScrollView>
     </RNModal>
   );
 };
