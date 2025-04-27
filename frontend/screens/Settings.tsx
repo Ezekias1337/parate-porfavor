@@ -63,59 +63,54 @@ const Settings: React.FC<SettingsProps> = ({
       <ActivityIndicator color={colors.primary500} size="large" />
     </View>
   ) : (
-    <View style={settingsStyles.wrapper}>
-      <Text
-        style={[
-          settingsStyles.title,
-          {
-            paddingLeft: screenWidth < 500 ? 10 : screenWidth * 0.1,
-            paddingRight: screenWidth < 500 ? 10 : screenWidth * 0.1,
-            justifyContent: "center",
-            alignSelf: "center",
-          },
-        ]}
-      >
-        {translate("settings")}
-      </Text>
+    <ScrollView
+      contentContainerStyle={[
+        settingsStyles.container,       
+      ]}
+      automaticallyAdjustKeyboardInsets={true}
+    >
+      <View style={settingsStyles.container}>
+        <Text style={settingsStyles.title}>{translate("settings")}</Text>
 
-      <ScrollView
-        contentContainerStyle={[
-          settingsStyles.container,
-          {
-            paddingLeft: screenWidth < 500 ? 10 : screenWidth * 0.1,
-            paddingRight: screenWidth < 500 ? 10 : screenWidth * 0.1,
-          },
-        ]}
-      >
-        {renderFirstLoadMsg({
-          isFirstLoad,
-          translate,
-        })}
-        {renderErrorMsg(errorMsg)}
-        {renderInputFields({
-          urlSettings,
-          setUrlSettings,
-          translate,
-        })}
-        {renderSubmitButton(
-          {
-            loading,
-            setLoading,
-            setErrorMsg,
-            urlSettings,
-            settingsSaved,
-            setSettingsSaved,
+        <View
+          style={[
+            settingsStyles.wrapper,
+            {
+              paddingLeft: screenWidth < 500 ? 10 : screenWidth * 0.1,
+              paddingRight: screenWidth < 500 ? 10 : screenWidth * 0.1,
+            },
+          ]}
+        >
+          {renderFirstLoadMsg({
             isFirstLoad,
-            setUrlIsSet,
-          },
-          translate
-        )}
-        {renderSettingsSavedMsg({
-          settingsSaved,
-          translate,
-        })}
-      </ScrollView>
-    </View>
+            translate,
+          })}
+          {renderErrorMsg(errorMsg)}
+          {renderInputFields({
+            urlSettings,
+            setUrlSettings,
+            translate,
+          })}
+          {renderSubmitButton(
+            {
+              loading,
+              setLoading,
+              setErrorMsg,
+              urlSettings,
+              settingsSaved,
+              setSettingsSaved,
+              isFirstLoad,
+              setUrlIsSet,
+            },
+            translate
+          )}
+          {renderSettingsSavedMsg({
+            settingsSaved,
+            translate,
+          })}
+        </View>
+      </View>
+    </ScrollView>
   );
 };
 

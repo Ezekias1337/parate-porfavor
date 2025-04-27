@@ -1,6 +1,6 @@
 // Library Imports
 import React, { useEffect, useState } from "react";
-import { View, Image, Dimensions } from "react-native";
+import { ScrollView, Image, Dimensions } from "react-native";
 // Functions, Helpers, Utils, and Hooks
 import loadCreds from "@/functions/page-specific/login/loadCreds";
 import renderErrorMsg from "@/functions/general/renderErrorMsg";
@@ -9,6 +9,7 @@ import renderSubmitButton from "@/functions/page-specific/login/render/renderSub
 // Components
 import { useAuth } from "../components/auth/authContext";
 import { useLocalization } from "../components/localization/LocalizationContext";
+import Button from "@/components/Button";
 // CSS
 import loginStyles from "../styles/page-specific/login";
 // Assets
@@ -36,14 +37,15 @@ const Login: React.FC = () => {
   }, []);
 
   return (
-    <View
-      style={[
+    <ScrollView 
+    contentContainerStyle={[
         loginStyles.container,
         {
           paddingLeft: screenWidth < 500 ? 10 : screenWidth * 0.1,
           paddingRight: screenWidth < 500 ? 10 : screenWidth * 0.1,
         },
       ]}
+      automaticallyAdjustKeyboardInsets={true}
     >
       <Image
         source={appIcon}
@@ -66,7 +68,8 @@ const Login: React.FC = () => {
         },
         translate
       )}
-    </View>
+      
+    </ScrollView>
   );
 };
 

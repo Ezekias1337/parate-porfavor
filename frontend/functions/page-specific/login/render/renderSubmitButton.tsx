@@ -18,9 +18,9 @@ import loginStyles from "@/styles/page-specific/login";
  * @param loginCredentials The login credentials
  * @param authenticate The function to authenticate the user
  * @returns {JSX.Element} The rendered login submit button
-*/
+ */
 
-interface RenderInputFieldsProps {
+interface RenderSubmitButtonProps {
   loading: boolean;
   setLoading: (loading: boolean) => void;
   errorMsg: string | null;
@@ -37,7 +37,7 @@ const renderSubmitButton = (
     setErrorMsg,
     loginCredentials,
     authenticate,
-  }: RenderInputFieldsProps,
+  }: RenderSubmitButtonProps,
   translate: (key: string) => string
 ) => {
   return (

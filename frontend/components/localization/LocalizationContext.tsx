@@ -69,6 +69,8 @@ export const LocalizationProvider: React.FC<{ children: React.ReactNode }> = ({
           blacklist: "Blacklist",
           whitelist: "Whitelist",
           deviceName: "Device Name",
+          ipAddress: "IP Address",
+          ssid: "SSID",
           macAddress: "MAC Address",
           addDevice: "Add Device to Filter",
           addToParentalControls: "Add Device to Parental Controls",
@@ -125,6 +127,7 @@ export const LocalizationProvider: React.FC<{ children: React.ReactNode }> = ({
             "Your start time must be before your end time and your end time must be after your start time.",
           tooManySchedules:
             "There is a maximum of 4 scheduled restrictions that can be added to each template.",
+          deleteCache: "Delete Cache",
         },
         es: {
           welcome: "Bienvenido",
@@ -163,6 +166,8 @@ export const LocalizationProvider: React.FC<{ children: React.ReactNode }> = ({
           blacklist: "Lista Negra",
           whitelist: "Lista Blanca",
           deviceName: "Nombre del Dispositivo",
+          ipAddress: "Dirección IP",
+          ssid: "SSID",
           macAddress: "Dirección MAC",
           addDevice: "Agregar Dispositivo a Filtro",
           addToParentalControls: "Agregar Dispositivo a Controles Parentales",
@@ -219,6 +224,7 @@ export const LocalizationProvider: React.FC<{ children: React.ReactNode }> = ({
           incorrectTimeRange:
             "La hora de inicio debe ser menor que la hora de fin y la hora de fin debe ser mayor que la hora de inicio",
           tooManySchedules: "Hay un máximo de 4 horarios permitidos por cada restricción programada",
+          deleteCache: "Borrar Cache",
         },
       };
 

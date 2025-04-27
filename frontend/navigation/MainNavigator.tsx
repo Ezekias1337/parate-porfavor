@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { loadEncrypted } from "../utils/secure-storage/secureStorage"; // adjust if needed
 import { useAuth } from "../components/auth/authContext";
 // Components
+import AuthTabs from "./AuthTabs";
 import BottomTabs from "./BottomTabs";
 // Screens
 import Login from "../screens/Login";
@@ -33,7 +34,6 @@ const MainNavigator = () => {
   }, []);
 
   if (urlIsSet === null) {
-    // Optional: render a loading indicator here
     return null;
   }
   
@@ -42,7 +42,7 @@ const MainNavigator = () => {
   }
   
   if (!isAuthenticated) {
-    return <Login />;
+    return <AuthTabs />;
   }
   
   

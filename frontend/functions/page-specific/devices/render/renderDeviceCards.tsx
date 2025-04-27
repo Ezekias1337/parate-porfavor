@@ -8,9 +8,7 @@ import renderDeviceCardButton2 from "./renderDeviceCardButton2";
 import Card from "@/components/Card";
 // Types
 import { Device } from "../../../../../shared/types/Device";
-import {
-  ParentalControlsData,
-} from "../../../../../shared/types/ParentalControls";
+import { ParentalControlsData } from "../../../../../shared/types/ParentalControls";
 import { ButtonProps } from "@/components/Button";
 import OntToken from "../../../../../shared/types/OntToken";
 // CSS
@@ -29,7 +27,7 @@ import { BadgeProps } from "@/components/Badge";
  * @param {React.Dispatch<React.SetStateAction<OntToken>>} setOntToken - The function to set the ONT token state.
  * @param {Function} translate - The function to translate the text.
  * @returns {JSX.Element} The rendered device cards.
-*/
+ */
 
 interface ListOfStateSetters {
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
@@ -154,7 +152,11 @@ const renderDeviceCards = (
           <Card
             key={device.macAddr + index}
             headerText={headerText}
-            bodyText={device.macAddr}
+            bodyText={`${translate("macAddress")}: ${device.macAddr}${
+              device?.ipAddress
+                ? `\n${translate("ipAddress")}: ${device.ipAddress}`
+                : ""
+            }${device?.ssid ? `\n${translate("ssid")}: ${device.ssid}` : ""}`}
             cardIcon={device.connectionType === "WIFI" ? "wifi" : "desktop"}
             buttons={buttons}
             badges={arrayOfBadges}

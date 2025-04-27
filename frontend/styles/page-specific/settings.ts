@@ -5,20 +5,22 @@ import { colors, fontSizes } from "../variables";
 
 const settingsStyles = StyleSheet.create({
   wrapper: {
-    backgroundColor: colors.neutral800,
-    height: "100%",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 20,
     width: "100%",
+    maxWidth: "100%",
   },
   
   container: {
-    flexDirection: "row",
-    flexWrap: "wrap",
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: colors.neutral800,
     width: "100%",
-    height: "100%",
-    paddingTop: 40,
-    paddingBottom: 40,
+    minHeight: "100%",
   },
   title: {
     fontSize: fontSizes.header1, color: colors.primary200,
@@ -34,6 +36,7 @@ const settingsStyles = StyleSheet.create({
   },
   buttonContainer: {
     width: "100%",
+    minWidth: "10%",
   },
   loader: {
     flex: 1,

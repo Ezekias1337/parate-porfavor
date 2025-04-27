@@ -1,3 +1,4 @@
+// Library Import
 import { ExpoConfig, ConfigContext } from "@expo/config";
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
@@ -7,6 +8,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   version: "1.0.0",
   orientation: "portrait",
   icon: "./assets/images/icon.png",
+  assetBundlePatterns: ["assets/images/*"],
   scheme: "myapp",
   userInterfaceStyle: "automatic",
   splash: {
@@ -23,7 +25,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       foregroundImage: "./assets/images/icon.png",
       backgroundColor: "#040A15"
     },
-    permissions: ["INTERNET", "STORAGE"]
+    permissions: ["INTERNET", "android.permission.INTERNET", "STORAGE"]
   },
   web: {
     bundler: "metro",
@@ -37,15 +39,17 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     [
       "expo-build-properties",
       {
-        "android": {
-          "compileSdkVersion": 35,
-          "targetSdkVersion": 34,
-          "buildToolsVersion": "35.0.0",
-          "kotlinVersion": "1.9.25"
-        }
-      }
-    ]
+        android: {
+          compileSdkVersion: 35,
+          targetSdkVersion: 34,
+          buildToolsVersion: "35.0.0",
+          kotlinVersion: "1.9.25",
+          usesCleartextTraffic: true
+        },
+      },
+    ],
   ],
+
   experiments: {
     typedRoutes: true
   },

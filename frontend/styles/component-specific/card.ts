@@ -2,7 +2,7 @@
 import { StyleSheet } from "react-native";
 
 // CSS
-import { colors, borderRadius, borderWidth } from "../variables";
+import { colors, borderRadius, borderWidth, fontSizes } from "../variables";
 
 const cardStyles = StyleSheet.create({
   card: {
@@ -17,9 +17,8 @@ const cardStyles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 8,
     elevation: 5,
-    //width: 300,
+    width: "100%",
     maxWidth: 400,
-    //height: 400,
 
   },
   imageOnlyCard: {
@@ -33,7 +32,7 @@ const cardStyles = StyleSheet.create({
     borderRadius: 8,
   },
   headerText: {
-    fontSize: 18,
+    fontSize: fontSizes.header3,
     fontWeight: "bold",
     marginVertical: 10,
     color: colors.primary500,

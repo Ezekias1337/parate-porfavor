@@ -1,7 +1,5 @@
 // Library Imports
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import CryptoJS from "crypto-js";
-import * as expoRandom from "expo-random";
 import Constants from "expo-constants";
 // Functions, Helpers, Utils, and Hooks
 import encrypt from "./encrypt";
