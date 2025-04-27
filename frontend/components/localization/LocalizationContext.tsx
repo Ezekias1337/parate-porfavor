@@ -128,6 +128,10 @@ export const LocalizationProvider: React.FC<{ children: React.ReactNode }> = ({
           tooManySchedules:
             "There is a maximum of 4 scheduled restrictions that can be added to each template.",
           deleteCache: "Delete Cache",
+          search: "Search",
+          noResults: "No results",
+          searchExplanation:
+            "Search for devices by name, IP address, SSID, or MAC address.",
         },
         es: {
           welcome: "Bienvenido",
@@ -223,8 +227,13 @@ export const LocalizationProvider: React.FC<{ children: React.ReactNode }> = ({
           needToSelectDays: "Debe seleccionar al menos un día",
           incorrectTimeRange:
             "La hora de inicio debe ser menor que la hora de fin y la hora de fin debe ser mayor que la hora de inicio",
-          tooManySchedules: "Hay un máximo de 4 horarios permitidos por cada restricción programada",
+          tooManySchedules:
+            "Hay un máximo de 4 horarios permitidos por cada restricción programada",
           deleteCache: "Borrar Cache",
+          search: "Buscar",
+          noResults: "No se encontraron resultados",
+          searchExplanation:
+            "Ingrese el nombre del dispositivo, la dirección MAC, el SSID o la dirección IP para a buscar",
         },
       };
 

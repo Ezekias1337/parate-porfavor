@@ -15,9 +15,11 @@ import renderButtons from "@/functions/page-specific/devices/render/renderButton
 import renderDeviceCards from "@/functions/page-specific/devices/render/renderDeviceCards";
 import renderModal from "@/functions/page-specific/devices/render/renderModal";
 import useRefreshToken from "@/hooks/useRefreshToken";
+import filterDevices from "@/functions/page-specific/devices/filterDevices";
 // Components
 import { useAuth } from "@/components/auth/authContext";
 import { useLocalization } from "../components/localization/LocalizationContext";
+import FilterInput from "@/components/page-specific/devices/FilterInput";
 // Types
 import { Device } from "../../shared/types/Device";
 import {
@@ -46,6 +48,7 @@ const Devices: React.FC = () => {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [ontToken, setOntToken] = useState<OntToken>(null);
   const [devices, setDevices] = useState<Device[]>([]);
+  const [filteredDevices, setFilteredDevices] = useState<Device[]>([]);
   const [selectedTemplate, setSelectedTemplate] = useState<Template | null>(
     null
   );
@@ -56,6 +59,7 @@ const Devices: React.FC = () => {
     });
   const [modalVisible, setModalVisible] = useState(false);
   const [modalDevice, setModalDevice] = useState<Device | null>(null);
+  const [filter, setFilter] = useState<string>("");
 
   useEffect(() => {
     fetchDevicesAndParentalControls(
@@ -80,7 +84,19 @@ const Devices: React.FC = () => {
       setSelectedTemplate(null);
     }
   }, [modalVisible]);
+
+  useEffect(() => {
+    filterDevices({
+      devices,
+      setFilteredDevices,
+      filter,
+    });
+  }, [devices, filter]);
   
+  useEffect(() => {
+    setFilteredDevices(devices);
+  }, [devices]);
+
   return loading ? (
     <View style={[deviceStyles.loader]}>
       <ActivityIndicator color={colors.primary500} size="large" />
@@ -106,9 +122,15 @@ const Devices: React.FC = () => {
         },
         translate
       )}
+      <FilterInput
+        filter={filter}
+        setFilter={setFilter}
+        translate={translate}
+      />
+
       {renderDeviceCards(
         ontToken,
-        devices,
+        filteredDevices,
         {
           setModalVisible,
           setDevices,
