@@ -9,11 +9,10 @@ import renderSubmitButton from "@/functions/page-specific/login/render/renderSub
 // Components
 import { useAuth } from "../components/auth/authContext";
 import { useLocalization } from "../components/localization/LocalizationContext";
-import Button from "@/components/Button";
 // CSS
 import loginStyles from "../styles/page-specific/login";
 // Assets
-const appIcon = require("../assets/images/icon.png");
+const appLogo = require("../assets/images/splash.png");
 
 export interface LoginCredentials {
   username: string;
@@ -48,7 +47,7 @@ const Login: React.FC = () => {
       automaticallyAdjustKeyboardInsets={true}
     >
       <Image
-        source={appIcon}
+        source={appLogo}
         style={{
           width: screenWidth < 500 ? screenWidth * 0.75 : screenWidth * 0.2,
           height: screenWidth < 500 ? screenWidth * 0.75 : screenWidth * 0.2,
