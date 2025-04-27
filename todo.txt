@@ -1,0 +1,3 @@
+On devices page if there are no templates then show message in the modal
+
+And make Devices page refetch when templates change

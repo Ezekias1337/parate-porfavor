@@ -155,6 +155,7 @@ const Devices: React.FC = () => {
         setLoading,
         setParentalControls,
         setDevices,
+        translate,
       })}
     </ScrollView>
   );
