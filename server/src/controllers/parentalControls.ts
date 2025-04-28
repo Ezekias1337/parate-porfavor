@@ -91,9 +91,9 @@ export const addDeviceToParentalControls: RequestHandler = async (req, res, next
         let ontToken: OntToken = req.body.ontToken;
         ontToken = await fetchOntTokenSourceHandler(ontToken, cookies, MODEM_URL_BASE);
 
-        const url = `${process.env.MODEM_URL_BASE}/html/bbsp/parentalctrl/add.cgi?x=InternetGatewayDevice.X_HW_Security.ParentalCtrl.MAC&RequestFile=html/bbsp/parentalctrl/parentalctrlmac.asp`;
+        const url = `${MODEM_URL_BASE}/html/bbsp/parentalctrl/add.cgi?x=InternetGatewayDevice.X_HW_Security.ParentalCtrl.MAC&RequestFile=html/bbsp/parentalctrl/parentalctrlmac.asp`;
         const queryString = `x.MACAddress=${deviceMac}&x.Description=${deviceDescription}&x.TemplateInst=${templateInst}&x.X_HW_Token=${ontToken}`;
-
+    
         await axios.post(url, queryString, {
             headers: {
                 "User-Agent": USER_AGENT,
@@ -104,8 +104,8 @@ export const addDeviceToParentalControls: RequestHandler = async (req, res, next
                 "Priority": "u=4",
                 "Pragma": "no-cache",
                 "Cache-Control": "no-cache",
-                "Referer": `${process.env.MODEM_URL_BASE}/html/bbsp/parentalctrl/parentalctrlmac.asp`,
-                "Origin": `${process.env.MODEM_URL_BASE}`,
+                "Referer": `${MODEM_URL_BASE}/html/bbsp/parentalctrl/parentalctrlmac.asp`,
+                "Origin": `${MODEM_URL_BASE}`,
                 "Cookie": cookies,
             },
         });

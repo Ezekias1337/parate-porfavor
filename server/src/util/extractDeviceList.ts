@@ -6,12 +6,12 @@ import { Device } from "../../../shared/types/Device";
  * @param {string} htmlContent - The raw HTML/ASP file content to be parsed.
  * @param {boolean} logList - Optional flag to log the extracted device list.
  * @returns {Device[] | null} - The extracted device list or null if not found.
-*/
+ */
 
 const extractDeviceList = (htmlContent: string, logList?: boolean): Device[] | null => {
     const deviceRegex = /new USERDeviceNew\("(.*?)","(.*?)","(.*?)","(.*?)","(.*?)","(.*?)","(.*?)","(.*?)","(.*?)","(.*?)","(.*?)","(.*?)","(.*?)","(.*?)","(.*?)","(.*?)","(.*?)"\)/g;
-    let match;
     const deviceList: Device[] = [];
+    let match;
 
     try {
         while ((match = deviceRegex.exec(htmlContent)) !== null) {
@@ -27,23 +27,34 @@ const extractDeviceList = (htmlContent: string, logList?: boolean): Device[] | n
                 parentalControlRestrictionApplied: false
             });
         }
-        
-        const deDupedArray = [...new Set(deviceList)];
-        const onlineDevices = deDupedArray.filter(device => device.onlineStatus === "Online");
 
-        const deviceListSortedByConnectionType = onlineDevices.sort((a, b) => {
-            if (a.connectionType === "ETH" && b.connectionType === "WIFI") {
+        // Remove duplicate entries based on macAddr
+        const uniqueDevices = Array.from(
+            new Map(deviceList.map(device => [device.macAddr, device])).values()
+        );
+
+        // Sort devices: Online first, then Offline
+        const sortedDevices = uniqueDevices.sort((a, b) => {
+            if (a.onlineStatus === "Online" && b.onlineStatus === "Offline") {
                 return -1;
-            } else if (a.connectionType === "WIFI" && b.connectionType === "ETH") {
+            } else if (a.onlineStatus === "Offline" && b.onlineStatus === "Online") {
                 return 1;
+            } else {
+                // If both have the same status, prefer ETH over WIFI
+                if (a.connectionType === "ETH" && b.connectionType === "WIFI") {
+                    return -1;
+                } else if (a.connectionType === "WIFI" && b.connectionType === "ETH") {
+                    return 1;
+                }
+                return 0;
             }
-            return 0;
-        })
+        });
 
         if (logList) {
-            console.log(`Device list extracted: ${JSON.stringify(deviceListSortedByConnectionType)}`);
+            console.log(`Device list extracted: ${JSON.stringify(sortedDevices, null, 2)}`);
         }
-        return deviceListSortedByConnectionType;
+
+        return sortedDevices;
     } catch (error) {
         console.error('Error parsing the HTML content:', error);
         return null;
