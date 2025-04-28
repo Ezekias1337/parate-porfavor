@@ -6,47 +6,67 @@
 
 const http = require("http");
 const httpProxy = require("http-proxy");
-const proxy = httpProxy.createProxyServer({});
+const net = require("net");
 
-const URL = "your_url_here";
+/* 
+    ! Make sure to npm install http-proxy on the proxy server 
+*/
+
+// === Config ===
+const URL = "http://192.168.1.254";
+const MODEM_IP = "192.168.1.254";
 const PORT = 3000;
 
-const startServer = () => {
-  const server = http.createServer((req, res) => {
-    proxy.web(req, res, { target: URL });
+// === Create Proxy Server ===
+const proxy = httpProxy.createProxyServer({});
+
+// === Modem Health Check (TCP ping) ===
+const checkModemHealth = () => {
+  const socket = new net.Socket();
+  const timeout = 3000; // 3 seconds timeout
+
+  socket.setTimeout(timeout);
+
+  socket.on("connect", () => {
+    console.log("[Modem] Modem is reachable.");
+    socket.destroy();
   });
 
-  server.listen(PORT, () => {
-    console.log(`Proxy running on port ${PORT}`);
+  socket.on("timeout", () => {
+    console.log("[Modem] Modem health check timeout.");
+    socket.destroy();
   });
 
-  server.on("error", (err) => {
-    console.log("Error starting server:", err);
-    console.log("Retrying server start in 1 minute...");
-    // Retry after 1 minute (60000 ms)
-    setTimeout(startServer, 60000);
+  socket.on("error", (err) => {
+    console.log("[Modem] Modem health check error:", err.message);
+    socket.destroy();
   });
+
+  socket.connect(80, MODEM_IP);
 };
 
-const updateDuckDNS = () => {
-  const token = "your_token_here"; // Replace with your DuckDNS token
-  const domain = "your_domain_here";
-  const url = `https://www.duckdns.org/update?domains=${domain}&token=${token}&ip=`;
+// === Create and Start HTTP Server ===
+const server = http.createServer((req, res) => {
+  proxy.web(req, res, { target: URL }, (err) => {
+    console.error("[Proxy] Proxy error:", err.message);
+    res.writeHead(502, { "Content-Type": "text/plain" });
+    res.end("Bad gateway: Unable to reach modem.");
+  });
+});
 
-  https
-    .get(url, (response) => {
-      let data = "";
-      response.on("data", (chunk) => {
-        data += chunk;
-      });
-      response.on("end", () => {
-        console.log(`DuckDNS update response: ${data}`);
-      });
-    })
-    .on("error", (err) => {
-      console.log("Error updating DuckDNS:", err);
-    });
-};
+server.listen(PORT, () => {
+  console.log(`[Server] Proxy running on port ${PORT}`);
+});
 
-startServer();
-setInterval(updateDuckDNS, 600000);
+// === Handle global proxy errors too ===
+proxy.on("error", (err, req, res) => {
+  console.error("[Proxy] Global proxy error:", err.message);
+
+  if (res && !res.headersSent) {
+    res.writeHead(502, { "Content-Type": "text/plain" });
+    res.end("Proxy error");
+  }
+});
+
+// === Kick Everything Off ===
+setInterval(checkModemHealth, 60000); // Every 1 minute
