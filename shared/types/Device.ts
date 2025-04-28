@@ -11,5 +11,6 @@ export type Device = {
     description?: string;
     templateId?: number;
     macFiltered?: boolean;
+    macIndex?: number;
     parentalControlRestrictionApplied?: boolean;
 };

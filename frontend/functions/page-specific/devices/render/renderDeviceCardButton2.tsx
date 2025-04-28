@@ -54,14 +54,6 @@ const renderDeviceCardButton2 = ({
   setErrorMsg,
   index,
 }: renderButtonArguments): ButtonProps | null => {
-  /* 
-    ? - if device is currently restricted, show option to modify
-    ? - if modify option is selected user is presented with option to:
-    ?     remove the restriction, or change the template, or change the device description
-    ?     (Changing the device description would require first removing the device and subsequently
-    ?     re-adding, this is a low priority feature)
-  */
-
   if (device.macFiltered !== undefined && device.macFiltered === true) {
     return null;
   } else if (
@@ -75,27 +67,12 @@ const renderDeviceCardButton2 = ({
 
       onClickHandler: async () => {
         try {
-          let macIndex = 0;
-
-          for (const template of parentalControls.templates) {
-            if (!template.devices) {
-              continue;
-            }
-
-            for (const [index, tempDevice] of template.devices.entries()) {
-              if (tempDevice.macAddr === device.macAddr) {
-                macIndex = index + 1;
-                break;
-              }
-            }
-          }
-
-          if (macIndex === 0) {
-            throw new Error("Device not found in parental controls templates");
+          if(device?.macIndex === undefined) {
+            throw new Error("macIndex is undefined");
           }
 
           const ontToken = await getOntToken(null);
-          await removeDeviceFromParentalControlsTemplate(macIndex, ontToken);
+          await removeDeviceFromParentalControlsTemplate(device.macIndex, ontToken);
 
           await fetchDevicesAndParentalControls(
             {

@@ -11,7 +11,7 @@ import { Device } from "../../../shared/types/Device";
 */
 
 const extractParentalControlsData = (htmlContent: string, logList?: boolean): ParentalControlsData => {
-    const childListRegex = /new ChildListClass\("InternetGatewayDevice[^"]*","(.*?)","(.*?)","(\d+)"\)/g;
+    const childListRegex = /new ChildListClass\("InternetGatewayDevice\.X_HW_Security\.ParentalCtrl\.MAC\.(\d+)","(.*?)","(.*?)","(\d+)"\)/g;
     const templatesListRegex = /new TemplatesListClass\("InternetGatewayDevice\.X_HW_Security\.ParentalCtrl\.Templates\.(\d+)","(.*?)"/g;
     const statsListRegex = /new StatsListClass\("InternetGatewayDevice[^"]*","\d+","(\d+)"/;
     const durationListRegex = /new DurationListClass\("InternetGatewayDevice\.X_HW_Security\.ParentalCtrl\.Templates\.(\d+)\.Duration\.(\d+)","([\d\\x3a]+)","([\d\\x3a]+)","([\d\\x2c]+)"\)/g;
@@ -42,10 +42,11 @@ const extractParentalControlsData = (htmlContent: string, logList?: boolean): Pa
         // Extract devices
         let match;
         while ((match = childListRegex.exec(htmlContent)) !== null) {
-            const macAddress = match[1].replace(/\\x3a/g, ":");
-            const description = decodeString(match[2]);
-            const templateId = parseInt(match[3], 10);
-
+            const macIndex = parseInt(match[1], 10);
+            const macAddress = match[2].replace(/\\x3a/g, ":");
+            const description = decodeString(match[3]);
+            const templateId = parseInt(match[4], 10);
+        
             deviceList.push({
                 domain: "",
                 ipAddress: "",
@@ -56,9 +57,11 @@ const extractParentalControlsData = (htmlContent: string, logList?: boolean): Pa
                 ssid: "Unknown",
                 description,
                 templateId,
-                parentalControlRestrictionApplied: true
+                parentalControlRestrictionApplied: true,
+                macIndex
             });
         }
+        
 
         // Extract restrictions
         while ((match = durationListRegex.exec(htmlContent)) !== null) {

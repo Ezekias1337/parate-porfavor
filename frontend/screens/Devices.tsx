@@ -97,8 +97,8 @@ const Devices: React.FC = () => {
     setFilteredDevices(devices);
     setFilter("");
   }, [devices]);
-  
 
+  
   return loading ? (
     <View style={[deviceStyles.loader]}>
       <ActivityIndicator color={colors.primary500} size="large" />

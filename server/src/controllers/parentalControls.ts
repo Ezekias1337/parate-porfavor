@@ -87,7 +87,7 @@ export const addDeviceToParentalControls: RequestHandler = async (req, res, next
         const MODEM_URL_BASE = getModemUrl(req);
 
         const { deviceMac, deviceDescription, templateInst } = req.body.deviceToAdd;
-        
+
         let ontToken: OntToken = req.body.ontToken;
         ontToken = await fetchOntTokenSourceHandler(ontToken, cookies, MODEM_URL_BASE);
 
