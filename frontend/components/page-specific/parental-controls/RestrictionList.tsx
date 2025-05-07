@@ -87,7 +87,7 @@ const RestrictionList: React.FC<RestrictionListProps> = ({
           }}
         />
       </View>
-      
+
       {maxTemplatesReached && (
         <Alert
           variant="warning"
@@ -96,51 +96,56 @@ const RestrictionList: React.FC<RestrictionListProps> = ({
         />
       )}
 
-      {template.restrictions.map((restriction, index) => (
-        <View key={index} style={cardStyles.card}>
-          <Text
-            style={[
-              parentalControlsStyles.title,
-              utilityStyles.marginTop10,
-              { fontSize: fontSizes.header3 },
-            ]}
-          >{`${translate("scheduledRestriction")} ${index + 1}`}</Text>
-          <RestrictionDisplay restriction={restriction} translate={translate} />
-          <View style={parentalControlsStyles.buttonContainer}>
-            <Button
-              text={translate("edit")}
-              variant="primary"
-              leftIcon
-              icon="pencil"
-              onClickHandler={() => {
-                setRestrictionToEdit(restriction);
-                setShowSchedulePeriodSelector(true);
-              }}
+      <View style={parentalControlsStyles.templatesContainer}>
+        {template.restrictions.map((restriction, index) => (
+          <View key={index} style={cardStyles.card}>
+            <Text
+              style={[
+                parentalControlsStyles.title,
+                utilityStyles.marginTop10,
+                { fontSize: fontSizes.header3 },
+              ]}
+            >{`${translate("scheduledRestriction")} ${index + 1}`}</Text>
+            <RestrictionDisplay
+              restriction={restriction}
+              translate={translate}
             />
+            <View style={parentalControlsStyles.buttonContainer}>
+              <Button
+                text={translate("edit")}
+                variant="primary"
+                leftIcon
+                icon="pencil"
+                onClickHandler={() => {
+                  setRestrictionToEdit(restriction);
+                  setShowSchedulePeriodSelector(true);
+                }}
+              />
 
-            <Button
-              text={translate("delete")}
-              variant="error"
-              leftIcon
-              icon="trash"
-              loading={deleteLoading}
-              onClickHandler={async () => {
-                await handleRemoveTimePeriod({
-                  template,
-                  restriction,
-                  setSelectedTemplate,
-                  setLoading,
-                  setParentalControls,
-                  setErrorMsg,
-                  translate,
-                  setDeleteLoading,
-                  ontToken,
-                });
-              }}
-            />
+              <Button
+                text={translate("delete")}
+                variant="error"
+                leftIcon
+                icon="trash"
+                loading={deleteLoading}
+                onClickHandler={async () => {
+                  await handleRemoveTimePeriod({
+                    template,
+                    restriction,
+                    setSelectedTemplate,
+                    setLoading,
+                    setParentalControls,
+                    setErrorMsg,
+                    translate,
+                    setDeleteLoading,
+                    ontToken,
+                  });
+                }}
+              />
+            </View>
           </View>
-        </View>
-      ))}
+        ))}
+      </View>
     </ScrollView>
   );
 };
