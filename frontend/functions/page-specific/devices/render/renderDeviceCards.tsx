@@ -4,6 +4,7 @@ import { View } from "react-native";
 import displayParentalControlsModal from "../displayParentalControlsModal";
 import renderDeviceCardButton1 from "./renderDeviceCardButton1";
 import renderDeviceCardButton2 from "./renderDeviceCardButton2";
+import renderDeviceCardButton3 from "./renderDeviceCardButton3";
 // Components
 import Card from "@/components/Card";
 import Alert from "@/components/Alert";
@@ -65,7 +66,7 @@ const renderDeviceCards = (
       />
     );
   }
-  
+
   return (
     <View style={deviceStyles.devicesContainer}>
       {devices.map((device, index) => {
@@ -104,6 +105,15 @@ const renderDeviceCards = (
           buttons.push(button2);
         }
 
+        let button3 = renderDeviceCardButton3({
+          device,
+          setLoading,
+          translate,
+        });
+        if (button3) {
+          buttons.push(button3);
+        }
+
         let headerText: string;
         if (device.hostName && device.hostName !== "") {
           headerText = device.hostName;
@@ -122,9 +132,7 @@ const renderDeviceCards = (
             icon: "signal",
             size: "small",
           });
-        } else if (
-          device.onlineStatus === "Offline"
-        ) {
+        } else if (device.onlineStatus === "Offline") {
           arrayOfBadges.push({
             text: translate("offline"),
             variant: "neutral",

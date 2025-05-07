@@ -18,7 +18,8 @@
     "nodemon": "^3.1.9",
     "ts-node": "^10.9.2",
     "util": "^0.12.5",
-    "vm": "^0.1.0"
+    "vm": "^0.1.0",
+    "wakeonlan": "^0.1.0"
   },
   "devDependencies": {
     "@types/cheerio": "^0.22.35",
