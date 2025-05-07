@@ -11,6 +11,7 @@ The frontend is built using **React Native (Expo)** and **TypeScript**, while th
 - **Device Management**: Add devices to parental control templates to apply restrictions.
 - **Hardware Utilization Monitoring**: View real-time data on modem hardware utilization such as CPU, RAM, and bandwidth usage.
 - **Reboot Modem**: Trigger a modem reboot from the application.
+- **Wake On Lan**: Wake supported devices that are connected via LAN
 
 ## Project Setup
 
