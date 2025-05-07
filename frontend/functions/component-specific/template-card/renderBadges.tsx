@@ -20,8 +20,7 @@ const renderBadges = (
 ): React.ReactNode => {
   return (
     <View style={[templateCardStyles.row, templateCardStyles.badgeRow]}>
-      {(!template?.restrictions[0]?.startTime ||
-        !template?.restrictions[0]?.endTime) && (
+      {template.restrictions.length <= 0 && (
         <Badge
           text={translate("missingTimePeriods")}
           variant="warning"

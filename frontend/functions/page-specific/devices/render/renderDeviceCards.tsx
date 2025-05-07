@@ -123,8 +123,7 @@ const renderDeviceCards = (
             size: "small",
           });
         } else if (
-          device.onlineStatus === "Offline" ||
-          device.onlineStatus === "Unknown"
+          device.onlineStatus === "Offline"
         ) {
           arrayOfBadges.push({
             text: translate("offline"),

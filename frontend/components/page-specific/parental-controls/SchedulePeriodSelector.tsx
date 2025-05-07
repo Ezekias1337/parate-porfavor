@@ -79,31 +79,23 @@ const SchedulePeriodSelector: React.FC<SchedulePeriodSelectorProps> = ({
     ? Initialize values on mount
   */
   useEffect(() => {
-    if (restrictionToEdit?.startTime) {
+    if (restrictionToEdit !== null) {
       const tempStartTime = convertToRestrictionTimeType(
         restrictionToEdit.startTime
       );
       setStartTime(tempStartTime);
-    }
 
-    if (restrictionToEdit?.endTime) {
       const tempEndTime = convertToRestrictionTimeType(
         restrictionToEdit.endTime
       );
       setEndTime(tempEndTime);
-    }
 
-    if (restrictionToEdit?.repeatDays) {
       const tempSelectedDays = convertToRepeatDays(
         restrictionToEdit.repeatDays
       );
       setSelectedDays(tempSelectedDays);
     }
   }, [restrictionToEdit]);
-
-  useEffect(() => {
-    console.log(template);
-  }, [template]);
 
   return (
     <ScrollView
@@ -112,11 +104,15 @@ const SchedulePeriodSelector: React.FC<SchedulePeriodSelectorProps> = ({
         { flexGrow: 1 },
       ]}
     >
-      <Text style={[parentalControlsStyles.title, utilityStyles.marginBottom40]}>
+      <Text
+        style={[parentalControlsStyles.title, utilityStyles.marginBottom40]}
+      >
         {translate("modifyScheduledRestriction")}
       </Text>
 
-      <View style={[inputFieldStyles.formLabelContainer, utilityStyles.marginTop20]}>
+      <View
+        style={[inputFieldStyles.formLabelContainer, utilityStyles.marginTop20]}
+      >
         <Text style={inputFieldStyles.formLabel}>
           {translate("allowedDays")}
         </Text>
@@ -127,7 +123,12 @@ const SchedulePeriodSelector: React.FC<SchedulePeriodSelectorProps> = ({
       />
 
       <View style={inputFieldStyles.formRow}>
-        <View style={[inputFieldStyles.formLabelContainer, utilityStyles.marginTop20]}>
+        <View
+          style={[
+            inputFieldStyles.formLabelContainer,
+            utilityStyles.marginTop20,
+          ]}
+        >
           <Text style={inputFieldStyles.formLabel}>
             {translate("allowedStartTime")}
           </Text>
@@ -148,7 +149,12 @@ const SchedulePeriodSelector: React.FC<SchedulePeriodSelectorProps> = ({
         />
         <AmPmSelector restrictionTime={startTime} setTime={setStartTime} />
 
-        <View style={[inputFieldStyles.formLabelContainer, utilityStyles.marginTop20]}>
+        <View
+          style={[
+            inputFieldStyles.formLabelContainer,
+            utilityStyles.marginTop20,
+          ]}
+        >
           <Text style={inputFieldStyles.formLabel}>
             {translate("allowedEndTime")}
           </Text>
