@@ -37,7 +37,7 @@ const deviceStyles = StyleSheet.create({
     justifyContent: "center",
     flexDirection: "row",
     flexWrap: "wrap",
-    alignItems: "center",
+    alignItems: "stretch",
     width: "100%",
     gap: 10,
     marginTop: 20,

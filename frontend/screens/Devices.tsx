@@ -92,13 +92,12 @@ const Devices: React.FC = () => {
       filter,
     });
   }, [devices, filter]);
-  
+
   useEffect(() => {
     setFilteredDevices(devices);
     setFilter("");
   }, [devices]);
 
-  
   return loading ? (
     <View style={[deviceStyles.loader]}>
       <ActivityIndicator color={colors.primary500} size="large" />
@@ -114,22 +113,24 @@ const Devices: React.FC = () => {
       ]}
       automaticallyAdjustKeyboardInsets={true}
     >
-      <Text style={deviceStyles.title}>{translate("devices")}</Text>
-      {renderErrorMsg(errorMsg)}
-      {renderButtons(
-        {
-          setDevices,
-          setParentalControls,
-          setLoading,
-          setErrorMsg,
-        },
-        translate
-      )}
-      <FilterInput
-        filter={filter}
-        setFilter={setFilter}
-        translate={translate}
-      />
+      <View style={[deviceStyles.container, { flexDirection: "column" }]}>
+        <Text style={deviceStyles.title}>{translate("devices")}</Text>
+        {renderErrorMsg(errorMsg)}
+        {renderButtons(
+          {
+            setDevices,
+            setParentalControls,
+            setLoading,
+            setErrorMsg,
+          },
+          translate
+        )}
+        <FilterInput
+          filter={filter}
+          setFilter={setFilter}
+          translate={translate}
+        />
+      </View>
 
       {renderDeviceCards(
         ontToken,
