@@ -7,45 +7,39 @@ import { useAuth } from "../components/auth/authContext";
 import AuthTabs from "./AuthTabs";
 import BottomTabs from "./BottomTabs";
 // Screens
-import Login from "../screens/Login";
 import Settings from "../screens/Settings";
 
 const MainNavigator = () => {
   const { isAuthenticated } = useAuth();
-  const [urlIsSet, setUrlIsSet] = useState<boolean | null>(null); // null means "still loading"
+  const [isFirstLaunch, setIsFirstLaunch] = useState<boolean | null>(null); // null means "still loading"
 
   useEffect(() => {
-    const checkServerUrl = async () => {
-      const urlSettings = await loadEncrypted("urlSettings");
+    const checkIfIsFirstLaunch = async () => {
+      const accounts = await loadEncrypted("accounts");
 
-      if (
-        !urlSettings ||
-        typeof urlSettings !== "object" ||
-        !urlSettings.serverUrl ||
-        urlSettings.serverUrl.trim() === ""
-      ) {
-        setUrlIsSet(false);
+      if (!accounts || accounts?.length === 0) {
+        setIsFirstLaunch(true);
       } else {
-        setUrlIsSet(true);
+        setIsFirstLaunch(false);
       }
     };
 
-    checkServerUrl();
+    checkIfIsFirstLaunch();
   }, []);
 
-  if (urlIsSet === null) {
+  if (isFirstLaunch === null) {
     return null;
   }
-  
-  if (!urlIsSet) {
-    return <Settings isFirstLoad={true} setUrlIsSet={setUrlIsSet} />;
+
+  if (isFirstLaunch) {
+    return (
+      <Settings isFirstLaunch={true} setIsFirstLaunch={setIsFirstLaunch} />
+    );
   }
-  
+
   if (!isAuthenticated) {
     return <AuthTabs />;
   }
-  
-  
 
   return <BottomTabs />;
 };

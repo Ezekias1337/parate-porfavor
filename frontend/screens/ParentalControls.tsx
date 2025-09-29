@@ -10,7 +10,6 @@ import {
 // Functions, Helpers, Utils, and Hooks
 import useRefreshToken from "@/hooks/useRefreshToken";
 import handleFetchOntToken from "@/functions/page-specific/parental-controls/handleFetchOntToken";
-
 import handleFetchParentalControls from "@/functions/page-specific/parental-controls/handleFetchParentalControls";
 import renderErrorMsg from "@/functions/general/renderErrorMsg";
 import renderControlButtons from "@/functions/page-specific/parental-controls/render/renderControlButtons";
@@ -26,11 +25,6 @@ import { Template } from "../../shared/types/ParentalControls";
 // CSS
 import { colors } from "../styles/variables";
 import parentalControlsStyles from "../styles/page-specific/parentalControls";
-
-/* 
-  ! THERE ARE VALIDATION RULES WRITTEN IN THE SERVER FILES, MAKE SURE TO ENFORCE THIS
-  ! IN THE FRONT END
-*/
 
 const ParentalControls: React.FC = () => {
   const { width: screenWidth } = Dimensions.get("window");

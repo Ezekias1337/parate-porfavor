@@ -38,6 +38,14 @@ export const inputFieldStyles = StyleSheet.create({
     marginBottom: 20,
     width: "100%",
   },
+  halfFormRow: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 20,
+    width: "50%",
+  },
   formLabelContainer: {
     alignSelf: "flex-start",
     marginBottom: 5,

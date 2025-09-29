@@ -10,7 +10,13 @@ import { loadEncrypted } from "@/utils/secure-storage/secureStorage";
 */
 
 const fetchData = async (input: RequestInfo, init?: RequestInit, logUrl?: boolean): Promise<Response> => {
-  const urlSettings = await loadEncrypted("urlSettings");
+  const serverUrl = await loadEncrypted("serverUrl");
+  const modemUrl = await loadEncrypted("modemUrl");
+
+  const urlSettings = {
+    serverUrl: serverUrl || "",
+    modemUrl: modemUrl || "",
+  };
 
   if (!urlSettings || !urlSettings.serverUrl || urlSettings.serverUrl.trim() === "") {
     throw new Error("Missing server URL in secure storage.");

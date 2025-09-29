@@ -13,7 +13,6 @@ const settingsStyles = StyleSheet.create({
     width: "100%",
     maxWidth: "100%",
   },
-  
   container: {
     flex: 1,
     justifyContent: "center",
@@ -35,8 +34,13 @@ const settingsStyles = StyleSheet.create({
     width: "100%",
   },
   buttonContainer: {
-    width: "100%",
-    minWidth: "10%",
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 10,
+    padding: 20,
+    width: "100%"
   },
   loader: {
     flex: 1,

@@ -2,10 +2,11 @@
 import { View } from "react-native";
 // Functions, Helpers, Utils, and Hooks
 import { saveEncrypted } from "@/utils/secure-storage/secureStorage";
+import generateRandomId from "@/utils/strings/generateRandomId";
 // Components
 import Button from "@/components/Button";
 // Types
-import { UrlSettings } from "@/screens/Settings";
+import { Account } from "../../../../../shared/types/Account";
 // CSS
 import settingsStyles from "@/styles/page-specific/settings";
 
@@ -14,24 +15,27 @@ import settingsStyles from "@/styles/page-specific/settings";
  * @param {boolean} loading - The state of the loading.
  * @param {Function} setLoading - The function to set the loading state.
  * @param {Function} setErrorMsg - The function to set the error message.
- * @param {UrlSettings} urlSettings - The url settings.
+ * @param {Account} selectedAccount - The selected account.
  * @param {boolean} settingsSaved - The state of the settings saved.
  * @param {Function} setSettingsSaved - The function to set the settings saved state.
- * @param {boolean} isFirstLoad - The state of the first load.
- * @param {Function} setUrlIsSet - The function to set the url is set state.
+ * @param {boolean} isFirstLaunch - The state of the first load.
+ * @param {Function} setIsFirstLaunch - The function to set the first load state.
+ * @param {Function} setModalVisible - The function to set the modal visible state.
  * @param {Function} translate - The function to translate the text.
  * @returns {JSX.Element} The rendered submit button.
-*/
+ */
 
 interface RenderSubmitButtonProps {
   loading: boolean;
   setLoading: React.Dispatch<boolean>;
   setErrorMsg: (errorMsg: string | null) => void;
-  urlSettings: UrlSettings;
+  accounts: Account[];
+  selectedAccount: Account;
   settingsSaved: boolean;
   setSettingsSaved: React.Dispatch<boolean>;
-  isFirstLoad: boolean;
-  setUrlIsSet?: (urlIsSet: boolean) => void;
+  isFirstLaunch: boolean;
+  setIsFirstLaunch: React.Dispatch<React.SetStateAction<boolean | null>>;
+  setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const renderSubmitButton = (
@@ -39,11 +43,13 @@ const renderSubmitButton = (
     loading,
     setLoading,
     setErrorMsg,
-    urlSettings,
+    accounts,
+    selectedAccount,
     settingsSaved,
     setSettingsSaved,
-    isFirstLoad,
-    setUrlIsSet,
+    isFirstLaunch,
+    setIsFirstLaunch,
+    setModalVisible,
   }: RenderSubmitButtonProps,
   translate: (key: string) => string
 ) => {
@@ -62,12 +68,33 @@ const renderSubmitButton = (
               setSettingsSaved(false);
             }
 
-            await saveEncrypted("urlSettings", urlSettings);
+            const failedConditions = [
+              selectedAccount.description.trim() === "",
+              selectedAccount.username.trim() === "",
+              selectedAccount.password.trim() === "",
+              selectedAccount.serverUrl.trim() === "",
+            ];
+            if (failedConditions.some((condition) => condition)) {
+              setLoading(false);
+              throw new Error("Failed to save settings due to empty fields.");
+            }
+
+            const oldAccountIndex = accounts.findIndex(
+              (acc) => acc.id === selectedAccount.id
+            );
+            if (oldAccountIndex !== -1) {
+              accounts[oldAccountIndex] = selectedAccount;
+            } else {
+              selectedAccount.id = generateRandomId();
+              accounts.push(selectedAccount);
+            }
+
+            await saveEncrypted("accounts", accounts);
             setLoading(false);
             setSettingsSaved(true);
-
-            if (isFirstLoad && setUrlIsSet) {
-              setUrlIsSet(true);
+            setModalVisible(false);
+            if (isFirstLaunch) {
+              setIsFirstLaunch(false);
             }
           } catch (error) {
             setErrorMsg(translate("settingsError"));

@@ -7,20 +7,20 @@ import settingsStyles from "@/styles/page-specific/settings";
 
 /**
  * Renders the first load message if the app is first loaded.
- * @param {boolean} isFirstLoad - The state of the first load.
+ * @param {boolean} isFirstLaunch - The state of the first load.
  * @param {Function} translate - The function to translate the text.
  * @returns {JSX.Element} The rendered first load message.
 */
 
 interface RenderFirstLoadMsgProps {
-  isFirstLoad: boolean;
+  isFirstLaunch: boolean;
   translate: (key: string) => string;
 }
 const renderFirstLoadMsg = ({
-  isFirstLoad,
+  isFirstLaunch,
   translate,
 }: RenderFirstLoadMsgProps) => {
-  if (isFirstLoad) {
+  if (isFirstLaunch) {
     return (
       <View style={settingsStyles.alertContainer}>
         <Alert

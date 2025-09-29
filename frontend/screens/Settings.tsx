@@ -9,54 +9,72 @@ import {
 } from "react-native";
 // Functions, Helpers, Utils, and Hooks
 import useRefreshToken from "@/hooks/useRefreshToken";
-import loadCreds from "@/functions/page-specific/settings/loadCreds";
+import loadCreds from "@/functions/general/loadCreds";
 import hideSuccessAlert from "@/functions/page-specific/settings/hideSuccessAlert";
 import renderErrorMsg from "@/functions/general/renderErrorMsg";
 import renderFirstLoadMsg from "@/functions/page-specific/settings/render/renderFirstLoadMsg";
 import renderSettingsSavedMsg from "@/functions/page-specific/settings/render/renderSettingsSavedMsg";
-import renderInputFields from "@/functions/page-specific/settings/render/renderInputFields";
-import renderSubmitButton from "@/functions/page-specific/settings/render/renderSubmitButton";
+import renderControlButtons from "@/functions/page-specific/settings/render/renderControlButtons";
+// Types
+import { Account } from "../../shared/types/Account";
 // Components
-import { useAuth } from "../components/auth/authContext";
-import { useLocalization } from "../components/localization/LocalizationContext";
+import { useAuth } from "@/components/auth/authContext";
+import { useLocalization } from "@/components/localization/LocalizationContext";
+import SettingsModal from "@/components/page-specific/settings/SettingsModal";
+import AccountCard from "@/components/page-specific/settings/AccountCard";
 // CSS
 import { colors } from "../styles/variables";
 import settingsStyles from "../styles/page-specific/settings";
 
 interface SettingsProps {
-  isFirstLoad?: boolean;
-  setUrlIsSet?: (urlIsSet: boolean) => void;
-}
-
-export interface UrlSettings {
-  serverUrl: string;
-  modemUrl: string;
+  isFirstLaunch: boolean;
+  setIsFirstLaunch: React.Dispatch<React.SetStateAction<boolean | null>>;
 }
 
 const Settings: React.FC<SettingsProps> = ({
-  isFirstLoad = false,
-  setUrlIsSet,
+  isFirstLaunch = false,
+  setIsFirstLaunch,
 }) => {
   const { translate } = useLocalization();
   const { width: screenWidth } = Dimensions.get("window");
   const { isAuthenticated } = useAuth();
   useRefreshToken(isAuthenticated);
   const [loading, setLoading] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [accounts, setAccounts] = useState<Account[]>([]);
 
-  const [urlSettings, setUrlSettings] = useState<UrlSettings>({
+  const [selectedAccount, setSelectedAccount] = useState<Account>({
+    id: "",
+    username: "",
+    password: "",
+    description: "",
     serverUrl: "",
     modemUrl: "",
   });
   const [settingsSaved, setSettingsSaved] = useState(false);
 
   useEffect(() => {
-    loadCreds({ setUrlSettings });
+    loadCreds({ setAccounts });
   }, []);
 
   useEffect(() => {
     hideSuccessAlert({ settingsSaved, setSettingsSaved });
   }, [settingsSaved]);
+
+  useEffect(() => {
+    if (!modalVisible) {
+      setSelectedAccount({
+        id: "",
+        username: "",
+        password: "",
+        description: "",
+        serverUrl: "",
+        modemUrl: "",
+      });
+      setErrorMsg(null);
+    }
+  }, [modalVisible]);
 
   return loading ? (
     <View style={[settingsStyles.loader]}>
@@ -64,9 +82,7 @@ const Settings: React.FC<SettingsProps> = ({
     </View>
   ) : (
     <ScrollView
-      contentContainerStyle={[
-        settingsStyles.container,       
-      ]}
+      contentContainerStyle={[settingsStyles.container]}
       automaticallyAdjustKeyboardInsets={true}
     >
       <View style={settingsStyles.container}>
@@ -81,35 +97,47 @@ const Settings: React.FC<SettingsProps> = ({
             },
           ]}
         >
+          {renderControlButtons({ setModalVisible, translate })}
           {renderFirstLoadMsg({
-            isFirstLoad,
+            isFirstLaunch,
             translate,
           })}
           {renderErrorMsg(errorMsg)}
-          {renderInputFields({
-            urlSettings,
-            setUrlSettings,
-            translate,
-          })}
-          {renderSubmitButton(
-            {
-              loading,
-              setLoading,
-              setErrorMsg,
-              urlSettings,
-              settingsSaved,
-              setSettingsSaved,
-              isFirstLoad,
-              setUrlIsSet,
-            },
-            translate
-          )}
+          {accounts.map((account, index) => (
+            <AccountCard
+              key={index}
+              account={account}
+              translate={translate}
+              accounts={accounts}
+              setAccounts={setAccounts}
+              setSelectedAccount={setSelectedAccount}
+              setModalVisible={setModalVisible}
+            />
+          ))}
+
           {renderSettingsSavedMsg({
             settingsSaved,
             translate,
           })}
         </View>
       </View>
+
+      <SettingsModal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        accounts={accounts}
+        selectedAccount={selectedAccount}
+        setSelectedAccount={setSelectedAccount}
+        loading={loading}
+        setLoading={setLoading}
+        errorMsg={errorMsg}
+        setErrorMsg={setErrorMsg}
+        settingsSaved={settingsSaved}
+        setSettingsSaved={setSettingsSaved}
+        isFirstLaunch={isFirstLaunch}
+        setIsFirstLaunch={setIsFirstLaunch}
+        translate={translate}
+      />
     </ScrollView>
   );
 };

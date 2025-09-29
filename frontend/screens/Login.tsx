@@ -2,13 +2,14 @@
 import React, { useEffect, useState } from "react";
 import { ScrollView, Image, Dimensions } from "react-native";
 // Functions, Helpers, Utils, and Hooks
-import loadCreds from "@/functions/page-specific/login/loadCreds";
+import loadCreds from "@/functions/general/loadCreds";
 import renderErrorMsg from "@/functions/general/renderErrorMsg";
-import renderInputFields from "@/functions/page-specific/login/render/renderInputFields";
-import renderSubmitButton from "@/functions/page-specific/login/render/renderSubmitButton";
+import renderLoginCards from "@/functions/page-specific/login/render/renderLoginCards";
 // Components
 import { useAuth } from "../components/auth/authContext";
 import { useLocalization } from "../components/localization/LocalizationContext";
+// Types
+import { Account } from "../../shared/types/Account";
 // CSS
 import loginStyles from "../styles/page-specific/login";
 // Assets
@@ -24,20 +25,16 @@ const Login: React.FC = () => {
   const { width: screenWidth } = Dimensions.get("window");
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
-
-  const [loginCredentials, setLoginCredentials] = useState<LoginCredentials>({
-    username: "",
-    password: "",
-  });
+  const [accounts, setAccounts] = useState<Account[]>([]);
   const { login: authenticate } = useAuth();
 
   useEffect(() => {
-    loadCreds(setLoginCredentials);
+    loadCreds({ setAccounts });
   }, []);
 
   return (
-    <ScrollView 
-    contentContainerStyle={[
+    <ScrollView
+      contentContainerStyle={[
         loginStyles.container,
         {
           paddingLeft: screenWidth < 500 ? 10 : screenWidth * 0.1,
@@ -55,19 +52,15 @@ const Login: React.FC = () => {
       />
 
       {renderErrorMsg(errorMsg)}
-      {renderInputFields({ loginCredentials, setLoginCredentials }, translate)}
-      {renderSubmitButton(
-        {
-          loading,
-          setLoading,
-          errorMsg,
-          setErrorMsg,
-          loginCredentials,
-          authenticate,
-        },
-        translate
-      )}
-      
+      {renderLoginCards({
+        accounts,
+        loading,
+        setLoading,
+        errorMsg,
+        setErrorMsg,
+        authenticate,
+        translate,
+      })}
     </ScrollView>
   );
 };

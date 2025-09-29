@@ -2,10 +2,11 @@
 import { View } from "react-native";
 // Functions, Helpers, Utils, and Hooks
 import handleLogin from "../handleLogin";
+import { saveEncrypted } from "@/utils/secure-storage/secureStorage";
 // Components
 import Button from "@/components/Button";
 // Types
-import { LoginCredentials } from "@/screens/Login";
+import { Account } from "../../../../../shared/types/Account";
 // CSS
 import loginStyles from "@/styles/page-specific/login";
 
@@ -25,7 +26,7 @@ interface RenderSubmitButtonProps {
   setLoading: (loading: boolean) => void;
   errorMsg: string | null;
   setErrorMsg: (errorMsg: string | null) => void;
-  loginCredentials: LoginCredentials;
+  account: Account;
   authenticate: (token: string) => Promise<void>;
 }
 
@@ -35,7 +36,7 @@ const renderSubmitButton = (
     setLoading,
     errorMsg,
     setErrorMsg,
-    loginCredentials,
+    account,
     authenticate,
   }: RenderSubmitButtonProps,
   translate: (key: string) => string
@@ -48,8 +49,11 @@ const renderSubmitButton = (
         buttonSize="medium"
         loading={loading}
         onClickHandler={async () => {
+          await saveEncrypted("serverUrl", account.serverUrl);
+          await saveEncrypted("modemUrl", account.modemUrl);
+          
           await handleLogin({
-            loginCredentials,
+            account,
             setLoading,
             errorMsg,
             setErrorMsg,

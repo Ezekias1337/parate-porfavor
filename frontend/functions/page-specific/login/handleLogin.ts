@@ -1,12 +1,11 @@
 // Functions, Helpers, Utils, and Hooks
 import login from "@/functions/network/auth/login";
-import { saveEncrypted } from "@/utils/secure-storage/secureStorage";
 // Types
-import { LoginCredentials } from "../../../screens/Login";
+import { Account } from "../../../../shared/types/Account";
 
 /**
  * Handles the login process.
- * @param loginCredentials The login credentials.
+ * @param account The account information.
  * @param setLoading The function to set the loading state.
  * @param errorMsg The error message.
  * @param setErrorMsg The function to set the error message.
@@ -16,7 +15,7 @@ import { LoginCredentials } from "../../../screens/Login";
 */
 
 interface HandleLoginProps {
-    loginCredentials: LoginCredentials;
+    account: Account;
     setLoading: (loading: boolean) => void;
     errorMsg: string | null;
     setErrorMsg: (errorMsg: string | null) => void;
@@ -24,17 +23,13 @@ interface HandleLoginProps {
     translate: (key: string) => string;
 }
 
-const handleLogin = async ({ loginCredentials, setLoading, errorMsg, setErrorMsg, authenticate, translate }: HandleLoginProps) => {
+const handleLogin = async ({ account, setLoading, errorMsg, setErrorMsg, authenticate, translate }: HandleLoginProps) => {
     try {
         setLoading(true);
         const token = await login(
-            loginCredentials.username,
-            loginCredentials.password
+            account.username,
+            account.password
         );
-
-        if (loginCredentials.username && loginCredentials.password) {
-            saveEncrypted("loginCreds", loginCredentials);
-        }
 
         if (token === null) {
             setErrorMsg(translate("authError"));

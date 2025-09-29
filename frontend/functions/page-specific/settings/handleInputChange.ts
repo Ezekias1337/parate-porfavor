@@ -1,22 +1,25 @@
 // Types
-import { UrlSettings } from "@/screens/Settings";
+import { Account } from "../../../../shared/types/Account";
 
 /**
  * Handles the input change for the settings page.
  * @param field The field to update.
- * @param urlSettings The current URL settings.
- * @param setUrlSettings The function to update the URL settings.
- * @returns {string} The updated URL settings.
+ * @param selectedAccount The current account settings.
+ * @param setSelectedAccount The function to update the account settings.
+ * @returns {string} The updated account settings.
 */
 
-const handleInputChange =
-    (field: "serverUrl" | "modemUrl", urlSettings: UrlSettings, setUrlSettings: React.Dispatch<React.SetStateAction<UrlSettings>>) => (text: string) => {
-        const newUrlSettings = {
-            ...urlSettings,
-            [field]: text,
-        };
+type fields = "serverUrl" | "modemUrl" | "username" | "password" | "description";
 
-        setUrlSettings(newUrlSettings);
-    };
+const handleInputChange =
+    (field: fields, selectedAccount: Account,
+        setSelectedAccount: React.Dispatch<React.SetStateAction<Account>>) => (text: string) => {
+            const newUrlSettings = {
+                ...selectedAccount,
+                [field]: text,
+            };
+
+            setSelectedAccount(newUrlSettings);
+        };
 
 export default handleInputChange;

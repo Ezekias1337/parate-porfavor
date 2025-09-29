@@ -110,10 +110,13 @@ export const LocalizationProvider: React.FC<{ children: React.ReactNode }> = ({
           settings: "Settings",
           serverUrl: "Server URL",
           modemUrl: "Modem URL",
-          settingsSaved: "Settings saved successfully!",
-          settingsError: "Failed to save settings. Please try again.",
+          settingsSaved: "Profile updated successfully!",
+          settingsError:
+            "Failed to save settings. Check to make sure all fields are filled out and try again.",
           serverUrlNeeded:
-            "Below please enter the URL of the server you want to connect to.\n\n This URL must be accessible from the modem.",
+            "Please create a profile.\n\nThis allows you to manage several modems without having to retype your password.",
+          createProfileInstructions:
+            "The Username and Password fields are for your modem's login credentials, the same one you use to access the web interface. \n\n The Server URL is the address where the server is hosted. \n\n The Modem URL is the local IP address of your modem.",
           edit: "Edit",
           delete: "Delete",
           missingDays: "Missing Days",
@@ -135,6 +138,15 @@ export const LocalizationProvider: React.FC<{ children: React.ReactNode }> = ({
           searchExplanation:
             "Search for devices by name, IP address, SSID, or MAC address.",
           wakeOnLan: "Wake On Lan",
+          addProfile: "Create Profile",
+          editProfile: "Edit Profile",
+          profileDescription: "Profile Description",
+          profileAdded: "Profile added successfully!",
+          profileEdited: "Profile edited successfully!",
+          profileDeleted: "Profile deleted successfully!",
+          confirmDeleteProfile: "Are you sure you want to delete this profile?",
+          deleteProfile: "Delete Profile",
+          noProfiles: "No profiles",
         },
         es: {
           welcome: "Bienvenido",
@@ -214,11 +226,13 @@ export const LocalizationProvider: React.FC<{ children: React.ReactNode }> = ({
           settings: "Ajustes",
           serverUrl: "URL del Servidor",
           modemUrl: "URL del Modem",
-          settingsSaved: "Ajustes guardados correctamente!",
+          settingsSaved: "Perfil actualizado exitosamente!",
           settingsError:
-            "No se pudieron guardar los ajustes. Por favor, inténtelo de nuevo.",
+            "No se pudieron guardar los ajustes. Por favor, inténtelo de nuevo. Verifique que todos los campos estén completos.",
           serverUrlNeeded:
-            "A continuación ingrese la URL del servidor al que desea conectarse.\n\n Esta URL debe ser accesible desde el modem.",
+            "Cree un perfil.\n\n Esto le permitirá administrar varios módems sin tener que volver a escribir su contraseña.",
+          createProfileInstructions:
+            "Los campos de Usuario y Contraseña son para las credenciales de inicio de sesión de su módem, las mismas que usa para acceder a la interfaz web. \n\n La URL del Servidor es la dirección donde se aloja el servidor. \n\n La URL del Modem es la dirección IP local de su módem.",
           edit: "Editar",
           delete: "Eliminar",
           missingDays: "Faltan Días",
@@ -240,6 +254,16 @@ export const LocalizationProvider: React.FC<{ children: React.ReactNode }> = ({
           searchExplanation:
             "Ingrese el nombre del dispositivo, la dirección MAC, el SSID o la dirección IP para a buscar",
           wakeOnLan: "Despertar Dispositivo",
+          addProfile: "Agregar Perfil",
+          editProfile: "Editar Perfil",
+          profileDescription: "Descripción del Perfil",
+          profileAdded: "¡Perfil agregado correctamente!",
+          profileEdited: "¡Perfil editado correctamente!",
+          profileDeleted: "¡Perfil eliminado correctamente!",
+          confirmDeleteProfile:
+            "¿Está seguro de que desea eliminar este perfil?",
+          deleteProfile: "Eliminar Perfil",
+          noProfiles: "No hay perfiles",
         },
       };
 

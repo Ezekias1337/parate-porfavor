@@ -6,7 +6,7 @@ import renderDeviceCardButton1 from "./renderDeviceCardButton1";
 import renderDeviceCardButton2 from "./renderDeviceCardButton2";
 import renderDeviceCardButton3 from "./renderDeviceCardButton3";
 // Components
-import Card from "@/components/Card";
+import DeviceCard from "@/components/page-specific/devices/DeviceCard";
 import Alert from "@/components/Alert";
 // Types
 import { Device } from "../../../../../shared/types/Device";
@@ -167,7 +167,7 @@ const renderDeviceCards = (
         }
 
         return (
-          <Card
+          <DeviceCard
             key={device.macAddr + index}
             headerText={headerText}
             bodyText={`${translate("macAddress")}: ${device.macAddr}${
@@ -178,7 +178,6 @@ const renderDeviceCards = (
             cardIcon={device.connectionType === "WIFI" ? "wifi" : "desktop"}
             buttons={buttons}
             badges={arrayOfBadges}
-            imageSource=""
           />
         );
       })}
