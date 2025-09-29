@@ -52,14 +52,14 @@ const AccountCard: FC<AccountCardProps> = ({
         </Text>
       </View>
 
-      {renderAccountCardButtons(
+      {renderAccountCardButtons({
         account,
         accounts,
         setAccounts,
         setSelectedAccount,
         setModalVisible,
-        translate
-      )}
+        translate,
+      })}
     </Card>
   );
 };
