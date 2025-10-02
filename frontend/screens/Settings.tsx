@@ -27,13 +27,13 @@ import { colors } from "../styles/variables";
 import settingsStyles from "../styles/page-specific/settings";
 
 interface SettingsProps {
-  isFirstLaunch: boolean;
-  setIsFirstLaunch: React.Dispatch<React.SetStateAction<boolean | null>>;
+  isFirstLaunch?: boolean;
+  setIsFirstLaunch?: React.Dispatch<React.SetStateAction<boolean | null>>;
 }
 
 const Settings: React.FC<SettingsProps> = ({
   isFirstLaunch = false,
-  setIsFirstLaunch,
+  setIsFirstLaunch = () => {},
 }) => {
   const { translate } = useLocalization();
   const { width: screenWidth } = Dimensions.get("window");

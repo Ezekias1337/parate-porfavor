@@ -1,21 +1,16 @@
 // Library Imports
 import { View } from "react-native";
 // Functions, Helpers, Utils, and Hooks
-import displayParentalControlsModal from "../displayParentalControlsModal";
-import renderDeviceCardButton1 from "./renderDeviceCardButton1";
-import renderDeviceCardButton2 from "./renderDeviceCardButton2";
-import renderDeviceCardButton3 from "./renderDeviceCardButton3";
+import renderDeviceCardButton from "./renderFavoriteCardButton";
 // Components
 import DeviceCard from "@/components/page-specific/devices/DeviceCard";
 import Alert from "@/components/Alert";
 // Types
-import { Device } from "../../../../../shared/types/Device";
-import { ParentalControlsData } from "../../../../../shared/types/ParentalControls";
+import { Device } from "../../../../shared/types/Device";
 import { ButtonProps } from "@/components/Button";
-import OntToken from "../../../../../shared/types/OntToken";
-import { Favorite } from "../../../../../shared/types/Favorite";
+import { Favorite } from "../../../../shared/types/Favorite";
 // CSS
-import deviceStyles from "../../../../styles/page-specific/device";
+import deviceStyles from "../../../styles/page-specific/device";
 import { BadgeProps } from "@/components/Badge";
 
 /**
@@ -34,40 +29,21 @@ import { BadgeProps } from "@/components/Badge";
  */
 
 interface ListOfStateSetters {
-  setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
-  setDevices: React.Dispatch<React.SetStateAction<Device[]>>;
-  parentalControls: ParentalControlsData;
-  setParentalControls: React.Dispatch<ParentalControlsData>;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  setErrorMsg: React.Dispatch<React.SetStateAction<string | null>>;
-  setModalDevice: React.Dispatch<React.SetStateAction<Device | null>>;
-  setOntToken: React.Dispatch<React.SetStateAction<OntToken>>;
   setFavorites: React.Dispatch<React.SetStateAction<Favorite[]>>;
 }
 
-const renderDeviceCards = (
-  ontToken: OntToken,
-  devices: Device[],
+const renderFavoriteCards = (
   lastUsedProfile: string | null,
   favorites: Favorite[],
-  {
-    setModalVisible,
-    setDevices,
-    parentalControls,
-    setParentalControls,
-    setLoading,
-    setErrorMsg,
-    setModalDevice,
-    setOntToken,
-    setFavorites
-  }: ListOfStateSetters,
+  { setLoading, setFavorites }: ListOfStateSetters,
   translate: (key: string) => string
 ) => {
-  if (devices.length === 0) {
+  if (favorites.length === 0) {
     return (
       <Alert
         variant="warning"
-        bodyText={translate("noResults")}
+        bodyText={translate("noFavorites")}
         icon="info-circle"
       />
     );
@@ -75,49 +51,17 @@ const renderDeviceCards = (
 
   return (
     <View style={deviceStyles.devicesContainer}>
-      {devices.map((device, index) => {
+      {favorites.map((favorite, index) => {
+        const device = favorite.device;
         const buttons: ButtonProps[] = [];
 
-        const button1 = renderDeviceCardButton1({
-          device,
-          devices,
-          setDevices,
-          setParentalControls,
-          setLoading,
-          setErrorMsg,
-          index,
-          ontToken,
-          setOntToken,
-          translate,
-        });
-        if (button1) {
-          buttons.push(button1);
-        }
-
-        const button2 = renderDeviceCardButton2({
-          device,
-          setDevices,
-          setModalDevice,
-          setModalVisible,
-          displayParentalControlsModal,
-          index,
-          parentalControls,
-          setParentalControls,
-          setLoading,
-          setErrorMsg,
-          translate,
-        });
-        if (button2) {
-          buttons.push(button2);
-        }
-
-        let button3 = renderDeviceCardButton3({
+        let button = renderDeviceCardButton({
           device,
           setLoading,
           translate,
         });
-        if (button3) {
-          buttons.push(button3);
+        if (button) {
+          buttons.push(button);
         }
 
         let headerText: string;
@@ -131,22 +75,6 @@ const renderDeviceCards = (
 
         let arrayOfBadges: BadgeProps[] = [];
 
-        if (device.onlineStatus === "Online") {
-          arrayOfBadges.push({
-            text: translate("online"),
-            variant: "success",
-            icon: "signal",
-            size: "small",
-          });
-        } else if (device.onlineStatus === "Offline") {
-          arrayOfBadges.push({
-            text: translate("offline"),
-            variant: "neutral",
-            icon: "signal",
-            size: "small",
-          });
-        }
-
         if (device.macFiltered || device.parentalControlRestrictionApplied) {
           arrayOfBadges.push({
             text: translate("blocked"),
@@ -156,26 +84,13 @@ const renderDeviceCards = (
           });
         }
 
-        if (device.parentalControlRestrictionApplied && device.templateId) {
-          const templateName =
-            parentalControls.templates[device.templateId - 1].name;
-
-          const badgeText = `${translate(
-            "scheduledRestriction"
-          )}: ${templateName}`;
-
-          arrayOfBadges.push({
-            text: badgeText,
-            variant: "info",
-            icon: "clock-o",
-            size: "small",
-          });
-        }
-        
         const isFavorite = favorites.some(
-          (favorite) => favorite.device.macAddr === device.macAddr /* && favorite.profileId === device.profileId */
+          (favorite) => favorite.device.macAddr === device.macAddr
         );
-        const deviceWithProfileId: Device = { ...device, profileId: lastUsedProfile || "" };
+        const deviceWithProfileId: Device = {
+          ...device,
+          profileId: lastUsedProfile || "",
+        };
 
         return (
           <DeviceCard
@@ -201,4 +116,4 @@ const renderDeviceCards = (
   );
 };
 
-export default renderDeviceCards;
+export default renderFavoriteCards;

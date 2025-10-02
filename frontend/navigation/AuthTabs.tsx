@@ -4,6 +4,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 // Screens
 import LoginScreen from "../screens/Login";
 import SettingsScreen from "../screens/Settings";
+import FavoritesScreen from "../screens/Favorites";
 // Components
 import TabIcon from "./TabIcon";
 // Hooks
@@ -34,6 +35,15 @@ const AuthTabs = () => {
         options={{
           tabBarIcon: ({ color, size }) => (
             <TabIcon name="sign-in" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name={translate("favorites")}
+        component={FavoritesScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <TabIcon name="heart" size={size} color={color} />
           ),
         }}
       />

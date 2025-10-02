@@ -72,6 +72,13 @@ const cardStyles = StyleSheet.create({
   buttonIcon: {
     marginRight: 8,
   },
+  iconWrapper: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 10,
+  },
   primary: {
     backgroundColor: colors.primary500,
   },

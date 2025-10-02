@@ -1,13 +1,18 @@
 // Library Imports
 import React, { FC } from "react";
-import { View, Text } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 // Components
 import Card from "../../Card";
 import Button, { ButtonProps } from "../../Button";
 import Badge, { BadgeProps } from "../../Badge";
+// Functions, Helpers, Utils, and Hooks
+import addToFavorites from "@/functions/general/addToFavorites";
+import removeFromFavorites from "@/functions/general/removeFromFavorites";
 // Types and Interfaces
 import FontAwesomeIconNames from "../../../types/FontAwesome";
+import { Favorite } from "../../../../shared/types/Favorite";
+import { Device } from "../../../../shared/types/Device";
 // CSS
 import { colors } from "../../../styles/variables";
 import cardStyles from "../../../styles/component-specific/card";
@@ -18,6 +23,11 @@ interface DeviceCardProps {
   cardIcon: FontAwesomeIconNames;
   buttons?: ButtonProps[];
   badges?: BadgeProps[];
+  isFavorite?: boolean;
+  profileId: string | null;
+  favorites: Favorite[];
+  setFavorites: React.Dispatch<React.SetStateAction<Favorite[]>>;
+  device: Device;
 }
 
 const DeviceCard: FC<DeviceCardProps> = ({
@@ -26,10 +36,32 @@ const DeviceCard: FC<DeviceCardProps> = ({
   cardIcon,
   buttons = [],
   badges = [],
+  isFavorite = false,
+  profileId,
+  favorites,
+  setFavorites,
+  device,
 }) => {
   return (
     <Card>
-      <FontAwesome name={cardIcon} size={32} color={colors.primary500} />
+      <View style={cardStyles.iconWrapper}>
+        <FontAwesome name={cardIcon} size={32} color={colors.primary500} />
+        <TouchableOpacity
+          onPress={() => {
+            if (isFavorite) {
+              removeFromFavorites({ device, favorites, setFavorites });
+            } else {
+              addToFavorites({ device, favorites, setFavorites });
+            }
+          }}
+        >
+          <FontAwesome
+            name={isFavorite ? "heart" : "heart-o"}
+            size={32}
+            color={colors.primary500}
+          />
+        </TouchableOpacity>
+      </View>
 
       <View style={cardStyles.cardTextWrapper}>
         <Text style={cardStyles.headerText}>{headerText}</Text>

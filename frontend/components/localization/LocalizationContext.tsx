@@ -147,6 +147,10 @@ export const LocalizationProvider: React.FC<{ children: React.ReactNode }> = ({
           confirmDeleteProfile: "Are you sure you want to delete this profile?",
           deleteProfile: "Delete Profile",
           noProfiles: "No profiles",
+          favorites: "Favorites",
+          favoritesExplanation: "Here you can quickly access your favorite devices of the last used profile.",
+          noFavorites:
+            "No favorite devices have been added. You can add devices to your favorites by going to the devices page and tapping the heart icon next to a device.",
         },
         es: {
           welcome: "Bienvenido",
@@ -264,6 +268,10 @@ export const LocalizationProvider: React.FC<{ children: React.ReactNode }> = ({
             "¿Está seguro de que desea eliminar este perfil?",
           deleteProfile: "Eliminar Perfil",
           noProfiles: "No hay perfiles",
+          favorites: "Favoritos",
+          favoritesExplanation: "Aquí puedes acceder rápidamente a tus dispositivos favoritos del último perfil usado.",
+          noFavorites:
+            "No hay favoritos. Puede agregar dispositivos a sus favoritos yendo a la página de dispositivos y tocando el ícono de corazón junto a un dispositivo.",
         },
       };
 

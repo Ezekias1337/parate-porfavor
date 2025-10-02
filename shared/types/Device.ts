@@ -13,4 +13,5 @@ export type Device = {
     macFiltered?: boolean;
     macIndex?: number;
     parentalControlRestrictionApplied?: boolean;
+    profileId?: string;
 };

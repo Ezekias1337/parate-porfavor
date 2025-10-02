@@ -51,6 +51,7 @@ const renderSubmitButton = (
         onClickHandler={async () => {
           await saveEncrypted("serverUrl", account.serverUrl);
           await saveEncrypted("modemUrl", account.modemUrl);
+          await saveEncrypted("lastUsedProfile", account.id);
           
           await handleLogin({
             account,

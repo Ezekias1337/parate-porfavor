@@ -16,6 +16,7 @@ import renderDeviceCards from "@/functions/page-specific/devices/render/renderDe
 import renderModal from "@/functions/page-specific/devices/render/renderModal";
 import useRefreshToken from "@/hooks/useRefreshToken";
 import filterDevices from "@/functions/page-specific/devices/filterDevices";
+import useFavoritesAndLastUsedProfile from "@/hooks/useFavoritesAndLastUsedProfile";
 // Components
 import { useAuth } from "@/components/auth/authContext";
 import { useLocalization } from "../components/localization/LocalizationContext";
@@ -30,6 +31,7 @@ import OntToken from "../../shared/types/OntToken";
 // CSS
 import { colors } from "../styles/variables";
 import deviceStyles from "../styles/page-specific/device";
+import { Favorite } from "../../shared/types/Favorite";
 
 export interface ListOfStateSetters {
   setDevices: React.Dispatch<React.SetStateAction<Device[]>>;
@@ -60,6 +62,8 @@ const Devices: React.FC = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalDevice, setModalDevice] = useState<Device | null>(null);
   const [filter, setFilter] = useState<string>("");
+  const { lastUsedProfile, favorites, setFavorites } =
+    useFavoritesAndLastUsedProfile();
 
   useEffect(() => {
     fetchDevicesAndParentalControls(
@@ -135,6 +139,8 @@ const Devices: React.FC = () => {
       {renderDeviceCards(
         ontToken,
         filteredDevices,
+        lastUsedProfile,
+        favorites,
         {
           setModalVisible,
           setDevices,
@@ -144,6 +150,7 @@ const Devices: React.FC = () => {
           setErrorMsg,
           setModalDevice,
           setOntToken,
+          setFavorites,
         },
         translate
       )}
