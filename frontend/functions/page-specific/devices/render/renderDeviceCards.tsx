@@ -189,7 +189,6 @@ const renderDeviceCards = (
             cardIcon={device.connectionType === "WIFI" ? "wifi" : "desktop"}
             buttons={buttons}
             badges={arrayOfBadges}
-            profileId={lastUsedProfile}
             isFavorite={isFavorite}
             favorites={favorites}
             setFavorites={setFavorites}

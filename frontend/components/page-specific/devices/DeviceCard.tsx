@@ -24,7 +24,6 @@ interface DeviceCardProps {
   buttons?: ButtonProps[];
   badges?: BadgeProps[];
   isFavorite?: boolean;
-  profileId: string | null;
   favorites: Favorite[];
   setFavorites: React.Dispatch<React.SetStateAction<Favorite[]>>;
   device: Device;
@@ -37,7 +36,6 @@ const DeviceCard: FC<DeviceCardProps> = ({
   buttons = [],
   badges = [],
   isFavorite = false,
-  profileId,
   favorites,
   setFavorites,
   device,

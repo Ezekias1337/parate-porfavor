@@ -23,3 +23,4 @@ const loadFavorites = async ({ setFavorites, lastUsedProfile }: LoadFavoritesPro
 }
 
 export default loadFavorites;
+
