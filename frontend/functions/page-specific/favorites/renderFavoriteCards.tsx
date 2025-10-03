@@ -84,9 +84,6 @@ const renderFavoriteCards = (
           });
         }
 
-        const isFavorite = favorites.some(
-          (favorite) => favorite.device.macAddr === device.macAddr
-        );
         const deviceWithProfileId: Device = {
           ...device,
           profileId: lastUsedProfile || "",
@@ -104,8 +101,7 @@ const renderFavoriteCards = (
             cardIcon={device.connectionType === "WIFI" ? "wifi" : "desktop"}
             buttons={buttons}
             badges={arrayOfBadges}
-            profileId={lastUsedProfile}
-            isFavorite={isFavorite}
+            isFavorite={true}
             favorites={favorites}
             setFavorites={setFavorites}
             device={deviceWithProfileId}

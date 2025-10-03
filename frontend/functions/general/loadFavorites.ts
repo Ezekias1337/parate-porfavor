@@ -10,15 +10,22 @@ import { Favorite } from "../../../shared/types/Favorite";
 */
 
 interface LoadFavoritesProps {
-    setFavorites: React.Dispatch<Favorite[]>;
+    setFavorites?: React.Dispatch<Favorite[]>;
     lastUsedProfile: string | null;
 }
 
-const loadFavorites = async ({ setFavorites, lastUsedProfile }: LoadFavoritesProps) => {
+const loadFavorites = async ({ setFavorites, lastUsedProfile }: LoadFavoritesProps): Promise<Favorite[]> => {
     const stored = await loadEncrypted("favorites");
-    if (stored) {
+    if (stored && lastUsedProfile) {
         const filteredFavorites = stored.filter((favorite: Favorite) => favorite.profileId === lastUsedProfile);
-        setFavorites(filteredFavorites);
+        setFavorites?.(filteredFavorites);
+        return filteredFavorites;
+    } else if (lastUsedProfile === null) {
+        setFavorites?.(stored);
+        return stored;
+    } else {
+        setFavorites?.([]);
+        return [];
     }
 }
 

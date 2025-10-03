@@ -1,4 +1,5 @@
 // Functions, Helpers, Utils, and Hooks
+import loadFavorites from "./loadFavorites";
 import { saveEncrypted } from "@/utils/secure-storage/secureStorage";
 // Types
 import { Device } from "../../../shared/types/Device";
@@ -27,7 +28,8 @@ const addToFavorites = async ({ device, favorites, setFavorites }: AddToFavorite
         profileId: device.profileId,
         device: device,
     };
-    const updatedFavorites = [...favorites, newFavorite];
+    const existingFavorites = await loadFavorites({ lastUsedProfile: null });
+    const updatedFavorites = [...existingFavorites, newFavorite];
 
     await saveEncrypted("favorites", updatedFavorites);
     setFavorites(updatedFavorites);
