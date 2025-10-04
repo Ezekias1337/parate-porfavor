@@ -21,6 +21,7 @@ import useFavoritesAndLastUsedProfile from "@/hooks/useFavoritesAndLastUsedProfi
 import { useAuth } from "@/components/auth/authContext";
 import { useLocalization } from "../components/localization/LocalizationContext";
 import FilterInput from "@/components/page-specific/devices/FilterInput";
+import Pagination from "@/components/pagination/Pagination";
 // Types
 import { Device } from "../../shared/types/Device";
 import {
@@ -31,7 +32,6 @@ import OntToken from "../../shared/types/OntToken";
 // CSS
 import { colors } from "../styles/variables";
 import deviceStyles from "../styles/page-specific/device";
-import { Favorite } from "../../shared/types/Favorite";
 
 export interface ListOfStateSetters {
   setDevices: React.Dispatch<React.SetStateAction<Device[]>>;
@@ -154,6 +154,7 @@ const Devices: React.FC = () => {
         },
         translate
       )}
+      <Pagination />
       {renderModal({
         modalVisible,
         setModalVisible,
