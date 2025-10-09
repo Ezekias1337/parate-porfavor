@@ -1,3 +1,5 @@
+// Functions, Helpers, Utils, and Hooks
+import chunkArray from "@/utils/arrays/chunkArray";
 // Types
 import { Device } from "../../../../shared/types/Device";
 
@@ -11,14 +13,18 @@ import { Device } from "../../../../shared/types/Device";
 // Arguments interface
 interface filterDeviceArgs {
     devices: Device[],
-    setFilteredDevices: React.Dispatch<React.SetStateAction<Device[]>>,
+    setFilteredDevices: React.Dispatch<React.SetStateAction<Device[][]>>,
     filter: string,
+    paginationSize: number,
+    paginationIndex: number
+    setPaginationIndex: React.Dispatch<React.SetStateAction<number>>
 }
 
-// The filter function
-const filterDevice = ({ devices, setFilteredDevices, filter }: filterDeviceArgs): void => {
+const filterDevice = ({ devices, setFilteredDevices, filter, paginationSize, paginationIndex, setPaginationIndex }: filterDeviceArgs): void => {
     if (filter === "") {
-        setFilteredDevices(devices);
+        const chunkedDevices = chunkArray(devices, paginationSize);
+        setPaginationIndex(0);
+        setFilteredDevices(chunkedDevices);
         return;
     }
 
@@ -33,7 +39,9 @@ const filterDevice = ({ devices, setFilteredDevices, filter }: filterDeviceArgs)
         );
     });
 
-    setFilteredDevices(filtered);
+    const chunkedDevices = chunkArray(filtered, paginationSize);
+    setPaginationIndex(0);
+    setFilteredDevices(chunkedDevices);
 };
 
 export default filterDevice;

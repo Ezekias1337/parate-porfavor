@@ -50,10 +50,12 @@ const Devices: React.FC = () => {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [ontToken, setOntToken] = useState<OntToken>(null);
   const [devices, setDevices] = useState<Device[]>([]);
-  const [filteredDevices, setFilteredDevices] = useState<Device[]>([]);
+  const [filteredDevices, setFilteredDevices] = useState<Device[][]>([]);
   const [selectedTemplate, setSelectedTemplate] = useState<Template | null>(
     null
   );
+  const [paginationSize, setPaginationSize] = useState<number>(10);
+  const [paginationIndex, setPaginationIndex] = useState<number>(0);
   const [parentalControls, setParentalControls] =
     useState<ParentalControlsData>({
       templates: [],
@@ -94,13 +96,11 @@ const Devices: React.FC = () => {
       devices,
       setFilteredDevices,
       filter,
+      paginationSize,
+      paginationIndex,
+      setPaginationIndex,
     });
   }, [devices, filter]);
-
-  useEffect(() => {
-    setFilteredDevices(devices);
-    setFilter("");
-  }, [devices]);
 
   return loading ? (
     <View style={[deviceStyles.loader]}>
@@ -141,6 +141,7 @@ const Devices: React.FC = () => {
         filteredDevices,
         lastUsedProfile,
         favorites,
+        paginationIndex,
         {
           setModalVisible,
           setDevices,
@@ -154,7 +155,13 @@ const Devices: React.FC = () => {
         },
         translate
       )}
-      <Pagination />
+      <Pagination
+        devices={filteredDevices}
+        paginationIndex={paginationIndex}
+        setPaginationIndex={setPaginationIndex}
+        paginationSize={paginationSize}
+        setPaginationSize={setPaginationSize}
+      />
       {renderModal({
         modalVisible,
         setModalVisible,

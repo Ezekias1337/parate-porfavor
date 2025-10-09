@@ -47,9 +47,10 @@ interface ListOfStateSetters {
 
 const renderDeviceCards = (
   ontToken: OntToken,
-  devices: Device[],
+  devices: Device[][],
   lastUsedProfile: string | null,
   favorites: Favorite[],
+  paginationIndex: number,
   {
     setModalVisible,
     setDevices,
@@ -59,11 +60,11 @@ const renderDeviceCards = (
     setErrorMsg,
     setModalDevice,
     setOntToken,
-    setFavorites
+    setFavorites,
   }: ListOfStateSetters,
   translate: (key: string) => string
 ) => {
-  if (devices.length === 0) {
+  if (devices?.length === 0 || !devices) {
     return (
       <Alert
         variant="warning"
@@ -73,14 +74,16 @@ const renderDeviceCards = (
     );
   }
 
+  const devicesToRender = devices[paginationIndex];
+
   return (
     <View style={deviceStyles.devicesContainer}>
-      {devices.map((device, index) => {
+      {devicesToRender.map((device, index) => {
         const buttons: ButtonProps[] = [];
 
         const button1 = renderDeviceCardButton1({
           device,
-          devices,
+          devices: devicesToRender,
           setDevices,
           setParentalControls,
           setLoading,
@@ -171,11 +174,14 @@ const renderDeviceCards = (
             size: "small",
           });
         }
-        
+
         const isFavorite = favorites.some(
-          (favorite) => favorite.device.macAddr === device.macAddr /* && favorite.profileId === device.profileId */
+          (favorite) => favorite.device.macAddr === device.macAddr
         );
-        const deviceWithProfileId: Device = { ...device, profileId: lastUsedProfile || "" };
+        const deviceWithProfileId: Device = {
+          ...device,
+          profileId: lastUsedProfile || "",
+        };
 
         return (
           <DeviceCard

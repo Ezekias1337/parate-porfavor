@@ -28,6 +28,9 @@ export const paginationStyles = StyleSheet.create({
     pageSelectorActiveText: {
         color: colors.primary100,   
     },
+    pageSelectorInactiveText: {
+        color: colors.neutral900,
+    },
     pageSelectorInactive: {
         backgroundColor: colors.primary100,
     }

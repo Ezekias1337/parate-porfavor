@@ -1,23 +1,63 @@
 // Library Imports
+import { FC } from "react";
 import { View } from "react-native";
-// Functions, Helpers, and Utils
-
 // Components
 import PageSelector from "./PageSelector";
-// Constants
-
+import PageArrowButton from "./PageArrowButton";
 // Interfaces and Types
-
+import { Device } from "../../../shared/types/Device";
 // CSS
 import { paginationStyles } from "@/styles/component-specific/pagination";
 
-const Pagination = () => {
+interface PaginationProps {
+  devices: Device[][];
+  paginationIndex: number;
+  setPaginationIndex: React.Dispatch<React.SetStateAction<number>>;
+  paginationSize: number;
+  setPaginationSize: React.Dispatch<React.SetStateAction<number>>;
+}
+
+const Pagination: FC<PaginationProps> = ({
+  devices,
+  paginationIndex,
+  setPaginationIndex,
+  paginationSize,
+  setPaginationSize,
+}) => {
+  if (devices?.length < paginationSize || !devices) {
+    return <></>;
+  }
+  
   return (
     <View style={paginationStyles.paginationWrapper}>
-      <PageSelector pageNumber={1} isActive={true} additionalClassNames="" />
-      <PageSelector pageNumber={2} isActive={false} additionalClassNames="ml-10" />
-      <PageSelector pageNumber={3} isActive={false} additionalClassNames="ml-10" />
-      <PageSelector pageNumber={4} isActive={false} additionalClassNames="ml-10" />
+      <PageArrowButton
+        isActive={paginationIndex > 0}
+        paginationIndex={paginationIndex}
+        direction="left"
+        onPress={() => {
+          setPaginationIndex(paginationIndex - 1);
+        }}
+      />
+
+      {devices.map((d, index) => {
+        return (
+          <PageSelector
+            key={index}
+            pageNumber={index + 1}
+            isActive={index === paginationIndex}
+            setPaginationIndex={setPaginationIndex}
+          />
+        );
+      })}
+
+      <PageArrowButton
+        isActive={paginationIndex < devices.length - 1}
+        paginationIndex={paginationIndex}
+        direction="right"
+        onPress={() => {
+          setPaginationIndex(paginationIndex + 1);
+        }}
+      />
     </View>
   );
 };
