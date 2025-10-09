@@ -16,7 +16,7 @@ import renderDeviceCards from "@/functions/page-specific/devices/render/renderDe
 import renderModal from "@/functions/page-specific/devices/render/renderModal";
 import useRefreshToken from "@/hooks/useRefreshToken";
 import filterDevices from "@/functions/page-specific/devices/filterDevices";
-import useFavoritesAndLastUsedProfile from "@/hooks/useFavoritesAndLastUsedProfile";
+import useFavoritesProfilesAndNotes from "@/hooks/useFavoritesProfilesAndNotes";
 // Components
 import { useAuth } from "@/components/auth/authContext";
 import { useLocalization } from "../components/localization/LocalizationContext";
@@ -64,8 +64,8 @@ const Devices: React.FC = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalDevice, setModalDevice] = useState<Device | null>(null);
   const [filter, setFilter] = useState<string>("");
-  const { lastUsedProfile, favorites, setFavorites } =
-    useFavoritesAndLastUsedProfile();
+  const { lastUsedProfile, favorites, setFavorites, notes, setNotes } =
+    useFavoritesProfilesAndNotes();
 
   useEffect(() => {
     fetchDevicesAndParentalControls(
@@ -141,6 +141,7 @@ const Devices: React.FC = () => {
         filteredDevices,
         lastUsedProfile,
         favorites,
+        notes,
         paginationIndex,
         {
           setModalVisible,
@@ -152,6 +153,7 @@ const Devices: React.FC = () => {
           setModalDevice,
           setOntToken,
           setFavorites,
+          setNotes,
         },
         translate
       )}

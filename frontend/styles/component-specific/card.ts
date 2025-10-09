@@ -72,12 +72,21 @@ const cardStyles = StyleSheet.create({
   buttonIcon: {
     marginRight: 8,
   },
-  iconWrapper: {
+  iconContainer: {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     marginBottom: 10,
+  },
+  touchableIconWrapper: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 20,
+  },
+  inputSectionWrapper: {
+    marginTop: 20,
   },
   primary: {
     backgroundColor: colors.primary500,

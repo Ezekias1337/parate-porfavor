@@ -12,8 +12,9 @@ import Alert from "@/components/Alert";
 import { Device } from "../../../../../shared/types/Device";
 import { ParentalControlsData } from "../../../../../shared/types/ParentalControls";
 import { ButtonProps } from "@/components/Button";
-import OntToken from "../../../../../shared/types/OntToken";
 import { Favorite } from "../../../../../shared/types/Favorite";
+import { Note } from "../../../../../shared/types/Note";
+import OntToken from "../../../../../shared/types/OntToken";
 // CSS
 import deviceStyles from "../../../../styles/page-specific/device";
 import { BadgeProps } from "@/components/Badge";
@@ -43,6 +44,7 @@ interface ListOfStateSetters {
   setModalDevice: React.Dispatch<React.SetStateAction<Device | null>>;
   setOntToken: React.Dispatch<React.SetStateAction<OntToken>>;
   setFavorites: React.Dispatch<React.SetStateAction<Favorite[]>>;
+  setNotes: React.Dispatch<React.SetStateAction<Note[]>>;
 }
 
 const renderDeviceCards = (
@@ -50,6 +52,7 @@ const renderDeviceCards = (
   devices: Device[][],
   lastUsedProfile: string | null,
   favorites: Favorite[],
+  notes: Note[],
   paginationIndex: number,
   {
     setModalVisible,
@@ -61,6 +64,7 @@ const renderDeviceCards = (
     setModalDevice,
     setOntToken,
     setFavorites,
+    setNotes,
   }: ListOfStateSetters,
   translate: (key: string) => string
 ) => {
@@ -178,6 +182,11 @@ const renderDeviceCards = (
         const isFavorite = favorites.some(
           (favorite) => favorite.device.macAddr === device.macAddr
         );
+        const note = notes.find(
+          (note) => note.macAddr === device.macAddr
+        )?.note;
+        
+        
         const deviceWithProfileId: Device = {
           ...device,
           profileId: lastUsedProfile || "",
@@ -198,7 +207,10 @@ const renderDeviceCards = (
             isFavorite={isFavorite}
             favorites={favorites}
             setFavorites={setFavorites}
+            deviceNote={note}
+            setNotes={setNotes}
             device={deviceWithProfileId}
+            translate={translate}
           />
         );
       })}

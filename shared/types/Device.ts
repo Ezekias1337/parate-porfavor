@@ -7,11 +7,12 @@ export type Device = {
     ipAddress?: string;
     onlineStatus?: "Online" | "Offline" | "Unknown";
     connectionType?: WirelessOrEthernet;
-    ssid?: SSIDName;  
+    ssid?: SSIDName;
     description?: string;
     templateId?: number;
     macFiltered?: boolean;
     macIndex?: number;
     parentalControlRestrictionApplied?: boolean;
     profileId?: string;
+    note?: string;
 };

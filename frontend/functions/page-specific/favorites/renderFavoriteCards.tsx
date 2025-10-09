@@ -9,6 +9,7 @@ import Alert from "@/components/Alert";
 import { Device } from "../../../../shared/types/Device";
 import { ButtonProps } from "@/components/Button";
 import { Favorite } from "../../../../shared/types/Favorite";
+import { Note } from "../../../../shared/types/Note";
 // CSS
 import deviceStyles from "../../../styles/page-specific/device";
 import { BadgeProps } from "@/components/Badge";
@@ -31,12 +32,14 @@ import { BadgeProps } from "@/components/Badge";
 interface ListOfStateSetters {
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   setFavorites: React.Dispatch<React.SetStateAction<Favorite[]>>;
+  setNotes: React.Dispatch<React.SetStateAction<Note[]>>;
 }
 
 const renderFavoriteCards = (
   lastUsedProfile: string | null,
   favorites: Favorite[],
-  { setLoading, setFavorites }: ListOfStateSetters,
+  notes: Note[],
+  { setLoading, setFavorites, setNotes }: ListOfStateSetters,
   translate: (key: string) => string
 ) => {
   if (favorites.length === 0) {
@@ -88,6 +91,11 @@ const renderFavoriteCards = (
           ...device,
           profileId: lastUsedProfile || "",
         };
+        
+        const note = notes.find(
+          (note) => note.macAddr === device.macAddr
+        )?.note;
+        console.log("Note:", note);
 
         return (
           <DeviceCard
@@ -105,6 +113,9 @@ const renderFavoriteCards = (
             favorites={favorites}
             setFavorites={setFavorites}
             device={deviceWithProfileId}
+            deviceNote={note}
+            setNotes={setNotes}
+            translate={translate}
           />
         );
       })}

@@ -1,6 +1,6 @@
 // Library Imports
-import React, { FC } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { FC, useState, useEffect, Fragment } from "react";
+import { View, Text, TouchableOpacity, TextInput } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 // Components
 import Card from "../../Card";
@@ -9,13 +9,17 @@ import Badge, { BadgeProps } from "../../Badge";
 // Functions, Helpers, Utils, and Hooks
 import addToFavorites from "@/functions/general/addToFavorites";
 import removeFromFavorites from "@/functions/general/removeFromFavorites";
+import updateNote from "@/functions/general/updateNote";
+import deleteNote from "@/functions/general/deleteNote";
 // Types and Interfaces
 import FontAwesomeIconNames from "../../../types/FontAwesome";
 import { Favorite } from "../../../../shared/types/Favorite";
 import { Device } from "../../../../shared/types/Device";
+import { Note } from "../../../../shared/types/Note";
 // CSS
 import { colors } from "../../../styles/variables";
 import cardStyles from "../../../styles/component-specific/card";
+import { inputFieldStyles } from "@/styles/component-specific/input-fields";
 
 interface DeviceCardProps {
   headerText: string;
@@ -26,7 +30,10 @@ interface DeviceCardProps {
   isFavorite?: boolean;
   favorites: Favorite[];
   setFavorites: React.Dispatch<React.SetStateAction<Favorite[]>>;
+  deviceNote?: string;
+  setNotes: React.Dispatch<React.SetStateAction<Note[]>>;
   device: Device;
+  translate: (key: string) => string;
 }
 
 const DeviceCard: FC<DeviceCardProps> = ({
@@ -38,27 +45,53 @@ const DeviceCard: FC<DeviceCardProps> = ({
   isFavorite = false,
   favorites,
   setFavorites,
+  deviceNote,
+  setNotes,
   device,
+  translate,
 }) => {
+  const [displayNoteInput, setDisplayNoteInput] = useState(false);
+  const [noteContent, setNoteContent] = useState("");
+  
+  useEffect(() => {
+    if(deviceNote) {
+      setNoteContent(deviceNote);
+    }
+  }, [deviceNote]);
+
   return (
     <Card>
-      <View style={cardStyles.iconWrapper}>
+      <View style={cardStyles.iconContainer}>
         <FontAwesome name={cardIcon} size={32} color={colors.primary500} />
-        <TouchableOpacity
-          onPress={() => {
-            if (isFavorite) {
-              removeFromFavorites({ device, favorites, setFavorites });
-            } else {
-              addToFavorites({ device, favorites, setFavorites });
-            }
-          }}
-        >
-          <FontAwesome
-            name={isFavorite ? "heart" : "heart-o"}
-            size={32}
-            color={colors.primary500}
-          />
-        </TouchableOpacity>
+        <View style={cardStyles.touchableIconWrapper}>
+          <TouchableOpacity
+            onPress={() => {
+              setDisplayNoteInput(!displayNoteInput);
+            }}
+          >
+            <FontAwesome
+              name={deviceNote ? "sticky-note" : "sticky-note-o"}
+              size={32}
+              color={colors.primary500}
+            />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => {
+              if (isFavorite) {
+                removeFromFavorites({ device, favorites, setFavorites });
+              } else {
+                addToFavorites({ device, setFavorites });
+              }
+            }}
+          >
+            <FontAwesome
+              name={isFavorite ? "heart" : "heart-o"}
+              size={32}
+              color={colors.primary500}
+            />
+          </TouchableOpacity>
+        </View>
       </View>
 
       <View style={cardStyles.cardTextWrapper}>
@@ -66,10 +99,20 @@ const DeviceCard: FC<DeviceCardProps> = ({
         {bodyText && (
           <Text style={cardStyles.bodyText}>
             {bodyText.split("\n").map((line, index) => (
-              <React.Fragment key={index}>
+              <Fragment key={index}>
                 {line}
                 {"\n"}
-              </React.Fragment>
+              </Fragment>
+            ))}
+          </Text>
+        )}
+        {deviceNote && (
+          <Text style={cardStyles.bodyText}>
+            {translate("note")}: {deviceNote.split("\n").map((line, index) => (
+              <Fragment key={index}>
+                {line}
+                {"\n"}
+              </Fragment>
             ))}
           </Text>
         )}
@@ -104,6 +147,51 @@ const DeviceCard: FC<DeviceCardProps> = ({
           />
         ))}
       </View>
+      {displayNoteInput && (
+        <View style={cardStyles.inputSectionWrapper}>
+          <TextInput
+            placeholder={translate("note")}
+            value={noteContent}
+            onChangeText={setNoteContent}
+            style={inputFieldStyles.textInput}
+            placeholderTextColor={colors.primary300}
+            id="username"
+          />
+          <View style={cardStyles.buttonWrapper}>
+            <Button
+              text={translate("addNote")}
+              variant={"success"}
+              leftIcon
+              icon={"floppy-o"}
+              iconSize={32}
+              onClickHandler={async () => {
+                await updateNote({
+                  device,
+                  newNoteContent: noteContent,
+                  setNotes,
+                });
+                setDisplayNoteInput(false);
+              }}
+              buttonSize="small"
+            />
+            <Button
+              text={translate("deleteNote")}
+              variant={"error"}
+              leftIcon
+              icon={"trash"}
+              iconSize={32}
+              onClickHandler={async () => {
+                await deleteNote({
+                  device,
+                  setNotes,
+                });
+                setDisplayNoteInput(false);
+              }}
+              buttonSize="small"
+            />
+          </View>
+        </View>
+      )}
     </Card>
   );
 };

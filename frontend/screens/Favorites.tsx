@@ -8,8 +8,8 @@ import {
   Dimensions,
 } from "react-native";
 // Functions, Helpers, Utils, and Hooks
-import renderFavoriteCards from "@/functions/page-specific/favorites/renderFavoriteCards";;
-import useFavoritesAndLastUsedProfile from "@/hooks/useFavoritesAndLastUsedProfile";
+import renderFavoriteCards from "@/functions/page-specific/favorites/renderFavoriteCards";
+import useFavoritesProfilesAndNotes from "@/hooks/useFavoritesProfilesAndNotes";
 // Components
 import Alert from "../components/Alert";
 // Types
@@ -23,8 +23,8 @@ const Favorites: React.FC = () => {
   const { translate } = useLocalization();
 
   const [loading, setLoading] = useState(false);
-  const { lastUsedProfile, favorites, setFavorites } =
-    useFavoritesAndLastUsedProfile();
+  const { lastUsedProfile, favorites, setFavorites, notes, setNotes } =
+    useFavoritesProfilesAndNotes();
 
   return loading ? (
     <View style={[modemStyles.loader]}>
@@ -52,7 +52,8 @@ const Favorites: React.FC = () => {
       {renderFavoriteCards(
         lastUsedProfile,
         favorites,
-        { setLoading, setFavorites },
+        notes,
+        { setLoading, setFavorites, setNotes },
         translate
       )}
     </ScrollView>
