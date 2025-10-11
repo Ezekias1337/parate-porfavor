@@ -7,7 +7,7 @@ import {
   Template,
 } from "../../../../shared/types/ParentalControls";
 // CSS
-import { colors } from "../../../styles/variables";
+import { colors } from "../../../styles/colors";
 import { templateCardStyles } from "./TemplateCard";
 
 interface RestrictionProps {

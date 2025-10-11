@@ -11,7 +11,7 @@ import TabIcon from "./TabIcon";
 import { useLocalization } from "../components/localization/LocalizationContext";
 // CSS
 import { bottomTabStyles } from "../styles/component-specific/bottom-tabs";
-import { colors } from "../styles/variables";
+import { colors } from "../styles/colors";
 
 const Tab = createBottomTabNavigator();
 

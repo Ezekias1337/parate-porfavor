@@ -6,7 +6,7 @@ import handleInputChange from "../handleInputChange";
 import { Account } from "../../../../../shared/types/Account";
 // CSS
 import { inputFieldStyles } from "@/styles/component-specific/input-fields";
-import { colors } from "@/styles/variables";
+import { colors } from "@/styles/colors";
 
 /**
  * Renders the input fields for the settings page.

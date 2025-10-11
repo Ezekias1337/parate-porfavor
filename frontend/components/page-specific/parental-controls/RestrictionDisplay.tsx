@@ -8,8 +8,9 @@ import convertTo12HourFormat from "../../../helpers/convertTo12HourFormat";
 import { Restriction } from "../../../../shared/types/ParentalControls";
 // CSS
 import utilityStyles from "@/styles/utilities";
-import { colors, borderWidth, borderRadius } from "../../../styles/variables";
-import  templateCardStyles  from "../../../styles/component-specific/template-card";
+import { colors } from "../../../styles/colors";
+import { borderWidth, borderRadius } from "../../../styles/borders";
+import templateCardStyles from "../../../styles/component-specific/template-card";
 
 interface RestrictionProps {
   restriction: Restriction;

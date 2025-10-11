@@ -16,7 +16,7 @@ import OntToken from "../../../../shared/types/OntToken";
 import parentalControlsStyles from "../../../styles/page-specific/parentalControls";
 import utilityStyles from "@/styles/utilities";
 import { inputFieldStyles } from "../../../styles/component-specific/input-fields";
-import { colors } from "../../../styles/variables";
+import { colors } from "../../../styles/colors";
 
 interface TemplateCreatorProps {
   parentalControls: ParentalControlsData | null;

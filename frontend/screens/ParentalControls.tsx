@@ -23,7 +23,7 @@ import { useLocalization } from "../components/localization/LocalizationContext"
 import OntToken from "../../shared/types/OntToken";
 import { Template } from "../../shared/types/ParentalControls";
 // CSS
-import { colors } from "../styles/variables";
+import { colors } from "../styles/colors";
 import parentalControlsStyles from "../styles/page-specific/parentalControls";
 
 const ParentalControls: React.FC = () => {

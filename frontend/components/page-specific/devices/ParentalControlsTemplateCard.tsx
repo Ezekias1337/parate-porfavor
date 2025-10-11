@@ -16,7 +16,8 @@ import OntToken from "../../../../shared/types/OntToken";
 import Button from "../../Button";
 // CSS
 import utilityStyles from "../../../styles/utilities";
-import { colors, fontSizes } from "../../../styles/variables";
+import { colors } from "../../../styles/colors";
+import { fontSizes } from "../../../styles/typography";
 import { inputFieldStyles } from "@/styles/component-specific/input-fields";
 import templateCardStyles from "@/styles/component-specific/template-card";
 

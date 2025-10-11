@@ -1,5 +1,9 @@
+// Library Imports
 import { StyleSheet } from "react-native";
-import { colors, fontSizes, borderRadius, borderWidth } from "../variables";
+// CSS
+import { colors } from "../colors"
+import { borderRadius, borderWidth } from "../borders";
+import { fontSizes } from "../typography";
 
 export const badgeStyles = StyleSheet.create({
   badge: {

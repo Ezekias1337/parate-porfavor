@@ -17,7 +17,7 @@ import { Favorite } from "../../../../shared/types/Favorite";
 import { Device } from "../../../../shared/types/Device";
 import { Note } from "../../../../shared/types/Note";
 // CSS
-import { colors } from "../../../styles/variables";
+import { colors } from "../../../styles/colors";
 import cardStyles from "../../../styles/component-specific/card";
 import { inputFieldStyles } from "@/styles/component-specific/input-fields";
 

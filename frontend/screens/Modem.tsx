@@ -22,7 +22,7 @@ import ModemStatusCard from "../components/page-specific/modem/ModemStatusCard";
 import { ModemStatus } from "../../shared/types/Modem";
 import { useLocalization } from "../components/localization/LocalizationContext";
 // CSS
-import { colors } from "../styles/variables";
+import { colors } from "../styles/colors";
 import modemStyles from "../styles/page-specific/modem";
 
 const Modem: React.FC = () => {

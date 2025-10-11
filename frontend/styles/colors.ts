@@ -1,7 +1,4 @@
-// theme.js
-
 export const colors = {
-  // Primary Color Shades
   primary100: "#D6E1F6",
   primary200: "#ADC3EC",
   primary300: "#84A5E2",
@@ -12,7 +9,6 @@ export const colors = {
   primary800: "#1D2D4F",
   primary900: "#101625",
 
-  // Success Colors
   success100: "#D6F6E4",
   success200: "#ADF1C9",
   success300: "#84EBAE",
@@ -23,7 +19,6 @@ export const colors = {
   success800: "#166630",
   success900: "#0D3D18",
 
-  // Warning Colors
   warning100: "#FFF6D6",
   warning200: "#FFEDAD",
   warning300: "#FFE384",
@@ -34,7 +29,6 @@ export const colors = {
   warning800: "#665C16",
   warning900: "#33250D",
 
-  // Error Colors
   error100: "#F6D6D6",
   error200: "#ECADAD",
   error300: "#E28484",
@@ -45,7 +39,6 @@ export const colors = {
   error800: "#4F1919",
   error900: "#251010",
 
-  // Info Colors
   info100: "#D6E6F6",
   info200: "#ADCDEB",
   info300: "#84B3E0",
@@ -56,7 +49,6 @@ export const colors = {
   info800: "#163754",
   info900: "#0D1E2D",
 
-  // Neutral Colors
   neutral100: "#FCFCFD",
   neutral200: "#D0D3D7",
   neutral300: "#A7ACB4",
@@ -77,19 +69,3 @@ export const colors = {
   transparentBlack800: "rgba(neutral900,  0.8)",
   transparentBlack900: "rgba(neutral900,  0.9)",
 };
-
-export const fontSizes = {
-  header1: 56.8,
-  header2: 42.6,
-  header3: 32,
-  general: 24,
-  body: 18,
-};
-
-export const borderRadius = {
-  borderRadius: 5,
-};
-
-export const borderWidth = {
-  borderWidth: 1.5,
-}

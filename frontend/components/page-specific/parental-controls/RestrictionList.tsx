@@ -17,7 +17,7 @@ import OntToken from "../../../../shared/types/OntToken";
 // CSS
 import utilityStyles from "../../../styles/utilities";
 import cardStyles from "../../../styles/component-specific/card";
-import { fontSizes } from "@/styles/variables";
+import { fontSizes } from "@/styles/typography";
 import parentalControlsStyles from "../../../styles/page-specific/parentalControls";
 interface RestrictionListProps {
   template: Template;

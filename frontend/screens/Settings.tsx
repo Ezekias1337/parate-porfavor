@@ -23,7 +23,7 @@ import { useLocalization } from "@/components/localization/LocalizationContext";
 import SettingsModal from "@/components/page-specific/settings/SettingsModal";
 import AccountCard from "@/components/page-specific/settings/AccountCard";
 // CSS
-import { colors } from "../styles/variables";
+import { colors } from "../styles/colors";
 import settingsStyles from "../styles/page-specific/settings";
 
 interface SettingsProps {

@@ -1,7 +1,8 @@
 // Library Imports
 import { StyleSheet } from "react-native";
 // CSS
-import { colors, fontSizes } from "../variables";
+import { colors } from "../colors"
+import { fontSizes } from "../typography";
 
 const parentalControlsStyles = StyleSheet.create({
   container: {

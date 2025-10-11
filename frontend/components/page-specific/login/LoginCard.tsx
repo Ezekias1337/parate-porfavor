@@ -9,7 +9,7 @@ import renderSubmitButton from "@/functions/page-specific/login/render/renderSub
 // Types and Interfaces
 import { Account } from "../../../../shared/types/Account";
 // CSS
-import { colors } from "../../../styles/variables";
+import { colors } from "../../../styles/colors";
 import cardStyles from "../../../styles/component-specific/card";
 
 interface LoginCardProps {

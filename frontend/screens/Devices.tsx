@@ -30,7 +30,7 @@ import {
 } from "../../shared/types/ParentalControls";
 import OntToken from "../../shared/types/OntToken";
 // CSS
-import { colors } from "../styles/variables";
+import { colors } from "../styles/colors";
 import deviceStyles from "../styles/page-specific/device";
 
 export interface ListOfStateSetters {

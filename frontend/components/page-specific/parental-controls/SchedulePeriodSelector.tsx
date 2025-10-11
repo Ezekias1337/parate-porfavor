@@ -22,7 +22,7 @@ import {
 import utilityStyles from "@/styles/utilities";
 import { inputFieldStyles } from "../../../styles/component-specific/input-fields";
 import parentalControlsStyles from "../../../styles/page-specific/parentalControls";
-import { colors } from "../../../styles/variables";
+import { colors } from "../../../styles/colors";
 
 interface SchedulePeriodSelectorProps {
   translate: (key: string) => string;

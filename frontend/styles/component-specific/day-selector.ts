@@ -1,8 +1,8 @@
 // Library Imports
 import { StyleSheet } from "react-native";
-
 // CSS
-import { colors, borderRadius } from "../variables";
+import { colors } from "../colors"
+import { borderRadius } from "../borders";
 
 const daySelectorStyles = StyleSheet.create({
   inactiveButton: {

@@ -15,7 +15,7 @@ import Alert from "../components/Alert";
 // Types
 import { useLocalization } from "../components/localization/LocalizationContext";
 // CSS
-import { colors } from "../styles/variables";
+import { colors } from "../styles/colors";
 import modemStyles from "../styles/page-specific/modem";
 
 const Favorites: React.FC = () => {

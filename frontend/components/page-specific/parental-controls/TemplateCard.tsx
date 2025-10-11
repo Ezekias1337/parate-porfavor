@@ -12,7 +12,9 @@ import { Template } from "../../../../shared/types/ParentalControls";
 import { ParentalControlsData } from "../../../../shared/types/ParentalControls";
 import OntToken from "../../../../shared/types/OntToken";
 // CSS
-import { colors, fontSizes, borderRadius } from "../../../styles/variables";
+import { colors } from "../../../styles/colors";
+import { borderRadius } from "../../../styles/borders";
+import { fontSizes } from "../../../styles/typography";
 
 interface TemplateCardProps {
   template: Template;

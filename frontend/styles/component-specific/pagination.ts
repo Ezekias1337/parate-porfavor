@@ -1,8 +1,9 @@
 // Library Imports
 import { StyleSheet } from "react-native";
-
 // CSS
-import { colors, borderRadius, fontSizes } from "../variables";
+import { colors } from "../colors"
+import { borderRadius } from "../borders";
+import { fontSizes } from "../typography";
 
 export const paginationStyles = StyleSheet.create({
     paginationWrapper: {
@@ -26,7 +27,7 @@ export const paginationStyles = StyleSheet.create({
         borderColor: colors.primary100,
     },
     pageSelectorActiveText: {
-        color: colors.primary100,   
+        color: colors.primary100,
     },
     pageSelectorInactiveText: {
         color: colors.neutral900,

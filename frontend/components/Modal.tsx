@@ -3,7 +3,7 @@ import React, { FC } from "react";
 import { Modal as RNModal, View, Pressable, ScrollView } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 // CSS
-import { colors } from "../styles/variables";
+import { colors } from "../styles/colors";
 import { modalStyles } from "../styles/component-specific/modal";
 
 interface ModalProps {

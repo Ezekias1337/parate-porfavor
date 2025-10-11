@@ -1,7 +1,9 @@
 // Library Imports
 import { StyleSheet } from "react-native";
 // CSS
-import { colors, borderRadius, fontSizes } from "../variables";
+import { colors } from "../colors"
+import { borderRadius } from "../borders";
+import { fontSizes } from "../typography";
 
 const modemStatusCardStyles = StyleSheet.create({
   card: {

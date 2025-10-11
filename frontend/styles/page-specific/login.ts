@@ -1,7 +1,7 @@
 // Library Imports
 import { StyleSheet } from "react-native";
 // CSS
-import { colors } from "../variables";
+import { colors } from "../colors";
 
 const loginStyles = StyleSheet.create({
   container: {

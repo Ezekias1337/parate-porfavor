@@ -1,7 +1,7 @@
-// styles/component-specific/bottom-tabs.ts
-
+// Library Imports
 import { StyleSheet } from "react-native";
-import { colors } from "../variables"; // Import your color and effect variables
+// CSS
+import { colors } from "../colors";
 
 export const bottomTabStyles = StyleSheet.create({
   tabBar: {

@@ -3,7 +3,7 @@ import { TextInput, View } from "react-native";
 // Functions, Helpers, Utils, and Hooks
 import handleInputChange from "../../../functions/page-specific/devices/handleInputChange";
 // CSS
-import { colors } from "../../../styles/variables";
+import { colors } from "../../../styles/colors";
 import { inputFieldStyles } from "../../../styles/component-specific/input-fields";
 import utilityStyles from "@/styles/utilities";
 

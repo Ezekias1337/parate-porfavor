@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
-
 // CSS
-import { colors, borderRadius, fontSizes } from "../variables";
+import { colors } from "../colors"
+import { borderRadius } from "../borders";
 
 export const modalStyles = StyleSheet.create({
   modalWrapper: {

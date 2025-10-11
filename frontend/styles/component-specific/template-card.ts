@@ -1,5 +1,9 @@
+// Library Imports
 import { StyleSheet } from "react-native";
-import { colors, fontSizes, borderRadius } from "../variables";
+// CSS
+import { colors } from "../colors"
+import { borderRadius } from "../borders";
+import { fontSizes } from "../typography";
 
 const templateCardStyles = StyleSheet.create({
   card: {

@@ -1,8 +1,9 @@
 // Library Imports
 import { StyleSheet } from "react-native";
-
 // CSS
-import { colors, borderRadius, fontSizes, borderWidth } from "../variables";
+import { colors } from "../colors"
+import { borderRadius, borderWidth } from "../borders";
+import { fontSizes } from "../typography";
 
 export const buttonStyles = StyleSheet.create({
   button: {

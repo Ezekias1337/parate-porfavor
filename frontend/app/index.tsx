@@ -9,7 +9,7 @@ import { AuthProvider } from "../components/auth/authContext";
 import { LocalizationProvider } from "../components/localization/LocalizationContext";
 
 //CSS
-import { colors } from "../styles/variables";
+import { colors } from "../styles/colors";
 
 const App = () => (
   <NavigationContainer>
