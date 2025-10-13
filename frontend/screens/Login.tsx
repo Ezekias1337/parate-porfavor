@@ -1,6 +1,6 @@
 // Library Imports
 import React, { useEffect, useState } from "react";
-import { ScrollView, Image, Dimensions } from "react-native";
+import { ScrollView, View, Image, Dimensions } from "react-native";
 // Functions, Helpers, Utils, and Hooks
 import loadCreds from "@/functions/general/loadCreds";
 import renderErrorMsg from "@/functions/general/renderErrorMsg";
@@ -11,6 +11,7 @@ import { useLocalization } from "../components/localization/LocalizationContext"
 // Types
 import { Account } from "../../shared/types/Account";
 // CSS
+import utilityStyles from "@/styles/utilities";
 import loginStyles from "../styles/page-specific/login";
 // Assets
 const appLogo = require("../assets/images/splash.png");
@@ -33,35 +34,42 @@ const Login: React.FC = () => {
   }, []);
 
   return (
-    <ScrollView
-      contentContainerStyle={[
-        loginStyles.container,
-        {
-          paddingLeft: screenWidth < 500 ? 10 : screenWidth * 0.1,
-          paddingRight: screenWidth < 500 ? 10 : screenWidth * 0.1,
-        },
-      ]}
-      automaticallyAdjustKeyboardInsets={true}
-    >
-      <Image
-        source={appLogo}
-        style={{
-          width: screenWidth < 500 ? screenWidth * 0.75 : screenWidth * 0.2,
-          height: screenWidth < 500 ? screenWidth * 0.75 : screenWidth * 0.2,
-        }}
-      />
+    <View style={[utilityStyles.screenContentsContainer]}>
+      <View style={utilityStyles.stickyTop}>
+        <Image
+          source={appLogo}
+          style={{
+            width: screenWidth < 500 ? screenWidth * 0.75 : screenWidth * 0.2,
+            height: screenWidth < 500 ? screenWidth * 0.75 : screenWidth * 0.2,
+          }}
+        />
+        {renderErrorMsg(errorMsg)}
+      </View>
 
-      {renderErrorMsg(errorMsg)}
-      {renderLoginCards({
-        accounts,
-        loading,
-        setLoading,
-        errorMsg,
-        setErrorMsg,
-        authenticate,
-        translate,
-      })}
-    </ScrollView>
+      <ScrollView
+        style={utilityStyles.fullWidth}
+        contentContainerStyle={[
+          utilityStyles.scrollableContent,
+          utilityStyles.paddingTop20,
+          {
+            paddingLeft: screenWidth < 500 ? 20 : screenWidth * 0.1,
+            paddingRight: screenWidth < 500 ? 20 : screenWidth * 0.1,
+            
+          },
+        ]}
+        automaticallyAdjustKeyboardInsets={true}
+      >
+        {renderLoginCards({
+          accounts,
+          loading,
+          setLoading,
+          errorMsg,
+          setErrorMsg,
+          authenticate,
+          translate,
+        })}
+      </ScrollView>
+    </View>
   );
 };
 

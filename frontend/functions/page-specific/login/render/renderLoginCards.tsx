@@ -1,7 +1,12 @@
+// Library Imports
+import { View } from "react-native";
+// Functions, Helpers, Utils, and Hooks
 // Components
 import LoginCard from "@/components/page-specific/login/LoginCard";
 // Types
 import { Account } from "../../../../../shared/types/Account";
+// CSS
+import utilityStyles from "@/styles/utilities";
 
 interface RenderLoginCardsProps {
   accounts: Account[];
@@ -23,7 +28,7 @@ const renderLoginCards = ({
   translate,
 }: RenderLoginCardsProps) => {
   return (
-    <>
+    <View style={[utilityStyles.gap20, utilityStyles.fullWidth]}>
       {accounts.map((account) => (
         <LoginCard
           key={account.id}
@@ -36,7 +41,7 @@ const renderLoginCards = ({
           translate={translate}
         />
       ))}
-    </>
+    </View>
   );
 };
 
