@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import {
   View,
   ActivityIndicator,
-  Text,
   ScrollView,
   Dimensions,
 } from "react-native";
@@ -11,11 +10,13 @@ import {
 import renderFavoriteCards from "@/functions/page-specific/favorites/renderFavoriteCards";
 import useFavoritesProfilesAndNotes from "@/hooks/useFavoritesProfilesAndNotes";
 // Components
+import PageTitle from "@/components/PageTitle";
 import Alert from "../components/Alert";
 // Types
 import { useLocalization } from "../components/localization/LocalizationContext";
 // CSS
 import { colors } from "../styles/colors";
+import utilityStyles from "../styles/utilities";
 import modemStyles from "../styles/page-specific/modem";
 
 const Favorites: React.FC = () => {
@@ -31,32 +32,38 @@ const Favorites: React.FC = () => {
       <ActivityIndicator color={colors.primary500} size="large" />
     </View>
   ) : (
-    <ScrollView
-      contentContainerStyle={[
-        modemStyles.container,
-        {
-          paddingLeft: screenWidth < 500 ? 10 : screenWidth * 0.1,
-          paddingRight: screenWidth < 500 ? 10 : screenWidth * 0.1,
-        },
-      ]}
-      automaticallyAdjustKeyboardInsets={true}
-    >
-      <Text style={modemStyles.title}>{translate("modem")}</Text>
-      {favorites.length > 0 && lastUsedProfile !== null && (
-        <Alert
-          bodyText={translate("favoritesExplanation")}
-          variant="info"
-          icon="info-circle"
-        />
-      )}
-      {renderFavoriteCards(
-        lastUsedProfile,
-        favorites,
-        notes,
-        { setLoading, setFavorites, setNotes },
-        translate
-      )}
-    </ScrollView>
+    <View style={[utilityStyles.screenContentsContainer]}>
+      <View style={utilityStyles.stickyTop}>
+        <PageTitle text={translate("favorites")} />
+        {favorites?.length > 0 && lastUsedProfile !== null && (
+          <Alert
+            bodyText={translate("favoritesExplanation")}
+            variant="info"
+            icon="info-circle"
+          />
+        )}
+      </View>
+
+      <ScrollView
+        contentContainerStyle={[
+          utilityStyles.scrollableContent,
+          utilityStyles.paddingTop20,
+          {
+            paddingLeft: screenWidth < 500 ? 20 : screenWidth * 0.1,
+            paddingRight: screenWidth < 500 ? 20 : screenWidth * 0.1,
+          },
+        ]}
+        automaticallyAdjustKeyboardInsets={true}
+      >
+        {renderFavoriteCards(
+          lastUsedProfile,
+          favorites,
+          notes,
+          { setLoading, setFavorites, setNotes },
+          translate
+        )}
+      </ScrollView>
+    </View>
   );
 };
 

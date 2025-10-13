@@ -27,8 +27,14 @@ const addToFavorites = async ({ device, setFavorites }: AddToFavoritesProps) => 
         device: device,
     };
     const existingFavorites = await loadFavorites({ lastUsedProfile: null });
-    const updatedFavorites = [...existingFavorites, newFavorite];
+    let updatedFavorites: Favorite[] = [];
 
+    if (existingFavorites) {
+        updatedFavorites = [...existingFavorites, newFavorite];
+    } else {
+        updatedFavorites = [newFavorite];
+    }
+    
     await saveEncrypted("favorites", updatedFavorites);
     setFavorites(updatedFavorites);
 }

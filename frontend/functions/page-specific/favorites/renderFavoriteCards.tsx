@@ -42,7 +42,7 @@ const renderFavoriteCards = (
   { setLoading, setFavorites, setNotes }: ListOfStateSetters,
   translate: (key: string) => string
 ) => {
-  if (favorites.length === 0) {
+  if (favorites?.length === 0 || !favorites) {
     return (
       <Alert
         variant="warning"

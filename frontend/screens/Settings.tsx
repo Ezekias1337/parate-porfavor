@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import {
   View,
-  Text,
   Dimensions,
   ScrollView,
   ActivityIndicator,
@@ -103,6 +102,7 @@ const Settings: React.FC<SettingsProps> = ({
             paddingRight: screenWidth < 500 ? 20 : screenWidth * 0.1,
           },
         ]}
+        automaticallyAdjustKeyboardInsets={true}
       >
         <View style={utilityStyles.gap20}>
           {accounts.map((account, index) => (

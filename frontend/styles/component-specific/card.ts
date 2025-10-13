@@ -17,7 +17,7 @@ const cardStyles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 8,
     elevation: 5,
-    maxWidth: 400,
+    width: "100%",
   },
   imageOnlyCard: {
     height: 200,

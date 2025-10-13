@@ -42,7 +42,7 @@ const deviceStyles = StyleSheet.create({
     width: "100%",
     gap: 10,
     marginTop: 20,
-    padding: 20,
+    /*  padding: 20, */
   },
   text: {
     color: colors.neutral100,
