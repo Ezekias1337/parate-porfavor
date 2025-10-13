@@ -1,6 +1,13 @@
 // Library Imports
 import React, { FC } from "react";
-import { Modal as RNModal, View, Pressable, ScrollView } from "react-native";
+import {
+  Modal as RNModal,
+  View,
+  Pressable,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 // CSS
 import { colors } from "../styles/colors";
@@ -27,26 +34,33 @@ const Modal: FC<ModalProps> = ({
       onRequestClose={() => setModalVisible(false)}
     >
       <View style={modalStyles.modalWrapper}>
-        <View
-          style={[
-            modalStyles.modalContents,
-            additionalClassNames && (modalStyles as any)[additionalClassNames],
-          ]}
+        <KeyboardAvoidingView
+          style={{ flex: 1, justifyContent: "center" }}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          keyboardVerticalOffset={Platform.OS === "ios" ? 60 : 0}
         >
-          <Pressable
-            style={modalStyles.closeButton}
-            onPress={() => setModalVisible(false)}
+          <View
+            style={[
+              modalStyles.modalContents,
+              additionalClassNames && (modalStyles as any)[additionalClassNames],
+            ]}
           >
-            <FontAwesome name="close" color={colors.neutral100} size={36} />
-          </Pressable>
+            <Pressable
+              style={modalStyles.closeButton}
+              onPress={() => setModalVisible(false)}
+            >
+              <FontAwesome name="close" color={colors.neutral100} size={36} />
+            </Pressable>
 
-          <ScrollView
-            contentContainerStyle={{ paddingBottom: 40 }}
-            showsVerticalScrollIndicator={true}
-          >
-            {children}
-          </ScrollView>
-        </View>
+            <ScrollView
+              contentContainerStyle={{ paddingBottom: 40 }}
+              showsVerticalScrollIndicator={true}
+              automaticallyAdjustKeyboardInsets={true}
+            >
+              {children}
+            </ScrollView>
+          </View>
+        </KeyboardAvoidingView>
       </View>
     </RNModal>
   );
