@@ -27,7 +27,7 @@ const PageArrowButton: FC<PageArrowButtonProps> = ({
   return (
     <TouchableOpacity
       style={[
-        paginationStyles.pageSelector,
+        paginationStyles.pageSelectorArrow,
         activeClass,
         additionalClassNames && (paginationStyles as any)[additionalClassNames],
       ]}
@@ -39,7 +39,7 @@ const PageArrowButton: FC<PageArrowButtonProps> = ({
     >
       <FontAwesome
         name={direction === "left" ? "arrow-left" : "arrow-right"}
-        size={32}
+        size={20}
         color={
           isActive
             ? paginationStyles.pageSelectorActiveText.color

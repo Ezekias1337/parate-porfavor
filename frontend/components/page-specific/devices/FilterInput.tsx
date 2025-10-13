@@ -15,7 +15,7 @@ interface FilterInputProps {
 
 const FilterInput = ({ filter, setFilter, translate }: FilterInputProps) => {
   return (
-    <View style={[utilityStyles.fullWidth, utilityStyles.padding20]}>
+    <View style={[utilityStyles.fullWidth, utilityStyles.paddingTop10]}>
       <TextInput
         placeholder={translate("search")}
         value={filter}

@@ -5,7 +5,7 @@ import Button from "@/components/Button";
 // Functions, Helpers, Utils, and Hooks
 import fetchDevicesAndParentalControls from "@/functions/page-specific/devices/fetchDevicesAndParentalControls";
 // CSS
-import deviceStyles from "../../../../styles/page-specific/device";
+import utilityStyles from "@/styles/utilities";
 // Types
 import { ListOfStateSetters } from "../../../../screens/Devices";
 
@@ -17,7 +17,7 @@ import { ListOfStateSetters } from "../../../../screens/Devices";
  * @param {ListOfStateSetters} setErrorMsg - The function to set the error message state
  * @param {Function} translate - The function to translate the text
  * @returns {JSX.Element} The rendered refresh devices button
-*/
+ */
 
 const renderButtons = (
   {
@@ -28,10 +28,8 @@ const renderButtons = (
   }: ListOfStateSetters,
   translate: (key: string) => string
 ) => {
-  const { width: screenWidth } = Dimensions.get("window");
-  
   return (
-    <View style={[deviceStyles.buttonContainer,  { width: screenWidth < 500 ? "85%" : "25%" },]}>
+    <View style={[utilityStyles.buttonWrapper]}>
       <Button
         variant="primary"
         buttonSize="small"

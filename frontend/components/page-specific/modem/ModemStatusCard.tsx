@@ -3,9 +3,12 @@ import React, { FC } from "react";
 import { View, Text } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { useLocalization } from "../../localization/LocalizationContext";
+// Components
+import Card from "../../Card";
 // Interfaces and Types
 import { ModemStatus } from "../../../../shared/types/Modem";
 // CSS
+import utilityStyles from "@/styles/utilities";
 import modemStatusCardStyles from "../../../styles/component-specific/modem-status-card";
 
 const ModemStatusCard: FC<ModemStatus> = ({ cpuUsed, memUsed, systemTime }) => {
@@ -16,7 +19,7 @@ const ModemStatusCard: FC<ModemStatus> = ({ cpuUsed, memUsed, systemTime }) => {
   }
 
   return (
-    <View style={modemStatusCardStyles.card}>
+    <Card additionalStyle={utilityStyles.fullMaxWidth}>
       <View style={modemStatusCardStyles.row}>
         <FontAwesome
           name="server"
@@ -49,7 +52,7 @@ const ModemStatusCard: FC<ModemStatus> = ({ cpuUsed, memUsed, systemTime }) => {
           "systemTime"
         )}: ${systemTime}`}</Text>
       </View>
-    </View>
+    </Card>
   );
 };
 

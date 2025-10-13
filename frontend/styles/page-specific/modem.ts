@@ -27,7 +27,7 @@ const modemStyles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     gap: 10,
-    padding: 20,
+
   },
   alertContainer: {
     width: "100%",

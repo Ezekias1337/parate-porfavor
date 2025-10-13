@@ -20,6 +20,7 @@ import useFavoritesProfilesAndNotes from "@/hooks/useFavoritesProfilesAndNotes";
 // Components
 import { useAuth } from "@/components/auth/authContext";
 import { useLocalization } from "../components/localization/LocalizationContext";
+import PageTitle from "@/components/PageTitle";
 import FilterInput from "@/components/page-specific/devices/FilterInput";
 import Pagination from "@/components/pagination/Pagination";
 // Types
@@ -31,6 +32,7 @@ import {
 import OntToken from "../../shared/types/OntToken";
 // CSS
 import { colors } from "../styles/colors";
+import utilityStyles from "@/styles/utilities";
 import deviceStyles from "../styles/page-specific/device";
 
 export interface ListOfStateSetters {
@@ -107,18 +109,9 @@ const Devices: React.FC = () => {
       <ActivityIndicator color={colors.primary500} size="large" />
     </View>
   ) : (
-    <ScrollView
-      contentContainerStyle={[
-        deviceStyles.container,
-        {
-          paddingHorizontal: screenWidth < 500 ? 10 : screenWidth * 0.1,
-          paddingRight: screenWidth < 500 ? 10 : screenWidth * 0.1,
-        },
-      ]}
-      automaticallyAdjustKeyboardInsets={true}
-    >
-      <View style={[deviceStyles.container, { flexDirection: "column" }]}>
-        <Text style={deviceStyles.title}>{translate("devices")}</Text>
+    <View style={[utilityStyles.screenContentsContainer]}>
+      <View style={utilityStyles.stickyTop}>
+        <PageTitle text={translate("devices")} />
         {renderErrorMsg(errorMsg)}
         {renderButtons(
           {
@@ -136,34 +129,47 @@ const Devices: React.FC = () => {
         />
       </View>
 
-      {renderDeviceCards(
-        ontToken,
-        filteredDevices,
-        lastUsedProfile,
-        favorites,
-        notes,
-        paginationIndex,
-        {
-          setModalVisible,
-          setDevices,
-          parentalControls,
-          setParentalControls,
-          setLoading,
-          setErrorMsg,
-          setModalDevice,
-          setOntToken,
-          setFavorites,
-          setNotes,
-        },
-        translate
-      )}
-      <Pagination
-        devices={filteredDevices}
-        paginationIndex={paginationIndex}
-        setPaginationIndex={setPaginationIndex}
-        paginationSize={paginationSize}
-        setPaginationSize={setPaginationSize}
-      />
+      <ScrollView
+        contentContainerStyle={[
+          utilityStyles.scrollableContent,
+          utilityStyles.paddingTop20,
+          {
+            paddingLeft: screenWidth < 500 ? 20 : screenWidth * 0.1,
+            paddingRight: screenWidth < 500 ? 20 : screenWidth * 0.1,
+          },
+        ]}
+        automaticallyAdjustKeyboardInsets={true}
+      >
+        {renderDeviceCards(
+          ontToken,
+          filteredDevices,
+          lastUsedProfile,
+          favorites,
+          notes,
+          paginationIndex,
+          {
+            setModalVisible,
+            setDevices,
+            parentalControls,
+            setParentalControls,
+            setLoading,
+            setErrorMsg,
+            setModalDevice,
+            setOntToken,
+            setFavorites,
+            setNotes,
+          },
+          translate
+        )}
+        <Pagination
+          devices={filteredDevices}
+          paginationIndex={paginationIndex}
+          setPaginationIndex={setPaginationIndex}
+          paginationSize={paginationSize}
+          setPaginationSize={setPaginationSize}
+        />
+      </ScrollView>
+
       {renderModal({
         modalVisible,
         setModalVisible,
@@ -178,7 +184,7 @@ const Devices: React.FC = () => {
         setDevices,
         translate,
       })}
-    </ScrollView>
+    </View>
   );
 };
 

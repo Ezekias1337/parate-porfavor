@@ -95,7 +95,6 @@ const renderFavoriteCards = (
         const note = notes.find(
           (note) => note.macAddr === device.macAddr
         )?.note;
-        console.log("Note:", note);
 
         return (
           <DeviceCard
