@@ -3,6 +3,7 @@ import { useState } from "react";
 import { View, StyleSheet } from "react-native";
 // Components
 import Button from "@/components/Button";
+import Card from "@/components/Card";
 // Functions, Helpers, Utils, and Hooks
 import renderBadges from "@/functions/component-specific/template-card/renderBadges";
 import parseParentalControlsDataForDisplay from "@/functions/general/parseParentalControlsDataForDisplay";
@@ -42,7 +43,7 @@ const TemplateCard = ({
   const [deleteLoading, setDeleteLoading] = useState(false);
 
   return (
-    <View style={templateCardStyles.card}>
+    <Card>
       {parseParentalControlsDataForDisplay({
         template,
         translate,
@@ -79,7 +80,7 @@ const TemplateCard = ({
           }}
         />
       </View>
-    </View>
+    </Card>
   );
 };
 

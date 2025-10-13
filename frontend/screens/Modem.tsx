@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import {
   View,
   ActivityIndicator,
-  Text,
   ScrollView,
   Dimensions,
 } from "react-native";

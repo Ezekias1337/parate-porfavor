@@ -76,6 +76,7 @@ const ParentalControlsModal: React.FC<RenderModalProps> = ({
       setShowSchedulePeriodSelector(false);
       setRestrictionToEdit(null);
       setSelectedTemplate(null);
+      setTemplateName("");
     }
   }, [modalVisible]);
 

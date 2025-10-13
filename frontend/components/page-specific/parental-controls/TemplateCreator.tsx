@@ -63,14 +63,9 @@ const TemplateCreator: React.FC<TemplateCreatorProps> = ({
     <ScrollView
       contentContainerStyle={[
         parentalControlsStyles.modalContainer,
-        
-        { flexGrow: 1 },
       ]}
+      style={[utilityStyles.fullHeight]}
     >
-      <Text style={[parentalControlsStyles.title, utilityStyles.marginBottom40]}>
-        {translate("createScheduledRestriction")}
-      </Text>
-
       <View style={utilityStyles.marginBottom20}>
         <Alert
           bodyText={translate("createScheduledRestrictionAlert")}
@@ -97,7 +92,7 @@ const TemplateCreator: React.FC<TemplateCreatorProps> = ({
           onChangeText={setTemplateName}
           style={inputFieldStyles.textInput}
           placeholderTextColor={colors.primary300}
-          id="username"
+          id="restrictionName"
         />
       </View>
       <View style={parentalControlsStyles.buttonContainer}>

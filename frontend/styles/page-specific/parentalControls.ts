@@ -29,7 +29,7 @@ const parentalControlsStyles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     gap: 10,
-    padding: 20,
+    marginTop: 20,
     width: "100%"
   },
   templatesContainer: {
@@ -38,7 +38,6 @@ const parentalControlsStyles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     gap: 10,
-    padding: 20,
     marginTop: 20
   },
 
@@ -68,9 +67,11 @@ const parentalControlsStyles = StyleSheet.create({
   },
   modalContainer: {
     width: "100%",
+    height: "100%",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    flexGrow: 1
   },
   ampmContainer: {
     display: "flex", 

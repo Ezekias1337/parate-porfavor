@@ -4,7 +4,6 @@ import {
   View,
   ScrollView,
   ActivityIndicator,
-  Text,
   Dimensions,
 } from "react-native";
 // Functions, Helpers, Utils, and Hooks
@@ -16,6 +15,7 @@ import renderControlButtons from "@/functions/page-specific/parental-controls/re
 import renderTemplateCards from "@/functions/page-specific/parental-controls/render/renderTemplateCards";
 // Components
 import { useAuth } from "../components/auth/authContext";
+import PageTitle from "@/components/PageTitle";
 import ParentalControlsModal from "@/components/page-specific/parental-controls/ParentalControlsModal";
 // Types
 import { ParentalControlsData } from "../../shared/types/ParentalControls";
@@ -24,6 +24,7 @@ import OntToken from "../../shared/types/OntToken";
 import { Template } from "../../shared/types/ParentalControls";
 // CSS
 import { colors } from "../styles/colors";
+import utilityStyles from "../styles/utilities";
 import parentalControlsStyles from "../styles/page-specific/parentalControls";
 
 const ParentalControls: React.FC = () => {
@@ -72,40 +73,43 @@ const ParentalControls: React.FC = () => {
       <ActivityIndicator color={colors.primary500} size="large" />
     </View>
   ) : (
-    <ScrollView
-      contentContainerStyle={[
-        parentalControlsStyles.container,
-        {
-          paddingLeft: screenWidth < 500 ? 10 : screenWidth * 0.1,
-          paddingRight: screenWidth < 500 ? 10 : screenWidth * 0.1,
-        },
-      ]}
-      automaticallyAdjustKeyboardInsets={true}
-    >
-      <Text style={parentalControlsStyles.title}>
-        {translate("parentalControls")}
-      </Text>
+    <View style={[utilityStyles.screenContentsContainer]}>
+      <View style={utilityStyles.stickyTop}>
+        <PageTitle text={translate("parentalControls")} />
+        {renderControlButtons({
+          setLoading,
+          parentalControls,
+          setParentalControls,
+          setModalVisible,
+          setSelectedTemplate,
+          setErrorMsg,
+          translate,
+        })}
+        {renderErrorMsg(errorMsg)}
+      </View>
 
-      {renderErrorMsg(errorMsg)}
-      {renderControlButtons({
-        setLoading,
-        parentalControls,
-        setParentalControls,
-        setModalVisible,
-        setSelectedTemplate,
-        setErrorMsg,
-        translate,
-      })}
-      {renderTemplateCards({
-        templates: parentalControls.templates,
-        translate,
-        ontToken,
-        setErrorMsg,
-        setLoading,
-        setParentalControls,
-        setSelectedTemplate,
-        setModalVisible,
-      })}
+      <ScrollView
+        contentContainerStyle={[
+          utilityStyles.scrollableContent,
+          utilityStyles.paddingTop20,
+          {
+            paddingLeft: screenWidth < 500 ? 20 : screenWidth * 0.1,
+            paddingRight: screenWidth < 500 ? 20 : screenWidth * 0.1,
+          },
+        ]}
+        automaticallyAdjustKeyboardInsets={true}
+      >
+        {renderTemplateCards({
+          templates: parentalControls.templates,
+          translate,
+          ontToken,
+          setErrorMsg,
+          setLoading,
+          setParentalControls,
+          setSelectedTemplate,
+          setModalVisible,
+        })}
+      </ScrollView>
 
       <ParentalControlsModal
         modalVisible={modalVisible}
@@ -124,7 +128,7 @@ const ParentalControls: React.FC = () => {
         setTemplateName={setTemplateName}
         setErrorMsg={setErrorMsg}
       />
-    </ScrollView>
+    </View>
   );
 };
 

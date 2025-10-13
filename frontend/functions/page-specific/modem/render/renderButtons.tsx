@@ -19,7 +19,7 @@ import modemStyles from "@/styles/page-specific/modem";
  * @param setModemRebooting The function to set the modem rebooting state.
  * @param translate The function to translate the text.
  * @returns {JSX.Element} The rendered buttons.
-*/
+ */
 
 interface RenderButtonsTypes {
   setLoading: React.Dispatch<boolean>;
@@ -44,8 +44,8 @@ const renderButtons = ({
         text={translate("rebootModem")}
         variant="primary"
         onClickHandler={async () => {
-          await rebootModem();
           setModemRebooting(true);
+          await rebootModem();
         }}
         loading={modemRebooting}
         icon="power-off"

@@ -31,6 +31,7 @@ const modemStyles = StyleSheet.create({
   },
   alertContainer: {
     width: "100%",
+    paddingBottom: 20
   },
   loader: {
     flex: 1,

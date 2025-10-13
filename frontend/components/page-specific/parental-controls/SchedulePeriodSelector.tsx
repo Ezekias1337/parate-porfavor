@@ -98,18 +98,7 @@ const SchedulePeriodSelector: React.FC<SchedulePeriodSelectorProps> = ({
   }, [restrictionToEdit]);
 
   return (
-    <ScrollView
-      contentContainerStyle={[
-        parentalControlsStyles.modalContainer,
-        { flexGrow: 1 },
-      ]}
-    >
-      <Text
-        style={[parentalControlsStyles.title, utilityStyles.marginBottom40]}
-      >
-        {translate("modifyScheduledRestriction")}
-      </Text>
-
+    <View>
       <View
         style={[inputFieldStyles.formLabelContainer, utilityStyles.marginTop20]}
       >
@@ -211,7 +200,7 @@ const SchedulePeriodSelector: React.FC<SchedulePeriodSelectorProps> = ({
       </View>
 
       {renderErrorMsg(error)}
-    </ScrollView>
+    </View>
   );
 };
 

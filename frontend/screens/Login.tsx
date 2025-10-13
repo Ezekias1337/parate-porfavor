@@ -12,7 +12,6 @@ import { useLocalization } from "../components/localization/LocalizationContext"
 import { Account } from "../../shared/types/Account";
 // CSS
 import utilityStyles from "@/styles/utilities";
-import loginStyles from "../styles/page-specific/login";
 // Assets
 const appLogo = require("../assets/images/splash.png");
 

@@ -4,7 +4,6 @@ import {
   ScrollView,
   View,
   ActivityIndicator,
-  Text,
   Dimensions,
 } from "react-native";
 // Functions, Helpers, Utils, and Hooks
