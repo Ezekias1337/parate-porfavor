@@ -15,14 +15,13 @@ export const inputFieldStyles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
     fontSize: fontSizes.body,
-    backgroundColor: colors.neutral800,
+    backgroundColor: colors.neutral700,
     borderColor: colors.primary500,
     borderWidth: 1.5,
     color: colors.primary500,
     minWidth: "100%",
     width: "100%",
     marginBottom: 10,
-
   },
   leftIcon: {
     paddingRight: 16,

@@ -58,7 +58,7 @@ const renderDeviceCardButton1 = ({
   } else if (device.macFiltered === undefined || device.macFiltered === false) {
     return {
       text: translate("blockInternetIndefinitely"),
-      variant: "primary",
+      variant: "error",
       icon: "hourglass",
 
       onClickHandler: async () => {
@@ -85,7 +85,7 @@ const renderDeviceCardButton1 = ({
   } else {
     return {
       text: translate("unblockDevice"),
-      variant: "warning",
+      variant: "success",
       icon: "unlock",
       onClickHandler: async () => {
         await removeDeviceFromMacFilterHandler({

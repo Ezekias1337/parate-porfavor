@@ -19,7 +19,7 @@ const ModemStatusCard: FC<ModemStatus> = ({ cpuUsed, memUsed, systemTime }) => {
   }
 
   return (
-    <Card additionalStyle={utilityStyles.fullMaxWidth}>
+    <Card additionalStyle={[utilityStyles.fullMaxWidth, utilityStyles.gap20]}>
       <View style={modemStatusCardStyles.row}>
         <FontAwesome
           name="server"

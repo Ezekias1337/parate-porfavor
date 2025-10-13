@@ -12,7 +12,7 @@ const modemStatusCardStyles = StyleSheet.create({
   },
   icon: {
     marginRight: 10,
-    color: colors.neutral100,
+    color: colors.primary500,
   },
   row: {
     flexDirection: "row",

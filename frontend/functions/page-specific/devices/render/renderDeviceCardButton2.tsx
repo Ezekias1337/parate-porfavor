@@ -62,7 +62,7 @@ const renderDeviceCardButton2 = ({
   ) {
     return {
       text: translate("removeScheduleRestriction"),
-      variant: "warning",
+      variant: "success",
       icon: "calendar-times-o",
 
       onClickHandler: async () => {
@@ -91,7 +91,7 @@ const renderDeviceCardButton2 = ({
   } else {
     return {
       text: translate("blockInternetOnSchedule"),
-      variant: "primaryDark",
+      variant: "warning",
       icon: "calendar",
       onClickHandler: () => {
         setModalDevice(device);

@@ -173,7 +173,7 @@ const renderDeviceCards = (
 
           arrayOfBadges.push({
             text: badgeText,
-            variant: "info",
+            variant: "warning",
             icon: "clock-o",
             size: "small",
           });

@@ -15,7 +15,7 @@ export const modalStyles = StyleSheet.create({
     maxWidth: "95%",
     maxHeight: "90%",
     width: "100%",
-    backgroundColor: colors.neutral600,
+    backgroundColor: colors.neutral800,
     borderRadius: borderRadius.borderRadius,
     padding: 20,
     borderColor: colors.primary300,
