@@ -116,7 +116,7 @@ export const LocalizationProvider: React.FC<{ children: React.ReactNode }> = ({
           serverUrlNeeded:
             "Please create a profile.\n\nThis allows you to manage several modems without having to retype your password.",
           createProfileInstructions:
-            "The Username and Password fields are for your modem's login credentials, the same one you use to access the web interface. \n\n The Server URL is the address where the server is hosted. \n\n The Modem URL is the local IP address of your modem.",
+            "The Username and Password fields are for your modem's login credentials, the same one you use to access the web interface. \n\nThe Server URL is the address where the server is hosted. \n\nThe Modem URL is the local IP address of your modem.",
           edit: "Edit",
           delete: "Delete",
           missingDays: "Missing Days",
@@ -126,7 +126,7 @@ export const LocalizationProvider: React.FC<{ children: React.ReactNode }> = ({
           allowedStartTime: "Allowed Start Time (HH:MM)",
           allowedEndTime: "Allowed End Time (HH:MM)",
           addTimePeriodError:
-            "Please enter a valid start and end time. The time must be in the 12 hour format of HH:MM. For example:\n\n 8:00 AM - 9:00 PM",
+            "Please enter a valid start and end time. The time must be in the 12 hour format of HH:MM. For example:\n\n8:00 AM - 9:00 PM",
           needToSelectDays: "Please select at least one day.",
           incorrectTimeRange:
             "Your start time must be before your end time and your end time must be after your start time.",
@@ -237,9 +237,9 @@ export const LocalizationProvider: React.FC<{ children: React.ReactNode }> = ({
           settingsError:
             "No se pudieron guardar los ajustes. Por favor, inténtelo de nuevo. Verifique que todos los campos estén completos.",
           serverUrlNeeded:
-            "Cree un perfil.\n\n Esto le permitirá administrar varios módems sin tener que volver a escribir su contraseña.",
+            "Cree un perfil.\n\nEsto le permitirá administrar varios módems sin tener que volver a escribir su contraseña.",
           createProfileInstructions:
-            "Los campos de Usuario y Contraseña son para las credenciales de inicio de sesión de su módem, las mismas que usa para acceder a la interfaz web. \n\n La URL del Servidor es la dirección donde se aloja el servidor. \n\n La URL del Modem es la dirección IP local de su módem.",
+            "Los campos de Usuario y Contraseña son para las credenciales de inicio de sesión de su módem, las mismas que usa para acceder a la interfaz web. \n\nLa URL del Servidor es la dirección donde se aloja el servidor. \n\nLa URL del Modem es la dirección IP local de su módem.",
           edit: "Editar",
           delete: "Eliminar",
           missingDays: "Faltan Días",
@@ -249,7 +249,7 @@ export const LocalizationProvider: React.FC<{ children: React.ReactNode }> = ({
           allowedStartTime: "Hora de Inicio Permitida (HH:MM)",
           allowedEndTime: "Hora de Fin Permitida (HH:MM)",
           addTimePeriodError:
-            "Ingrese una hora de inicio y de fin válida. La hora debe estar en formato de 12 horas (HH:MM). Por ejemplo:\n\n 8:00 AM - 9:00 PM",
+            "Ingrese una hora de inicio y de fin válida. La hora debe estar en formato de 12 horas (HH:MM). Por ejemplo:\n\n8:00 AM - 9:00 PM",
           needToSelectDays: "Debe seleccionar al menos un día",
           incorrectTimeRange:
             "La hora de inicio debe ser menor que la hora de fin y la hora de fin debe ser mayor que la hora de inicio",

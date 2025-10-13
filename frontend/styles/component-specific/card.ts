@@ -11,16 +11,13 @@ const cardStyles = StyleSheet.create({
     borderWidth: borderWidth.borderWidth,
     borderColor: colors.primary500,
     padding: 20,
-    margin: 10,
     backgroundColor: colors.neutral800,
     shadowColor: colors.neutral900,
     shadowOpacity: 0.1,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 8,
     elevation: 5,
-    width: "100%",
     maxWidth: 400,
-
   },
   imageOnlyCard: {
     height: 200,

@@ -1,4 +1,4 @@
-// Library Import
+// Library Imports
 import { ExpoConfig, ConfigContext } from "@expo/config";
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
@@ -8,29 +8,30 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   version: "1.0.0",
   orientation: "portrait",
   icon: "./assets/images/icon.png",
-  assetBundlePatterns: ["assets/images/*"],
   scheme: "myapp",
   userInterfaceStyle: "automatic",
   splash: {
-    image: "./assets/images/icon.png",
+    image: "./assets/images/splash.png",
     resizeMode: "cover",
-    backgroundColor: "#040A15"
+    backgroundColor: "#040A15",
   },
   ios: {
-    supportsTablet: true
+    supportsTablet: true,
+    bundleIdentifier: "com.ezekias1337.parateporfavor"
   },
   android: {
-    package: "com.ezekias1337.parateporfavor", // REQUIRED for Play Store
+    package: "com.ezekias1337.parateporfavor",
     adaptiveIcon: {
       foregroundImage: "./assets/images/icon.png",
-      backgroundColor: "#040A15"
+      backgroundColor: "#040A15",
     },
-    permissions: ["INTERNET", "android.permission.INTERNET", "STORAGE"]
+    edgeToEdgeEnabled: true,
+    permissions: ["INTERNET", "android.permission.INTERNET", "STORAGE"],
   },
   web: {
     bundler: "metro",
     output: "static",
-    favicon: "./assets/images/favicon.png"
+    favicon: "./assets/images/favicon.png",
   },
   plugins: [
     "expo-router",
@@ -43,24 +44,24 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
           compileSdkVersion: 35,
           targetSdkVersion: 34,
           buildToolsVersion: "35.0.0",
-          kotlinVersion: "1.9.25",
-          usesCleartextTraffic: true
+          usesCleartextTraffic: true,
         },
       },
     ],
   ],
 
+
   experiments: {
-    typedRoutes: true
+    typedRoutes: true,
   },
   androidStatusBar: {
     barStyle: "light-content",
-    backgroundColor: "#4276CF"
+    backgroundColor: "#4276CF",
   },
   extra: {
     encryptionSecret: process.env.EXPO_PUBLIC_ENCRYPTION_SECRET || "fallback",
     eas: {
-      projectId: "44357fa5-05e3-4415-9214-99edeebb023f"
-    }
-  }
+      projectId: "44357fa5-05e3-4415-9214-99edeebb023f",
+    },
+  },
 });

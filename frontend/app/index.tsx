@@ -1,27 +1,51 @@
-import React from "react";
+// Library Imports
+import React, { useEffect } from "react";
 import MainNavigator from "@/navigation/MainNavigator";
 import { StatusBar } from "expo-status-bar";
-import { SafeAreaView } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
-// Auth Context
+import { View } from "react-native";
+import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
+import * as NavigationBar from "expo-navigation-bar";
 import { AuthProvider } from "../components/auth/authContext";
-// Localization Context
 import { LocalizationProvider } from "../components/localization/LocalizationContext";
 
-//CSS
-import { colors } from "../styles/colors";
+const App = () => {
+  useEffect(() => {
+    const configureNavBar = async () => {
+      try {
+        await NavigationBar.setVisibilityAsync("visible");
+        await NavigationBar.setButtonStyleAsync("light");
+      } catch (e) {
+        console.warn("Failed to set navigation bar color:", e);
+      }
+    };
 
-const App = () => (
-  <NavigationContainer>
-    <LocalizationProvider>
-      <AuthProvider>
-        <SafeAreaView style={{ flex: 1 }}>
-          <StatusBar style="light" backgroundColor={colors.primary500} />
-          <MainNavigator />
-        </SafeAreaView>
-      </AuthProvider>
-    </LocalizationProvider>
-  </NavigationContainer>
-);
+    configureNavBar();
+  }, []);
+
+  const navTheme = {
+    ...DefaultTheme,
+    colors: {
+      ...DefaultTheme.colors,
+      background: "transparent",
+    },
+  };
+
+  return (
+    <NavigationContainer theme={navTheme}>
+      <LocalizationProvider>
+        <AuthProvider>
+          <View style={{ flex: 1, backgroundColor: "transparent" }}>
+            <StatusBar
+              style="light"
+              backgroundColor="transparent"
+              translucent
+            />
+            <MainNavigator />
+          </View>
+        </AuthProvider>
+      </LocalizationProvider>
+    </NavigationContainer>
+  );
+};
 
 export default App;

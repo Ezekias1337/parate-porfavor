@@ -19,5 +19,5 @@
     "server/**/*.ts",
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
-  ]
+, "plugins/withAndroidTransparentNavigation.ts"  ]
 }

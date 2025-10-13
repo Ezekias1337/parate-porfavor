@@ -5,25 +5,9 @@ import { colors } from "../colors"
 import { fontSizes } from "../typography";
 
 const settingsStyles = StyleSheet.create({
-  wrapper: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 20,
-    width: "100%",
-    maxWidth: "100%",
-  },
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: colors.neutral800,
-    width: "100%",
-    minHeight: "100%",
-  },
   title: {
-    fontSize: fontSizes.header1, color: colors.primary200,
+    fontSize: fontSizes.header1,
+    color: colors.primary200,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
@@ -40,7 +24,6 @@ const settingsStyles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     gap: 10,
-    padding: 20,
     width: "100%"
   },
   loader: {

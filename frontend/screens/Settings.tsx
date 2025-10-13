@@ -20,10 +20,12 @@ import { Account } from "../../shared/types/Account";
 // Components
 import { useAuth } from "@/components/auth/authContext";
 import { useLocalization } from "@/components/localization/LocalizationContext";
+import PageTitle from "@/components/PageTitle";
 import SettingsModal from "@/components/page-specific/settings/SettingsModal";
 import AccountCard from "@/components/page-specific/settings/AccountCard";
 // CSS
 import { colors } from "../styles/colors";
+import utilityStyles from "@/styles/utilities";
 import settingsStyles from "../styles/page-specific/settings";
 
 interface SettingsProps {
@@ -81,28 +83,28 @@ const Settings: React.FC<SettingsProps> = ({
       <ActivityIndicator color={colors.primary500} size="large" />
     </View>
   ) : (
-    <ScrollView
-      contentContainerStyle={[settingsStyles.container]}
-      automaticallyAdjustKeyboardInsets={true}
-    >
-      <View style={settingsStyles.container}>
-        <Text style={settingsStyles.title}>{translate("settings")}</Text>
+    <View style={[utilityStyles.screenContentsContainer]}>
+      <View style={utilityStyles.stickyTop}>
+        <PageTitle text={translate("settings")} />
+        {renderControlButtons({ setModalVisible, translate })}
+        {renderFirstLoadMsg({
+          isFirstLaunch,
+          translate,
+        })}
+        {renderErrorMsg(errorMsg)}
+      </View>
 
-        <View
-          style={[
-            settingsStyles.wrapper,
-            {
-              paddingLeft: screenWidth < 500 ? 10 : screenWidth * 0.1,
-              paddingRight: screenWidth < 500 ? 10 : screenWidth * 0.1,
-            },
-          ]}
-        >
-          {renderControlButtons({ setModalVisible, translate })}
-          {renderFirstLoadMsg({
-            isFirstLaunch,
-            translate,
-          })}
-          {renderErrorMsg(errorMsg)}
+      <ScrollView
+        contentContainerStyle={[
+          utilityStyles.scrollableContent,
+          utilityStyles.paddingTop20,
+          {
+            paddingLeft: screenWidth < 500 ? 20 : screenWidth * 0.1,
+            paddingRight: screenWidth < 500 ? 20 : screenWidth * 0.1,
+          },
+        ]}
+      >
+        <View style={utilityStyles.gap20}>
           {accounts.map((account, index) => (
             <AccountCard
               key={index}
@@ -114,13 +116,13 @@ const Settings: React.FC<SettingsProps> = ({
               setModalVisible={setModalVisible}
             />
           ))}
-
-          {renderSettingsSavedMsg({
-            settingsSaved,
-            translate,
-          })}
         </View>
-      </View>
+
+        {renderSettingsSavedMsg({
+          settingsSaved,
+          translate,
+        })}
+      </ScrollView>
 
       <SettingsModal
         modalVisible={modalVisible}
@@ -138,7 +140,7 @@ const Settings: React.FC<SettingsProps> = ({
         setIsFirstLaunch={setIsFirstLaunch}
         translate={translate}
       />
-    </ScrollView>
+    </View>
   );
 };
 

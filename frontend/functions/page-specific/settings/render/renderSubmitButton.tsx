@@ -9,6 +9,7 @@ import Button from "@/components/Button";
 import { Account } from "../../../../../shared/types/Account";
 // CSS
 import settingsStyles from "@/styles/page-specific/settings";
+import utilityStyles from "@/styles/utilities";
 
 /**
  * Renders the submit button for the settings page.
@@ -54,11 +55,11 @@ const renderSubmitButton = (
   translate: (key: string) => string
 ) => {
   return (
-    <View style={settingsStyles.buttonContainer}>
+    <View style={utilityStyles.buttonWrapper}>
       <Button
         text={translate("saveChanges")}
         variant="primary"
-        buttonSize="medium"
+        buttonSize="large"
         loading={loading}
         onClickHandler={async () => {
           try {

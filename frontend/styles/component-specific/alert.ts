@@ -7,7 +7,6 @@ import { fontSizes } from "../typography";
 
 export const alertStyles = StyleSheet.create({
   alertWrapper: {
-    paddingHorizontal: 20,
     maxWidth: "100%",
     display: "flex",
     justifyContent: "center",

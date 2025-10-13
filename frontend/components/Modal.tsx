@@ -22,11 +22,11 @@ const Modal: FC<ModalProps> = ({
   return (
     <RNModal
       animationType="fade"
-      transparent={true}
+      transparent
       visible={modalVisible}
       onRequestClose={() => setModalVisible(false)}
     >
-      <ScrollView contentContainerStyle={modalStyles.modalWrapper} automaticallyAdjustKeyboardInsets={true}>
+      <View style={modalStyles.modalWrapper}>
         <View
           style={[
             modalStyles.modalContents,
@@ -39,9 +39,15 @@ const Modal: FC<ModalProps> = ({
           >
             <FontAwesome name="close" color={colors.neutral100} size={36} />
           </Pressable>
-          {children}
+
+          <ScrollView
+            contentContainerStyle={{ paddingBottom: 40 }}
+            showsVerticalScrollIndicator={true}
+          >
+            {children}
+          </ScrollView>
         </View>
-      </ScrollView>
+      </View>
     </RNModal>
   );
 };

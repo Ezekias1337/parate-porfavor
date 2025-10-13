@@ -1,4 +1,8 @@
+// Library Imports
 import { StyleSheet } from 'react-native';
+// CSS
+import { fontSizes } from './typography';
+import { colors } from './colors';
 
 const utilityStyles = StyleSheet.create({
     pageTitle: {
@@ -6,6 +10,10 @@ const utilityStyles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         fontWeight: 'bold',
+        fontSize: fontSizes.header1,
+        marginTop: 80,
+        marginBottom: 40,
+        color: colors.primary200,
     },
     fullWidth: {
         width: '100%',
@@ -261,11 +269,34 @@ const utilityStyles = StyleSheet.create({
     gap40: {
         gap: 40,
     },
+    stickyTop: {
+        paddingLeft: 20,
+        paddingRight: 20,
+    },
+    screenContentsContainer: {
+        flex: 1,
+        alignItems: "center",
+        backgroundColor: colors.neutral800,
+        width: "100%",
+        maxWidth: "100%",
+        minHeight: "100%",
+    },
+    scrollableContent: {
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        marginBottom: 20,
+        width: "100%",
+        maxWidth: "100%",
+    },
     buttonWrapper: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        gap: 20,
-        flexWrap: 'wrap',
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "row",
+        flexWrap: "wrap",
+        gap: 10,
+        width: "100%"
     },
     boldText: {
         fontWeight: 'bold',
