@@ -25,6 +25,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       foregroundImage: "./assets/images/icon.png",
       backgroundColor: "#040A15",
     },
+    softwareKeyboardLayoutMode: "pan",
     edgeToEdgeEnabled: true,
     permissions: ["INTERNET", "android.permission.INTERNET", "STORAGE"],
   },
