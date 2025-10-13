@@ -34,10 +34,8 @@ const Modal: FC<ModalProps> = ({
       onRequestClose={() => setModalVisible(false)}
     >
       <View style={modalStyles.modalWrapper}>
-        <KeyboardAvoidingView
+        <View
           style={{ flex: 1, justifyContent: "center" }}
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-          keyboardVerticalOffset={Platform.OS === "ios" ? 60 : 0}
         >
           <View
             style={[
@@ -60,7 +58,7 @@ const Modal: FC<ModalProps> = ({
               {children}
             </ScrollView>
           </View>
-        </KeyboardAvoidingView>
+        </View>
       </View>
     </RNModal>
   );
