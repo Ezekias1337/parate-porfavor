@@ -98,7 +98,7 @@ const SchedulePeriodSelector: React.FC<SchedulePeriodSelectorProps> = ({
   }, [restrictionToEdit]);
 
   return (
-    <View>
+    <>
       <View
         style={[inputFieldStyles.formLabelContainer, utilityStyles.marginTop20]}
       >
@@ -200,7 +200,7 @@ const SchedulePeriodSelector: React.FC<SchedulePeriodSelectorProps> = ({
       </View>
 
       {renderErrorMsg(error)}
-    </View>
+    </>
   );
 };
 

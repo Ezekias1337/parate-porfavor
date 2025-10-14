@@ -1,13 +1,12 @@
-// Library Imports
 import React, { FC } from "react";
 import {
-  Modal as RNModal,
   View,
   Pressable,
   ScrollView,
-  KeyboardAvoidingView,
-  Platform,
+  StyleSheet,
+  GestureResponderEvent,
 } from "react-native";
+import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
 import { FontAwesome } from "@expo/vector-icons";
 // CSS
 import { colors } from "../styles/colors";
@@ -26,22 +25,30 @@ const Modal: FC<ModalProps> = ({
   modalVisible,
   setModalVisible,
 }) => {
+  if (!modalVisible) return null;
+
   return (
-    <RNModal
-      animationType="fade"
-      transparent
-      visible={modalVisible}
-      onRequestClose={() => setModalVisible(false)}
+    <Animated.View
+      entering={FadeIn.duration(200)}
+      exiting={FadeOut.duration(200)}
+      style={[StyleSheet.absoluteFill, { zIndex: 9999 }]}
     >
-      <View style={modalStyles.modalWrapper}>
-        <View
-          style={{ flex: 1, justifyContent: "center" }}
-        >
+      <View style={modalStyles.modalWrapper} pointerEvents="box-none">
+        <Pressable
+          style={StyleSheet.absoluteFill}
+          onPress={() => setModalVisible(false)}
+          android_ripple={{ color: "transparent" }}
+        />
+
+        <View style={styles.centerContainer} pointerEvents="box-none">
           <View
             style={[
               modalStyles.modalContents,
-              additionalClassNames && (modalStyles as any)[additionalClassNames],
+              additionalClassNames &&
+                (modalStyles as any)[additionalClassNames],
             ]}
+            onStartShouldSetResponder={() => false}
+            onMoveShouldSetResponder={() => false}
           >
             <Pressable
               style={modalStyles.closeButton}
@@ -51,17 +58,31 @@ const Modal: FC<ModalProps> = ({
             </Pressable>
 
             <ScrollView
+              keyboardShouldPersistTaps="handled"
+              nestedScrollEnabled={true} // important for Android
               contentContainerStyle={{ paddingBottom: 40 }}
-              showsVerticalScrollIndicator={true}
-              automaticallyAdjustKeyboardInsets={true}
+              showsVerticalScrollIndicator
+              automaticallyAdjustKeyboardInsets
+              bounces={false}
+              onStartShouldSetResponder={() => false}
+              onMoveShouldSetResponder={() => false}
             >
               {children}
             </ScrollView>
           </View>
         </View>
       </View>
-    </RNModal>
+    </Animated.View>
   );
 };
+
+const styles = StyleSheet.create({
+  centerContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    // ensure it won't block touches to inner ScrollView
+  },
+});
 
 export default Modal;

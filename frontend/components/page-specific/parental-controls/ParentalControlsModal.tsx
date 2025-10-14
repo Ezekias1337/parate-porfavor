@@ -98,7 +98,34 @@ const ParentalControlsModal: React.FC<RenderModalProps> = ({
         />
       )}
 
-      {selectedTemplate && parentalControls && (
+      {showSchedulePeriodSelector && selectedTemplate && (
+        <SchedulePeriodSelector
+          translate={translate}
+          template={selectedTemplate}
+          setSelectedTemplate={setSelectedTemplate}
+          setShowSchedulePeriodSelector={setShowSchedulePeriodSelector}
+          setParentalControls={setParentalControls}
+          ontToken={ontToken}
+          restrictionToEdit={restrictionToEdit}
+        />
+      )}
+
+      {!showSchedulePeriodSelector && selectedTemplate && (
+        <RestrictionList
+          template={selectedTemplate}
+          setSelectedTemplate={setSelectedTemplate}
+          translate={translate}
+          ontToken={ontToken}
+          setLoading={setLoading}
+          setParentalControls={setParentalControls}
+          setErrorMsg={setErrorMsg}
+          setRestrictionToEdit={setRestrictionToEdit}
+          setShowSchedulePeriodSelector={setShowSchedulePeriodSelector}
+          setModalVisible={setModalVisible}
+        />
+      )}
+
+      {/* {selectedTemplate && parentalControls && (
         <View
           style={[
             utilityStyles.fullWidth,
@@ -106,34 +133,9 @@ const ParentalControlsModal: React.FC<RenderModalProps> = ({
             utilityStyles.displayFlex,
           ]}
         >
-          {showSchedulePeriodSelector && (
-            <SchedulePeriodSelector
-              translate={translate}
-              template={selectedTemplate}
-              setSelectedTemplate={setSelectedTemplate}
-              setShowSchedulePeriodSelector={setShowSchedulePeriodSelector}
-              setParentalControls={setParentalControls}
-              ontToken={ontToken}
-              restrictionToEdit={restrictionToEdit}
-            />
-          )}
-
-          {!showSchedulePeriodSelector && (
-            <RestrictionList
-              template={selectedTemplate}
-              setSelectedTemplate={setSelectedTemplate}
-              translate={translate}
-              ontToken={ontToken}
-              setLoading={setLoading}
-              setParentalControls={setParentalControls}
-              setErrorMsg={setErrorMsg}
-              setRestrictionToEdit={setRestrictionToEdit}
-              setShowSchedulePeriodSelector={setShowSchedulePeriodSelector}
-              setModalVisible={setModalVisible}
-            />
-          )}
+          
         </View>
-      )}
+      )} */}
     </Modal>
   );
 };
