@@ -42,7 +42,33 @@ app.use("/api/wake-on-lan", wakeOnLanRoutes);
 app.options("*", cors(corsOptions));
 
 const server = http.createServer(app);
+server.keepAliveTimeout = 65000;
+server.headersTimeout = 66000;
 
 server.listen(BACKEND_PORT, '0.0.0.0', () => {
     console.log(`Listening on port: ${BACKEND_PORT}`);
 });
+
+// Graceful shutdown
+const shutdown = (signal: string) => {
+    console.log(`Received ${signal}. Shutting down gracefully...`);
+
+    server.close((err) => {
+        if (err) {
+            console.error("Error during server close:", err);
+            process.exit(1);
+        }
+
+        console.log("HTTP server closed.");
+        process.exit(0);
+    });
+
+    // Force shutdown after timeout (prevents nginx/systemd hangs)
+    setTimeout(() => {
+        console.error("Forced shutdown (timeout)");
+        process.exit(1);
+    }, 10000);
+};
+
+process.on("SIGTERM", () => shutdown("SIGTERM"));
+process.on("SIGINT", () => shutdown("SIGINT"));
